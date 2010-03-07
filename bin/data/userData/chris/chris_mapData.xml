@@ -1,0 +1,80 @@
+<ensanche>
+    <client>
+        <username>chris</username>
+    </client>
+    <exterior>
+        <representation>
+            <map>
+                <position>
+                    <x>-331.000183</x>
+                    <y>136.000244</y>
+                </position>
+                <rotation>-3.000000</rotation>
+            </map>
+            <barrio>
+                <building bClosed="1" type="0" floors="6">
+                    <pt x="131.231918" y="-17.776249"></pt>
+                    <pt x="124.005310" y="101.008308"></pt>
+                    <pt x="251.882278" y="106.708687"></pt>
+                    <pt x="259.056519" y="-11.077251"></pt>
+                </building>
+                <building bClosed="1" type="1" floors="6">
+                    <pt x="263.106476" y="-13.304838"></pt>
+                    <pt x="256.258484" y="105.574226"></pt>
+                    <pt x="378.250427" y="111.967552"></pt>
+                    <pt x="384.450073" y="-6.327678"></pt>
+                </building>
+                <building bClosed="1" type="1" floors="6">
+                    <pt x="292.734558" y="179.713013"></pt>
+                    <pt x="287.025604" y="269.537170"></pt>
+                    <pt x="418.317078" y="267.405518"></pt>
+                    <pt x="431.229950" y="192.979309"></pt>
+                </building>
+            </barrio>
+        </representation>
+        <architecture>
+            <building>
+                <wall uid="411dd892-29f9-11df-926b-f729df01ff76">
+                    <pt x="0.138887" y="0.338402"></pt>
+                    <pt x="0.000000" y="16.866173"></pt>
+                </wall>
+                <wall uid="411df93a-29f9-11df-926b-f729df01ff76">
+                    <pt x="0.000000" y="16.866173"></pt>
+                    <pt x="17.777782" y="16.727287"></pt>
+                </wall>
+                <wall uid="411dfc96-29f9-11df-926b-f729df01ff76">
+                    <pt x="17.777782" y="16.727287"></pt>
+                    <pt x="17.916668" y="0.338402"></pt>
+                </wall>
+            </building>
+            <building>
+                <wall uid="411e002e-29f9-11df-926b-f729df01ff76">
+                    <pt x="18.462200" y="0.000000"></pt>
+                    <pt x="18.376514" y="16.538132"></pt>
+                </wall>
+                <wall uid="411e02f4-29f9-11df-926b-f729df01ff76">
+                    <pt x="18.376514" y="16.538132"></pt>
+                    <pt x="35.343094" y="16.538124"></pt>
+                </wall>
+                <wall uid="411e05a6-29f9-11df-926b-f729df01ff76">
+                    <pt x="35.343094" y="16.538124"></pt>
+                    <pt x="35.343098" y="0.085690"></pt>
+                </wall>
+            </building>
+            <building>
+                <wall uid="411e06c8-29f9-11df-926b-f729df01ff76">
+                    <pt x="23.974598" y="26.555931"></pt>
+                    <pt x="23.835693" y="39.055908"></pt>
+                </wall>
+                <wall uid="411e0772-29f9-11df-926b-f729df01ff76">
+                    <pt x="23.835693" y="39.055908"></pt>
+                    <pt x="42.030136" y="37.805908"></pt>
+                </wall>
+                <wall uid="411e081c-29f9-11df-926b-f729df01ff76">
+                    <pt x="42.030136" y="37.805908"></pt>
+                    <pt x="43.280136" y="27.389244"></pt>
+                </wall>
+            </building>
+        </architecture>
+    </exterior>
+</ensanche>
