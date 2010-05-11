@@ -21,12 +21,13 @@ class EnsancheModelRoom{
 	public:
 		EnsancheModelRoom();
 		~EnsancheModelRoom();
+		EnsancheModelRoom( const EnsancheModelRoom & mom );
 		
 		void setup();
 		void clear();
 		void draw();
 		
-		void setFromPolygon(polyEditable poly, float wallHeight, bool bOffset = true  );
+		//void setFromPolygon(polyEditable poly, float wallHeight, bool bOffset = true  );
 		void setFromBuilding(EnsancheBuilding * building, float wallHeight, bool bOffset = true );
 		
 		int getNumPts(){ return nPts;}
@@ -44,8 +45,12 @@ class EnsancheModelRoom{
 		ofPoint center;
 		ofPoint rotation;
 		
+		//--- 2d representation
+		//vector<polySimple> buildingFloors;
+		
 	protected:
-	
+		
+		//--- for 3d rendering
 		int nPts;
 		int nFloorPts;
 		float * pts;

@@ -14,6 +14,7 @@ polySimple::polySimple()
 	nPts = 0;
 	bDrawnWithPoints = true;
 	bClosed = false;
+	area = 0;
 }
 
 polySimple::~polySimple()
@@ -22,9 +23,11 @@ polySimple::~polySimple()
 
 polySimple::polySimple(  const polySimple &  mom )
 {
-	pts.clear();
-	for( int i = 0; i < pts.size(); i++) pts.push_back(mom.pts[i]);				
+	bDrawnWithPoints = mom.bDrawnWithPoints;
+	bClosed = false;
+	pts.assign(mom.pts.begin(),mom.pts.end());
 	nPts = mom.nPts;
+	area = mom.area;
 }
 
 void polySimple::pushVertex( ofPoint pt )
@@ -185,3 +188,8 @@ ofPoint polySimple::getPt( int id )
 	else return NULL;
 }
 
+
+void polySimple::setArea()
+{
+area = getArea();
+}

@@ -65,14 +65,40 @@ void polyEditable::clear()
 	selectedPoint = -1;
 	bEnabled = false;
 }
-/*polyEditable::polyEditable(  const polyEditable &  mom )
+
+polyEditable::polyEditable( const polyEditable &  mom )
 {
-	pts.clear();
-	for( int i = 0; i < pts.size(); i++) 
-		pts.push_back(mom.pts[i]);				
+	bDrawnWithPoints = true;
+	bClosed = false;
 	
+	pts.assign(mom.pts.begin(),mom.pts.end());
 	nPts = mom.nPts;
-}*/
+ 
+ 	uId = mom.uId;
+	
+	bEnabled = mom.bEnabled;			
+	bUseClosePoly = mom.bUseClosePoly;
+	bUseKeyPress = mom.bUseKeyPress;
+	bUseRotation = mom.bUseRotation;
+	
+	selectedPoint = mom.selectedPoint;
+	
+	selectDist = mom.selectDist;
+	lastMouse = mom.lastMouse; 
+	lastCenter = mom.lastCenter; 
+	moveOffSet = mom.moveOffSet;
+	rotation = mom.rotation;			
+	
+	scale = mom.scale;		
+	invScale = mom.invScale;	
+	gRotation = mom.gRotation;			
+	transPreRotate = mom.transPreRotate;
+	transPstRotate = mom.transPstRotate;
+	
+	mode = mom.mode;		
+	prevMode = mom.prevMode;
+	bTempMode = mom.bTempMode;
+}
 //--------------------------------------------------------------
 //
 //	

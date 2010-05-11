@@ -19,6 +19,18 @@ EnsancheFloorPlan::~EnsancheFloorPlan()
 {
 }
 
+EnsancheFloorPlan::EnsancheFloorPlan(const EnsancheFloorPlan & mom)
+{
+	walls.assign( mom.walls.begin(),mom.walls.end() );
+	pilars.assign( mom.pilars.begin(),mom.pilars.end() );
+	windows.assign( mom.windows.begin(),mom.windows.end() );
+	entries.assign( mom.entries.begin(),mom.entries.end() );
+	
+	// safe??
+	polyLimitsTrans = mom.polyLimitsTrans;
+	boundingbox = mom.boundingbox;
+}
+
 void EnsancheFloorPlan::clear()
 {
 	walls.clear();

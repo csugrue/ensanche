@@ -65,14 +65,15 @@ void EnsancheScaleTool::draw()
 			// Note: not so efficient to calc everytime
 			float xDiff = fabs(polyFWs[i]->pts[0].x-polyFWs[i]->pts[1].x);
 			float yDiff = fabs(polyFWs[i]->pts[0].y-polyFWs[i]->pts[1].y);
+			float armlen = 4*(1/scale);
 			
 			if( xDiff > yDiff)
 			{
-				ofLine( polyFWs[i]->pts[0].x,polyFWs[i]->pts[0].y-4,polyFWs[i]->pts[0].x,polyFWs[i]->pts[0].y+4);
-				ofLine( polyFWs[i]->pts[1].x,polyFWs[i]->pts[1].y-4,polyFWs[i]->pts[1].x,polyFWs[i]->pts[1].y+4);
+				ofLine( polyFWs[i]->pts[0].x,polyFWs[i]->pts[0].y-armlen,polyFWs[i]->pts[0].x,polyFWs[i]->pts[0].y+armlen);
+				ofLine( polyFWs[i]->pts[1].x,polyFWs[i]->pts[1].y-armlen,polyFWs[i]->pts[1].x,polyFWs[i]->pts[1].y+armlen);
 			}else{
-				ofLine( polyFWs[i]->pts[0].x-4,polyFWs[i]->pts[0].y,polyFWs[i]->pts[0].x+4,polyFWs[i]->pts[0].y);
-				ofLine( polyFWs[i]->pts[1].x-4,polyFWs[i]->pts[1].y,polyFWs[i]->pts[1].x+4,polyFWs[i]->pts[1].y);
+				ofLine( polyFWs[i]->pts[0].x-armlen,polyFWs[i]->pts[0].y,polyFWs[i]->pts[0].x+armlen,polyFWs[i]->pts[0].y);
+				ofLine( polyFWs[i]->pts[1].x-armlen,polyFWs[i]->pts[1].y,polyFWs[i]->pts[1].x+armlen,polyFWs[i]->pts[1].y);
 			}
 			
 			// draw measurement
@@ -85,16 +86,23 @@ void EnsancheScaleTool::draw()
 			if( xDiff > yDiff )
 			{
 				float cX = .5*(polyFWs[i]->pts[0].x+polyFWs[i]->pts[1].x);
-				font.drawString(strMeasure, cX - .5*strLen, polyFWs[i]->pts[0].y-4);
+				glPushMatrix();
+					glTranslatef(cX,polyFWs[i]->pts[0].y,0);
+					glScalef(1/scale,1/scale,1);
+					font.drawString(strMeasure, -.5*strLen, -4);
+				glPopMatrix();
+
 			}else{
 				float cY = .5*(polyFWs[i]->pts[0].y+polyFWs[i]->pts[1].y);
 				glPushMatrix();
+					
 					glTranslatef(polyFWs[i]->pts[0].x,cY,0);
+					glScalef(1/scale,1/scale,1);
 					glRotatef(90,0,0,1);
+					
 					font.drawString(strMeasure, -.5*strLen, -4);
 				glPopMatrix();
 			}
-			
 			
 			
 		}

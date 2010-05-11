@@ -1,0 +1,5 @@
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/ensancheTypes/ensancheBuilding.cpp: In constructor 'EnsancheBuilding::EnsancheBuilding()':
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/ensancheTypes/ensancheBuilding.cpp:15: error: 'uid' was not declared in this scope
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/ensancheTypes/ensancheBuilding.cpp: In copy constructor 'EnsancheBuilding::EnsancheBuilding(const EnsancheBuilding&)':
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/ensancheTypes/ensancheBuilding.cpp:28: error: 'uid' was not declared in this scope
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/ensancheTypes/ensancheBuilding.cpp:28: error: 'const class EnsancheBuilding' has no member named 'uid'

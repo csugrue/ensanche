@@ -18,7 +18,8 @@ void SceneAnalysis::setup()
 	
 	// set up sub scenes
 	analysisScenes[ ANALYSIS_SUB_EXPAND ] = new AnalysisExpandScene();
-	
+	analysisScenes[ ANALYSIS_SUB_MODEL ] = new AnalysisModelScene();
+
 	for( int i = 0; i < ANALYSIS_NUM_SUB_SCENES; i++)
 		analysisScenes[i]->setup();
 	
@@ -32,7 +33,7 @@ void SceneAnalysis::startScene()
 	// load current user data in case there were any changes
 	cout << "start analysis scene " << endl;
 	analysisScenes[ANALYSIS_SUB_EXPAND]->loadUserFile();
-	
+	analysisScenes[ANALYSIS_SUB_MODEL]->loadUserFile();
 }
 
 void SceneAnalysis::setUserName(string name)
@@ -142,7 +143,7 @@ string	SceneAnalysis::getStatusMessage()
 
 void SceneAnalysis::setupControlPanel()
 {
-	panel.setup("analysis", 250, 10, 530, 400);
+	panel.setup("analysis", 250, 10, 530, 75);
 	
 	panel.addPanel("expand", 1, false);
 	panel.addPanel("3d model", 1, false);
@@ -159,7 +160,7 @@ void SceneAnalysis::updateControlPanel()
 int  SceneAnalysis::getSubSceneId( string panelName)
 {
 	if(			panelName == "expand")	return ANALYSIS_SUB_EXPAND;
-	//else if (	panelName == "3d model")	return USER_SUB_INT;
+	else if (	panelName == "3d model")	return ANALYSIS_SUB_MODEL;
 	else		return -1;
 	
 }

@@ -56,6 +56,10 @@
                 <pt x="594.682251" y="146.423798"></pt>
                 <pt x="678.571960" y="146.423798"></pt>
             </pilar>
+            <pilar width="5.400000">
+                <pt x="801.219666" y="281.350281"></pt>
+                <pt x="798.292847" y="307.203949"></pt>
+            </pilar>
             <window>
                 <pt x="594.905945" y="346.384857"></pt>
                 <pt x="623.402405" y="346.908295"></pt>
@@ -72,72 +76,84 @@
                 <pt x="528.467590" y="193.130798"></pt>
                 <pt x="527.986633" y="220.482819"></pt>
             </window>
+            <window>
+                <pt x="775.392273" y="349.700287"></pt>
+                <pt x="815.090027" y="350.429474"></pt>
+            </window>
         </representation>
         <architecture>
-            <room uid="13644f4c-2a00-11df-926b-f729df01ff76">
-                <wall uid="13640564-2a00-11df-926b-f729df01ff76">
+            <room uid="e251b770-2af7-11df-b677-c12adf01ffb2">
+                <wall uid="e25178f0-2af7-11df-b677-c12adf01ffb2">
                     <pt x="0.129847" y="0.000000"></pt>
                     <pt x="10.377760" y="0.178878"></pt>
-                    <window uid="13641a9a-2a00-11df-926b-f729df01ff76">
+                    <window uid="e25183e0-2af7-11df-b677-c12adf01ffb2">
                         <pt x="8.952522" y="0.154001"></pt>
                         <pt x="8.099458" y="0.139112"></pt>
                     </window>
-                    <window uid="13641bf8-2a00-11df-926b-f729df01ff76">
+                    <window uid="e251853e-2af7-11df-b677-c12adf01ffb2">
                         <pt x="5.003500" y="0.085070"></pt>
                         <pt x="4.195112" y="0.070960"></pt>
                     </window>
                 </wall>
-                <wall uid="136412b6-2a00-11df-926b-f729df01ff76">
+                <wall uid="e25179ea-2af7-11df-b677-c12adf01ffb2">
                     <pt x="10.377760" y="0.178878"></pt>
                     <pt x="10.236388" y="7.572323"></pt>
                 </wall>
-                <wall uid="13641400-2a00-11df-926b-f729df01ff76">
+                <wall uid="e2517a94-2af7-11df-b677-c12adf01ffb2">
                     <pt x="10.236388" y="7.572323"></pt>
                     <pt x="0.000000" y="7.384292"></pt>
-                    <window uid="13641784-2a00-11df-926b-f729df01ff76">
+                    <window uid="e251805c-2af7-11df-b677-c12adf01ffb2">
                         <pt x="2.160890" y="7.423984"></pt>
                         <pt x="3.051889" y="7.440350"></pt>
                     </window>
+                    <window uid="e25186e2-2af7-11df-b677-c12adf01ffb2">
+                        <pt x="7.804156" y="7.527647"></pt>
+                        <pt x="9.045385" y="7.550447"></pt>
+                    </window>
                 </wall>
-                <wall uid="136414b4-2a00-11df-926b-f729df01ff76">
+                <wall uid="e2517b3e-2af7-11df-b677-c12adf01ffb2">
                     <pt x="0.000000" y="7.384292"></pt>
                     <pt x="0.129847" y="0.000000"></pt>
-                    <window uid="13641cd4-2a00-11df-926b-f729df01ff76">
+                    <window uid="e251861a-2af7-11df-b677-c12adf01ffb2">
                         <pt x="0.083563" y="2.632189"></pt>
                         <pt x="0.068524" y="3.487405"></pt>
                     </window>
                 </wall>
-                <pilar uid="13641f90-2a00-11df-926b-f729df01ff76" width="0.168842">
+                <pilar uid="e2518a7a-2af7-11df-b677-c12adf01ffb2" width="0.168842">
                     <pt x="0.007288" y="7.262260"></pt>
                     <pt x="0.296462" y="7.267304"></pt>
                 </pilar>
-                <pilar uid="13642292-2a00-11df-926b-f729df01ff76" width="0.168842">
+                <pilar uid="e2518d9a-2af7-11df-b677-c12adf01ffb2" width="0.168842">
                     <pt x="5.263796" y="7.344088"></pt>
                     <pt x="4.974596" y="7.347302"></pt>
                 </pilar>
-                <pilar uid="136423e6-2a00-11df-926b-f729df01ff76" width="0.168842">
+                <pilar uid="e2518eee-2af7-11df-b677-c12adf01ffb2" width="0.168842">
                     <pt x="5.378109" y="4.126641"></pt>
                     <pt x="4.949497" y="4.126641"></pt>
                 </pilar>
-                <pilar uid="136424b8-2a00-11df-926b-f729df01ff76" width="0.168842">
+                <pilar uid="e2518fc0-2af7-11df-b677-c12adf01ffb2" width="0.168842">
                     <pt x="10.017690" y="4.331673"></pt>
                     <pt x="10.272516" y="4.331673"></pt>
                 </pilar>
-                <pilar uid="13642580-2a00-11df-926b-f729df01ff76" width="0.168842">
+                <pilar uid="e251907e-2af7-11df-b677-c12adf01ffb2" width="0.168842">
                     <pt x="0.027742" y="4.119329"></pt>
                     <pt x="0.301708" y="4.119329"></pt>
                 </pilar>
-                <pilar uid="13642652-2a00-11df-926b-f729df01ff76" width="0.168842">
+                <pilar uid="e251915a-2af7-11df-b677-c12adf01ffb2" width="0.168842">
                     <pt x="0.337885" y="1.061596"></pt>
                     <pt x="0.083059" y="1.061596"></pt>
                 </pilar>
-                <pilar uid="13642710-2a00-11df-926b-f729df01ff76" width="0.168842">
+                <pilar uid="e2519218-2af7-11df-b677-c12adf01ffb2" width="0.168842">
                     <pt x="10.033598" y="1.235283"></pt>
                     <pt x="10.288424" y="1.235283"></pt>
                 </pilar>
-                <pilar uid="13642df0-2a00-11df-926b-f729df01ff76" width="0.168842">
+                <pilar uid="e25192d6-2af7-11df-b677-c12adf01ffb2" width="0.168842">
                     <pt x="2.153896" y="1.171802"></pt>
                     <pt x="4.776875" y="1.171802"></pt>
+                </pilar>
+                <pilar uid="e2519394-2af7-11df-b677-c12adf01ffb2" width="0.168842">
+                    <pt x="8.611701" y="5.390548"></pt>
+                    <pt x="8.520188" y="6.198915"></pt>
                 </pilar>
             </room>
         </architecture>

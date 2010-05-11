@@ -13,8 +13,12 @@
 #include "ofMain.h"
 #include "baseScene.h"
 #include "ensancheBarrio.h"
-#include "ensancheModelRoom.h"
-
+#include "ensancheUtils.h"
+#include "analysisExpandAreaFinder.h"
+#include "ensancheScaleTool.h"
+#include "ensancheModelBuilding.h"
+#include "facadeBoxRipple.h"
+#include "analysisSideAssigner.h"
 
 class AnalysisExpandScene: public baseScene{
 	
@@ -23,7 +27,6 @@ public:
 	~AnalysisExpandScene();
 	void setup();
 	void update();
-	
 	
 	void preDraw();
 	void draw();
@@ -35,6 +38,9 @@ public:
 	void mousePressed(int x, int y, int button);
 	void mouseReleased(int x, int y, int button);
 	
+	void disable();
+	void enable();
+	
 	string	getStatusMessage();
 	
 	void setupControlPanel();
@@ -44,8 +50,27 @@ public:
 	void loadUserFile();
 	
 	bool bSetUserName;
+	bool bEnabled;
 	
 	// model of original layout
 	EnsancheBarrio	barrioOriginal;
-	EnsancheModelRoom modelRoom;
+	
+	// tools for making expansion
+	AnalysisExpandAreaFinder minRectExpander;
+	
+	// expanded models
+	vector<EnsancheModelBuilding>	buildings;
+	
+	// scale tool
+	EnsancheScaleTool	scaleTool;
+	
+	// update toggle
+	guiTypeMultiToggle * multiWhichB;
+	
+	// facade makers
+	FacadeBoxRipple		facadeMakerBox;
+	
+	//
+	AnalysisSideAssigner	sideAssigner;
+	
 };

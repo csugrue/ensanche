@@ -12,10 +12,12 @@
 #include "ofMain.h"
 #include "baseScene.h"
 #include "analysisExpandScene.h"
+#include "analysisModelScene.h"
 
-#define ANALYSIS_NUM_SUB_SCENES 1
+#define ANALYSIS_NUM_SUB_SCENES 2
 
 #define ANALYSIS_SUB_EXPAND	0
+#define ANALYSIS_SUB_MODEL	1
 
 
 class SceneAnalysis: public baseScene{

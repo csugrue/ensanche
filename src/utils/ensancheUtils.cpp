@@ -48,3 +48,51 @@ string subsChars(string origString){
 	
 	return origString;
 }
+
+
+void drawPolyIntoMe( ofxCvGrayscaleImage & image, vector<ofPoint> npts, int color )
+{
+	if( npts.size() > 0 ) {
+		CvPoint* cvpts = new CvPoint[npts.size()];
+		for( int i=0; i < npts.size() ; i++ ) {
+			cvpts[i].x = (int)npts[i].x;
+			cvpts[i].y = (int)npts[i].y;
+		}
+		int nPts = npts.size();
+		cvFillConvexPoly ( image.getCvImage(), cvpts, nPts,
+						  CV_RGB(color,color,color) );
+		delete cvpts;
+	}
+}
+
+
+int getColor(int n)
+{
+	int tcolors = 11;
+	
+	int colors[] = {
+		0x4D1225,
+		0x5D6B22,
+		0x026B66,
+		0xBB9732,
+		0x7AB041,
+		0x1AD3C4,
+		0xB02100,
+		0x7F8C1B,
+		0x8CB1B1,
+		0xDC660F,
+		0x192542
+		
+		/*0xff0000,
+		0x00bdb2,
+		0x3b2303,
+		0x00ff00,
+		0x0000ff,
+		0x3b23dc,
+		0x032506*/
+	};
+	
+	return colors[ n%tcolors ];
+	
+}
+

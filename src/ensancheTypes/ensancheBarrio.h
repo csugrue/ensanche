@@ -18,6 +18,7 @@ class EnsancheBarrio{
 public:
 	EnsancheBarrio();
 	~EnsancheBarrio();
+	EnsancheBarrio( const EnsancheBarrio & mom );
 	
 	void clear();
 	void setup();
@@ -25,6 +26,8 @@ public:
 	
 	void addBuilding();
 	
+	ofRectangle getGroupBoundingBox();
+
 	//--- set from xml
 	void loadFromXml( string filename);
 	
@@ -32,11 +35,10 @@ public:
 	void addBuilding(EnsancheBuildingGroup * mapBuildings, float pixelsPerMeter);
 	
 	//--- architectural elements
-	vector<EnsancheBuilding*>		buildings;
+	vector<EnsancheBuilding>		buildings;
 	ofRectangle boundingBox;
 	
 protected:
 	
-	ofRectangle getGroupBoundingBox();
 	
 };

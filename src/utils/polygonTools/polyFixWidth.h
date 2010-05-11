@@ -16,7 +16,8 @@ public:
 	
 	polyFixWidth();
 	~polyFixWidth();
-	
+	polyFixWidth(  const polyFixWidth &  mom );
+
 	void setup();
 	void clear();
 	void addPoint( ofPoint pt );

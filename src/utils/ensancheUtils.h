@@ -10,6 +10,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxCvMain.h"
 
 //--------------------------------------------------
 // data utils
@@ -25,6 +26,9 @@ string getTimeString();
 // draws a grid over entire screen with submitted spacing
 void enDrawGrid( int xSpace, int ySpace );
 
+// gets a unique color from a lookup table
+int getColor(int n);
+
 //--------------------------------------------------
 // text utils
 //--------------------------------------------------
@@ -35,3 +39,9 @@ typedef struct{
 }charSubstitution;
 
 string subsChars(string origString);
+
+//--------------------------------------------------
+// image utils
+//--------------------------------------------------
+
+void drawPolyIntoMe( ofxCvGrayscaleImage & image, vector<ofPoint> npts, int color );

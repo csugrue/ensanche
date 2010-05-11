@@ -19,12 +19,13 @@ polyAdv::~polyAdv()
 {
 }
 
-/*polyAdv::polyAdv(  const polyAdv &  mom )
+polyAdv::polyAdv(  const polyAdv &  mom )
 {
-	pts.clear();
-	for( int i = 0; i < pts.size(); i++) pts.push_back(mom.pts[i]);				
+	bDrawnWithPoints = true;
+	bClosed = false;
+	pts.assign(mom.pts.begin(),mom.pts.end());
 	nPts = mom.nPts;
-}*/
+}
 
 bool polyAdv::bHitTest( float x, float y)
 {

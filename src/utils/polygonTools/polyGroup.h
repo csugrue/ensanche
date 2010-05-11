@@ -12,6 +12,7 @@
 #include "polyFixWidth.h"
 #include "polyUtils.h"
 
+/* NOTE: needs copy constructor?? */
 
 class polyGroup{
 

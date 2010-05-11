@@ -45,7 +45,8 @@ class baseScene{
 		
 		virtual void disable(){}
 		virtual void enable(){}
-	
+		virtual void toggleHidePanel(){}
+		
 		//----  controls
 		ofxControlPanel	panel;
 		bool bPanelOn;

@@ -41,5 +41,9 @@ public:
 	int                 nPts;
 	bool				bDrawnWithPoints, bClosed;
 	
+	// mostly for sorting
+	float				area;
+	void				setArea();
+	
 	
 };

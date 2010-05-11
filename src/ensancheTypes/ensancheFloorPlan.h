@@ -21,6 +21,7 @@ typedef struct enWall{
 	ofPoint pts[2];
 	string uid;
 	int posInPoly;
+	int type;
 };
 	
 typedef struct enPilar{
@@ -56,6 +57,7 @@ class EnsancheFloorPlan
 	public:
 		EnsancheFloorPlan();
 		~EnsancheFloorPlan();
+		EnsancheFloorPlan(const EnsancheFloorPlan & mom);
 		
 		void clear();
 		void setup();

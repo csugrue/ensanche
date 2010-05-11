@@ -18,7 +18,8 @@ class EnsancheBuilding{
 	public:
 		EnsancheBuilding();
 		~EnsancheBuilding();
-	
+		EnsancheBuilding( const EnsancheBuilding & mom );
+		
 		void clear();
 		void setup();
 		void draw();
@@ -27,7 +28,7 @@ class EnsancheBuilding{
 		void addClosingWall();
 		
 		//--- set from xml
-		void loadFromXml( string filename);
+		//void loadFromXml( string filename);
 	
 		//--- set from editor functions
 		void addWalls(EnsancheMapBuilding & mapBuilding, float pixelsPerMeter, bool bRemoveBounding);
@@ -35,7 +36,12 @@ class EnsancheBuilding{
 		//--- architectural elements
 		vector<enWall>		walls;
 		polySimple			buildingPoly;
-	
+		
+		// hmm makes sense if dont have polys for all floors?
+		int nFloors;
+		
+		string uid;
+		
 	protected:
 		
 		ofPoint	getTransformsApplied(ofPoint me, ofPoint pre, ofPoint pst, float rotation);

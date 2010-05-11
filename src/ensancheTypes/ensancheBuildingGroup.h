@@ -11,6 +11,9 @@
 
 #include "ensancheMapBuilding.h"
 
+// NOTE: needs copy constructor!
+
+
 class EnsancheBuildingGroup{
 
 	public:

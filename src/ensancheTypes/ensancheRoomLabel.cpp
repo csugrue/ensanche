@@ -19,8 +19,19 @@ EnsancheRoomLabel::EnsancheRoomLabel()
 	h = 2;
 }
 
-EnsancheRoomLabel::~EnsancheRoomLabel()
+EnsancheRoomLabel::EnsancheRoomLabel( const EnsancheRoomLabel & mom )
 {
+	polyEditable::polyEditable((polyEditable)mom);
+	
+	labelID = mom.labelID;
+	labelName = mom.labelName;
+	
+	 w = mom.w;
+	 h = mom.h;
+	
+	// NOTE: how to copy pointer??
+	//ofTrueTypeFont * font;
+	bSetFont = false;
 }
 
 void EnsancheRoomLabel::clear()

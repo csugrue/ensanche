@@ -11,6 +11,8 @@
 
 #include "ensancheRoomLabel.h"
 
+// NOTE: needs copy constructor!
+
 class EnsancheLabelGroup{
 	
 	public:

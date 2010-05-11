@@ -8,6 +8,7 @@
  */
 
 #include "polyFixWidth.h"
+
 polyFixWidth::polyFixWidth()
 {
 	polySimple::polySimple();
@@ -29,7 +30,22 @@ polyFixWidth::polyFixWidth()
 polyFixWidth::~polyFixWidth()
 {
 	
+
+}
+
+polyFixWidth::polyFixWidth(  const polyFixWidth &  mom ){
 	
+	polyEditable::polyEditable( (polyEditable)mom);
+	
+	rectPts.assign(mom.rectPts.begin(),mom.rectPts.end());
+	center = mom.center;
+	length = mom.length;
+	width = mom.width;
+	bSquare = mom.bSquare;
+	fillColor = mom.fillColor;
+	strokeColor = mom.strokeColor;
+	ppA = mom.ppA; 
+	ppB = mom.ppB;
 }
 
 void polyFixWidth::setup()

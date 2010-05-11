@@ -1,0 +1,6 @@
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/ensancheTypes/ensancheMapBuilding.cpp: In constructor 'EnsancheMapBuilding::EnsancheMapBuilding()':
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/ensancheTypes/ensancheMapBuilding.cpp:17: error: 'uid' was not declared in this scope
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/ensancheTypes/ensancheMapBuilding.cpp:17: error: 'getUid' was not declared in this scope
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/ensancheTypes/ensancheMapBuilding.cpp: In copy constructor 'EnsancheMapBuilding::EnsancheMapBuilding(const EnsancheMapBuilding&)':
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/ensancheTypes/ensancheMapBuilding.cpp:25: error: 'uid' was not declared in this scope
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/ensancheTypes/ensancheMapBuilding.cpp:25: error: 'const class EnsancheMapBuilding' has no member named 'uid'

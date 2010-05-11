@@ -18,7 +18,7 @@ public:
 	
 	polyAdv();
 	~polyAdv();
-	//polyAdv(  const polyAdv &  mom );
+	polyAdv(  const polyAdv &  mom );
 	
 	virtual void createFromRect( ofRectangle rect );
 	virtual bool bHitTest( float x, float y);

@@ -41,8 +41,17 @@
 //-------------------------------------------
 #define WALL_ORIENT_H				0
 #define WALL_ORIENT_V				1
+#define EN_FLOOR_HEIGHT				4	//meters
 
 //-------------------------------------------
 // MISC
 //-------------------------------------------
 #define AUTO_SAVE_TIME				10
+
+
+//-------------------------------------------
+// TEXTURE TYPES
+//-------------------------------------------
+#define MODEL_TEX_WINDOW	0
+#define MODEL_TEX_WALL		1
+#define MODEL_TEX_SOLAR		2

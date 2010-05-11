@@ -377,6 +377,7 @@ void userMapScene::saveUserFile()
 						xml.setAttribute("building","bClosed",buildingGroup.buildings[i]->bClosed,i);
 						xml.setAttribute("building","type",buildingGroup.buildings[i]->type,i);
 						xml.setAttribute("building","floors",buildingGroup.buildings[i]->nFloors,i);
+						xml.setAttribute("building","uid",buildingGroup.buildings[i]->uid,i);
 						xml.pushTag("building",i);
 						for(int j = 0; j < buildingGroup.buildings[i]->pts.size(); j++)
 						{
@@ -406,22 +407,29 @@ void userMapScene::saveUserFile()
 				{
 					// make translated, scaled version
 					xml.addTag("building");
+					xml.addAttribute("building","nFloors",barrio.buildings[i].nFloors,tSaved);
+					xml.setAttribute("building","uid",buildingGroup.buildings[i]->uid,tSaved);
+					
 					xml.pushTag("building",tSaved);
 					
-						for(int j = 0; j < barrio.buildings[i]->walls.size(); j++)
-						{
-							xml.addTag("wall");
-							xml.setAttribute("wall","uid",barrio.buildings[i]->walls[j].uid, j);
-							xml.pushTag("wall",j);
-								xml.addTag("pt");
-								xml.setAttribute("pt","x",barrio.buildings[i]->walls[j].pts[0].x, 0);
-								xml.setAttribute("pt","y",barrio.buildings[i]->walls[j].pts[0].y, 0);
-								xml.addTag("pt");
-								xml.setAttribute("pt","x",barrio.buildings[i]->walls[j].pts[1].x, 1);
-								xml.setAttribute("pt","y",barrio.buildings[i]->walls[j].pts[1].y, 1);
+						
+							xml.addTag("floor");
+							xml.pushTag("floor",0);
+							for(int j = 0; j < barrio.buildings[i].walls.size(); j++)
+							{
+								xml.addTag("wall");
+								xml.setAttribute("wall","uid",barrio.buildings[i].walls[j].uid, j);
+								xml.pushTag("wall",j);
+									xml.addTag("pt");
+									xml.setAttribute("pt","x",barrio.buildings[i].walls[j].pts[0].x, 0);
+									xml.setAttribute("pt","y",barrio.buildings[i].walls[j].pts[0].y, 0);
+									xml.addTag("pt");
+									xml.setAttribute("pt","x",barrio.buildings[i].walls[j].pts[1].x, 1);
+									xml.setAttribute("pt","y",barrio.buildings[i].walls[j].pts[1].y, 1);
+								xml.popTag();
+							}
 							xml.popTag();
-						}
-					
+						
 					xml.popTag();
 					tSaved++;
 				}
@@ -512,7 +520,8 @@ void userMapScene::loadUserFile()
 							bool bClose = xml.getAttribute("building","bClosed",false,i);
 							buildingGroup.buildings[i]->type	= xml.getAttribute("building","type",EN_BUILDING_NEIGHBOR,i);
 							buildingGroup.buildings[i]->nFloors = xml.getAttribute("building","floors",6,i);
-						
+							buildingGroup.buildings[i]->uid = xml.getAttribute("building","uid",getUid(),i);
+							
 							xml.pushTag("building",i);
 							
 								int npts = xml.getNumTags("pt");

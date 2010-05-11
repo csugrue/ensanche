@@ -15,7 +15,8 @@ class EnsancheRoomLabel : public polyEditable{
 
 	public:
 		EnsancheRoomLabel();
-		~EnsancheRoomLabel();
+		//~EnsancheRoomLabel();
+		EnsancheRoomLabel( const EnsancheRoomLabel & mom );
 		
 		void clear();
 		void setup();

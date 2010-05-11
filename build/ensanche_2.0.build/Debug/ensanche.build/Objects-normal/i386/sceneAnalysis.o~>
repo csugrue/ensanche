@@ -1,0 +1,8 @@
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/scenes/sceneAnalysis.cpp: In member function 'virtual void SceneAnalysis::setup()':
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/scenes/sceneAnalysis.cpp:21: error: 'ANALYSIS_SUB_MODEL' was not declared in this scope
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/scenes/sceneAnalysis.cpp:21: error: expected type-specifier before 'AnalysisModelScene'
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/scenes/sceneAnalysis.cpp:21: error: expected `;' before 'AnalysisModelScene'
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/scenes/sceneAnalysis.cpp: In member function 'virtual void SceneAnalysis::startScene()':
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/scenes/sceneAnalysis.cpp:36: error: 'ANALYSIS_SUB_MODEL' was not declared in this scope
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/scenes/sceneAnalysis.cpp: In member function 'int SceneAnalysis::getSubSceneId(std::string)':
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.4/src/scenes/sceneAnalysis.cpp:163: error: 'ANALYSIS_SUB_MODEL' was not declared in this scope

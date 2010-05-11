@@ -11,6 +11,9 @@
 
 #include "polyGroup.h"
 
+// NOTE: needs copy constructor!
+
+
 class EnsancheScaleTool : public polyGroup
 {
 	public:

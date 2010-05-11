@@ -31,8 +31,8 @@ class polyEditable: public polyAdv{
 public:
 	
 	polyEditable();
-	~polyEditable();
-	//polyEditable(  const polyEditable &  mom );
+	virtual ~polyEditable();
+	polyEditable(  const polyEditable &  mom );
 	
 	virtual void setup();
 	virtual void clear();

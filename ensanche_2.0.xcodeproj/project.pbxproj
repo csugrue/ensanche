@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8329A277114A78BF001FEEF0 /* ofxCvBlobTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8329A273114A78BF001FEEF0 /* ofxCvBlobTracker.cpp */; };
+		835E976D1144E4A0006B36DE /* ensancheModelBarrio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 835E976C1144E4A0006B36DE /* ensancheModelBarrio.cpp */; };
+		835E97741144FFBF006B36DE /* ensancheModelBuilding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 835E97731144FFBF006B36DE /* ensancheModelBuilding.cpp */; };
+		835E9BE81146C25D006B36DE /* analysisModelScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 835E9BE71146C25D006B36DE /* analysisModelScene.cpp */; };
 		8376F18510FE8245001808C2 /* userComboScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8376F17F10FE8245001808C2 /* userComboScene.cpp */; };
 		8376F18610FE8245001808C2 /* userInteriorScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8376F18110FE8245001808C2 /* userInteriorScene.cpp */; };
 		8376F18710FE8245001808C2 /* userMapScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8376F18310FE8245001808C2 /* userMapScene.cpp */; };
@@ -36,9 +40,14 @@
 		83927E5911430E3400534A62 /* uuid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83927E5811430E3400534A62 /* uuid.cpp */; };
 		83927E5F11430F1300534A62 /* sysdep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83927E5E11430F1300534A62 /* sysdep.cpp */; };
 		83927F4011438A0F00534A62 /* uidGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83927F3F11438A0F00534A62 /* uidGenerator.cpp */; };
+		8396E68011746B3800AA48B9 /* ensancheModelBuildingAdv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8396E67E11746B3800AA48B9 /* ensancheModelBuildingAdv.cpp */; };
 		83D19C6510F9F13200882687 /* ofxControlPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D19C6010F9F13200882687 /* ofxControlPanel.cpp */; };
 		83D19CAB10FA2B0200882687 /* baseScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D19CA910FA2B0200882687 /* baseScene.cpp */; };
 		83D19CAF10FA2CFC00882687 /* sceneUserInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D19CAE10FA2CFC00882687 /* sceneUserInput.cpp */; };
+		83DDD07911832C4F007567E9 /* facadeBoxRipple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83DDD07811832C4F007567E9 /* facadeBoxRipple.cpp */; };
+		83FFE895118078EA00DC16CD /* analysisFacadeMaker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83FFE88E118078EA00DC16CD /* analysisFacadeMaker.cpp */; };
+		83FFE897118078EA00DC16CD /* analysisExpandAreaFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83FFE893118078EA00DC16CD /* analysisExpandAreaFinder.cpp */; };
+		83FFE898118078EA00DC16CD /* analysisSideAssigner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83FFE894118078EA00DC16CD /* analysisSideAssigner.cpp */; };
 		E44667010F5B3E04005D0BF0 /* model3DS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E44665D70F5B3E03005D0BF0 /* model3DS.cpp */; };
 		E44667020F5B3E04005D0BF0 /* texture3DS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E44665D90F5B3E03005D0BF0 /* texture3DS.cpp */; };
 		E44667030F5B3E04005D0BF0 /* ofx3dModelLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E44665DD0F5B3E03005D0BF0 /* ofx3dModelLoader.cpp */; };
@@ -141,6 +150,16 @@
 
 /* Begin PBXFileReference section */
 		8309E1C210FC89E000900BA9 /* guiTypeTextInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guiTypeTextInput.h; sourceTree = "<group>"; };
+		8329A273114A78BF001FEEF0 /* ofxCvBlobTracker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCvBlobTracker.cpp; sourceTree = "<group>"; };
+		8329A274114A78BF001FEEF0 /* ofxCvBlobTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCvBlobTracker.h; sourceTree = "<group>"; };
+		8329A275114A78BF001FEEF0 /* ofxCvConstants_Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCvConstants_Track.h; sourceTree = "<group>"; };
+		8329A276114A78BF001FEEF0 /* ofxCvTrackedBlob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCvTrackedBlob.h; sourceTree = "<group>"; };
+		835E976B1144E4A0006B36DE /* ensancheModelBarrio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ensancheModelBarrio.h; path = ensancheTypes/ensancheModelBarrio.h; sourceTree = "<group>"; };
+		835E976C1144E4A0006B36DE /* ensancheModelBarrio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ensancheModelBarrio.cpp; path = ensancheTypes/ensancheModelBarrio.cpp; sourceTree = "<group>"; };
+		835E97721144FFBF006B36DE /* ensancheModelBuilding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ensancheModelBuilding.h; path = ensancheTypes/ensancheModelBuilding.h; sourceTree = "<group>"; };
+		835E97731144FFBF006B36DE /* ensancheModelBuilding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ensancheModelBuilding.cpp; path = ensancheTypes/ensancheModelBuilding.cpp; sourceTree = "<group>"; };
+		835E9BE61146C25D006B36DE /* analysisModelScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = analysisModelScene.h; path = scenes/analysisScene/analysisModelScene.h; sourceTree = "<group>"; };
+		835E9BE71146C25D006B36DE /* analysisModelScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = analysisModelScene.cpp; path = scenes/analysisScene/analysisModelScene.cpp; sourceTree = "<group>"; };
 		8376F17F10FE8245001808C2 /* userComboScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = userComboScene.cpp; sourceTree = "<group>"; };
 		8376F18010FE8245001808C2 /* userComboScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = userComboScene.h; sourceTree = "<group>"; };
 		8376F18110FE8245001808C2 /* userInteriorScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = userInteriorScene.cpp; sourceTree = "<group>"; };
@@ -201,6 +220,8 @@
 		83927E5E11430F1300534A62 /* sysdep.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sysdep.cpp; path = utils/uuid/sysdep.cpp; sourceTree = "<group>"; };
 		83927F3E11438A0F00534A62 /* uidGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = uidGenerator.h; path = utils/uuid/uidGenerator.h; sourceTree = "<group>"; };
 		83927F3F11438A0F00534A62 /* uidGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = uidGenerator.cpp; path = utils/uuid/uidGenerator.cpp; sourceTree = "<group>"; };
+		8396E67E11746B3800AA48B9 /* ensancheModelBuildingAdv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ensancheModelBuildingAdv.cpp; path = ensancheTypes/ensancheModelBuildingAdv.cpp; sourceTree = "<group>"; };
+		8396E67F11746B3800AA48B9 /* ensancheModelBuildingAdv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ensancheModelBuildingAdv.h; path = ensancheTypes/ensancheModelBuildingAdv.h; sourceTree = "<group>"; };
 		83D19C4F10F9F13200882687 /* guiBaseObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guiBaseObject.h; sourceTree = "<group>"; };
 		83D19C5010F9F13200882687 /* guiColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guiColor.h; sourceTree = "<group>"; };
 		83D19C5110F9F13200882687 /* guiCustomImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guiCustomImpl.h; sourceTree = "<group>"; };
@@ -227,6 +248,14 @@
 		83D19CAA10FA2B0200882687 /* baseScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = baseScene.h; sourceTree = "<group>"; };
 		83D19CAD10FA2CFC00882687 /* sceneUserInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sceneUserInput.h; sourceTree = "<group>"; };
 		83D19CAE10FA2CFC00882687 /* sceneUserInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sceneUserInput.cpp; sourceTree = "<group>"; };
+		83DDD07711832C4F007567E9 /* facadeBoxRipple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = facadeBoxRipple.h; path = analysisExterior/facadeBoxRipple.h; sourceTree = "<group>"; };
+		83DDD07811832C4F007567E9 /* facadeBoxRipple.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = facadeBoxRipple.cpp; path = analysisExterior/facadeBoxRipple.cpp; sourceTree = "<group>"; };
+		83FFE88D118078EA00DC16CD /* analysisExpandAreaFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = analysisExpandAreaFinder.h; path = analysisExterior/analysisExpandAreaFinder.h; sourceTree = "<group>"; };
+		83FFE88E118078EA00DC16CD /* analysisFacadeMaker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = analysisFacadeMaker.cpp; path = analysisExterior/analysisFacadeMaker.cpp; sourceTree = "<group>"; };
+		83FFE891118078EA00DC16CD /* analysisSideAssigner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = analysisSideAssigner.h; path = analysisExterior/analysisSideAssigner.h; sourceTree = "<group>"; };
+		83FFE892118078EA00DC16CD /* analysisFacadeMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = analysisFacadeMaker.h; path = analysisExterior/analysisFacadeMaker.h; sourceTree = "<group>"; };
+		83FFE893118078EA00DC16CD /* analysisExpandAreaFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = analysisExpandAreaFinder.cpp; path = analysisExterior/analysisExpandAreaFinder.cpp; sourceTree = "<group>"; };
+		83FFE894118078EA00DC16CD /* analysisSideAssigner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = analysisSideAssigner.cpp; path = analysisExterior/analysisSideAssigner.cpp; sourceTree = "<group>"; };
 		E44665D70F5B3E03005D0BF0 /* model3DS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = model3DS.cpp; path = ../../../addons/ofx3DModelLoader/src/3DS/model3DS.cpp; sourceTree = SOURCE_ROOT; };
 		E44665D80F5B3E03005D0BF0 /* model3DS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = model3DS.h; path = ../../../addons/ofx3DModelLoader/src/3DS/model3DS.h; sourceTree = SOURCE_ROOT; };
 		E44665D90F5B3E03005D0BF0 /* texture3DS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = texture3DS.cpp; path = ../../../addons/ofx3DModelLoader/src/3DS/texture3DS.cpp; sourceTree = SOURCE_ROOT; };
@@ -405,6 +434,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8329A272114A78BF001FEEF0 /* ofxOpenCVBlobTracking */ = {
+			isa = PBXGroup;
+			children = (
+				8329A273114A78BF001FEEF0 /* ofxCvBlobTracker.cpp */,
+				8329A274114A78BF001FEEF0 /* ofxCvBlobTracker.h */,
+				8329A275114A78BF001FEEF0 /* ofxCvConstants_Track.h */,
+				8329A276114A78BF001FEEF0 /* ofxCvTrackedBlob.h */,
+			);
+			name = ofxOpenCVBlobTracking;
+			path = utils/ofxOpenCVBlobTracking;
+			sourceTree = "<group>";
+		};
 		8376F17E10FE8245001808C2 /* userInputScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -498,8 +539,12 @@
 		83927A7611408E6800534A62 /* analysisScene */ = {
 			isa = PBXGroup;
 			children = (
+				83DDD07411832C18007567E9 /* analysisFacades */,
+				83C85C4E1149221F00C3E66A /* analysisExterior */,
 				83927BBA11413B0500534A62 /* analysisExpandScene.h */,
 				83927BBB11413B0500534A62 /* analysisExpandScene.cpp */,
+				835E9BE61146C25D006B36DE /* analysisModelScene.h */,
+				835E9BE71146C25D006B36DE /* analysisModelScene.cpp */,
 			);
 			name = analysisScene;
 			sourceTree = "<group>";
@@ -514,8 +559,14 @@
 		83927D9F1142D3DD00534A62 /* ensancheModelTypes */ = {
 			isa = PBXGroup;
 			children = (
-				83927D9D1142D3D200534A62 /* ensancheModelRoom.cpp */,
+				8396E67F11746B3800AA48B9 /* ensancheModelBuildingAdv.h */,
+				8396E67E11746B3800AA48B9 /* ensancheModelBuildingAdv.cpp */,
+				835E97721144FFBF006B36DE /* ensancheModelBuilding.h */,
+				835E97731144FFBF006B36DE /* ensancheModelBuilding.cpp */,
 				83927D9C1142D3D200534A62 /* ensancheModelRoom.h */,
+				83927D9D1142D3D200534A62 /* ensancheModelRoom.cpp */,
+				835E976B1144E4A0006B36DE /* ensancheModelBarrio.h */,
+				835E976C1144E4A0006B36DE /* ensancheModelBarrio.cpp */,
 			);
 			name = ensancheModelTypes;
 			sourceTree = "<group>";
@@ -533,9 +584,23 @@
 			name = uid;
 			sourceTree = "<group>";
 		};
+		83C85C4E1149221F00C3E66A /* analysisExterior */ = {
+			isa = PBXGroup;
+			children = (
+				83FFE88D118078EA00DC16CD /* analysisExpandAreaFinder.h */,
+				83FFE893118078EA00DC16CD /* analysisExpandAreaFinder.cpp */,
+				83FFE891118078EA00DC16CD /* analysisSideAssigner.h */,
+				83FFE894118078EA00DC16CD /* analysisSideAssigner.cpp */,
+				83FFE892118078EA00DC16CD /* analysisFacadeMaker.h */,
+				83FFE88E118078EA00DC16CD /* analysisFacadeMaker.cpp */,
+			);
+			name = analysisExterior;
+			sourceTree = "<group>";
+		};
 		83D19C4B10F9F12900882687 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				8329A272114A78BF001FEEF0 /* ofxOpenCVBlobTracking */,
 				83927E83114317BC00534A62 /* uid */,
 				83927D901142CF4F00534A62 /* modelUtils */,
 				8376FB9211075E46001808C2 /* pocoDirectoryLister.h */,
@@ -590,6 +655,15 @@
 				83D19CAA10FA2B0200882687 /* baseScene.h */,
 			);
 			path = scenes;
+			sourceTree = "<group>";
+		};
+		83DDD07411832C18007567E9 /* analysisFacades */ = {
+			isa = PBXGroup;
+			children = (
+				83DDD07711832C4F007567E9 /* facadeBoxRipple.h */,
+				83DDD07811832C4F007567E9 /* facadeBoxRipple.cpp */,
+			);
+			name = analysisFacades;
 			sourceTree = "<group>";
 		};
 		E44665C70F5B3E03005D0BF0 /* addons */ = {
@@ -1425,6 +1499,15 @@
 				83927E5911430E3400534A62 /* uuid.cpp in Sources */,
 				83927E5F11430F1300534A62 /* sysdep.cpp in Sources */,
 				83927F4011438A0F00534A62 /* uidGenerator.cpp in Sources */,
+				835E976D1144E4A0006B36DE /* ensancheModelBarrio.cpp in Sources */,
+				835E97741144FFBF006B36DE /* ensancheModelBuilding.cpp in Sources */,
+				835E9BE81146C25D006B36DE /* analysisModelScene.cpp in Sources */,
+				8329A277114A78BF001FEEF0 /* ofxCvBlobTracker.cpp in Sources */,
+				8396E68011746B3800AA48B9 /* ensancheModelBuildingAdv.cpp in Sources */,
+				83FFE895118078EA00DC16CD /* analysisFacadeMaker.cpp in Sources */,
+				83FFE897118078EA00DC16CD /* analysisExpandAreaFinder.cpp in Sources */,
+				83FFE898118078EA00DC16CD /* analysisSideAssigner.cpp in Sources */,
+				83DDD07911832C4F007567E9 /* facadeBoxRipple.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

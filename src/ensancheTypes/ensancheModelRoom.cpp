@@ -34,6 +34,31 @@ EnsancheModelRoom::~EnsancheModelRoom()
 	ofRemoveListener(ofEvents.mouseDragged, this, &EnsancheModelRoom::mouseDragged);
 }
 
+EnsancheModelRoom::EnsancheModelRoom( const EnsancheModelRoom & mom )
+{
+	bDrawFloor	= mom.bDrawFloor;
+	bDrawCeiling= mom.bDrawCeiling;
+	bEnabled	= mom.bEnabled;
+	offSet		= mom.offSet;
+	center		= mom.center;
+	rotation	= mom.rotation;
+		
+	lastMouse	= mom.lastMouse;
+	
+	nPts		= mom.nPts;
+	nFloorPts	= mom.nFloorPts;
+	
+	if(nPts > 0 ){
+		pts = new float[nPts];
+		memcpy(pts,mom.pts,mom.nPts*sizeof(float));
+	}
+	
+	if(nFloorPts > 0 ){
+		floorPts = new float[nFloorPts];
+		memcpy(floorPts,mom.floorPts,mom.nFloorPts*sizeof(float));
+	}
+}
+
 void EnsancheModelRoom::setup()
 {
 	ofAddListener(ofEvents.mousePressed, this, &EnsancheModelRoom::mousePressed);
@@ -76,12 +101,12 @@ void EnsancheModelRoom::draw()
 		
 	glPopMatrix();
 }
-
+/*
 void EnsancheModelRoom::setFromPolygon( polyEditable poly, float wallHeigh, bool bOffset  )
 {
 
 }
-
+*/
 void EnsancheModelRoom::setFromBuilding( EnsancheBuilding * building, float wallHeight, bool bOffset )
 {
 	clear();

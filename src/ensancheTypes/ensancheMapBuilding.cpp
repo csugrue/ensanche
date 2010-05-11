@@ -14,8 +14,16 @@ EnsancheMapBuilding::EnsancheMapBuilding()
 	polyEditable::polyEditable();
 	nFloors = 0;
 	type = EN_BUILDING_NEIGHBOR;
+	uid = getUid();
 }
 
+EnsancheMapBuilding::EnsancheMapBuilding( const EnsancheMapBuilding & mom )
+{
+	polyEditable::polyEditable((polyEditable)mom);
+	nFloors = mom.nFloors;
+	type = mom.type;
+	uid = mom.uid;
+}
 
 void EnsancheMapBuilding::drawData( )
 {

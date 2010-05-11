@@ -9,17 +9,22 @@
 
 #include "analysisExpandScene.h"
 
+bool sort_parea_compare(  EnsancheBuilding  a,  EnsancheBuilding  b) {
+	
+	return (a.buildingPoly.getArea() > b.buildingPoly.getArea());
+}
+
 
 void AnalysisExpandScene::setup()
 {
 	statusMessage	= "none";
-	bPanelOn		= false;
+	bPanelOn		= true;
 	bSetUserName	= false;
-	
-	modelRoom.setup();
-	modelRoom.enable();
+	bEnabled		= false;
+
 	
 	setupControlPanel();
+	scaleTool.setup();
 	
 }
 
@@ -30,8 +35,29 @@ AnalysisExpandScene::~AnalysisExpandScene()
 void AnalysisExpandScene::update()
 {
 	if(bPanelOn) updateControlPanel();
+	
+	/*
+	if( panel.getSelectedPanelName() == "add scale" )
+		scaleTool.reEnableLast();
+	else
+		scaleTool.disableAll(true);
+		*/
+	if( panel.getValueB("SCALE") )
+		scaleTool.reEnableLast();
+	else
+		scaleTool.disableAll(true);
+	
 }
 
+void AnalysisExpandScene::disable()
+{
+	bEnabled = false;
+}
+
+void AnalysisExpandScene::enable()
+{
+	bEnabled = true;
+}
 
 void AnalysisExpandScene::preDraw()
 {
@@ -39,27 +65,76 @@ void AnalysisExpandScene::preDraw()
 
 void AnalysisExpandScene::draw()
 {
+	ofBackground(255,255,255);
+	
+	//grid
+	ofSetColor(200,200,200,255);
+	if(panel.getValueB("GRID")) enDrawGrid(10,10);
+	
+	ofRectangle boundingBox = barrioOriginal.getGroupBoundingBox();
+	scaleTool.setScale( panel.getValueF("ZOOM"));
+	ofPoint transPreRotate = ofPoint( ofGetWidth()*.5,ofGetHeight()*.5);
+	ofPoint transPstRotate = ofPoint(0,0);//-boundingBox.width,-boundingBox.height,0);
+	
+	scaleTool.setOffset(transPreRotate,transPstRotate);
+
+	// 2d model
 	glPushMatrix();
 		
-		glTranslatef(10,400,0);
-		glScalef(4,4,1);
+		glTranslatef(ofGetWidth()*.5,ofGetHeight()*.5,0);
 		
-		barrioOriginal.draw();
-		
+		float zoom = panel.getValueF("ZOOM");
+		glScalef(zoom,zoom,1);
 	
+		glPushMatrix();
+			glTranslatef(-boundingBox.width*.5,-boundingBox.height*.5,0);
+			ofFill();
+			ofSetColor(235,235,235,220);
+			barrioOriginal.draw();
+			
+			ofNoFill();
+			ofSetColor(0,0,0,255);
+			barrioOriginal.draw();
+		
+		
+			ofNoFill();
+			ofSetColor(255,0,0,200);
+			//minRectExpander.draw();
+			glLineWidth(3.0);
+			minRectExpander.drawExpandAreas();
+			if( panel.getValueB("SHOW_INTERSECT") ) minRectExpander.drawIntersections( panel.getValueI("SHOW_WHICH_B") - 1 );
+			if( panel.getValueB("SHOW_SHORTEST")  )	minRectExpander.drawShortest( panel.getValueI("SHOW_WHICH_B") - 1  );
+			
+			glLineWidth(1.0);
+			
+		glPopMatrix();
+		
+		facadeMakerBox.draw();
+		sideAssigner.draw();
+		
+		scaleTool.draw();
+		
 	glPopMatrix();
 	
-	glPushMatrix();
-		glTranslatef(ofGetWidth()/2.f,ofGetHeight()/2.f,0);
-		glScalef(4,4,4);
-		modelRoom.draw();
-	glPopMatrix();
 	
+	// control panel
 	if(bPanelOn) panel.draw();
 }
 
 void AnalysisExpandScene::keyPressed(int key)
 {
+	if(key=='k') //TEST FACADE
+	{
+		facadeMakerBox.getFacadeLine(ofPoint(0,0), ofPoint(18,0), ofPoint(0,1) );
+	}
+	
+	
+	if(key=='K')
+	{
+		if(barrioOriginal.buildings.size() > 0 ) sideAssigner.assignSides(&barrioOriginal.buildings[0]);
+		if(barrioOriginal.buildings.size() > 0 && minRectExpander.expanders.size() > 0 ) 
+			sideAssigner.assignSidesQuadrants(&barrioOriginal.buildings[0], minRectExpander.expanders[0]);
+	}
 	
 }
 
@@ -76,11 +151,19 @@ void AnalysisExpandScene::mouseMoved(int x, int y)
 void AnalysisExpandScene::mouseDragged(int x, int y, int button)
 {
 	if(bPanelOn) panel.mouseDragged(x,y,button);
+	if( panel.isMouseInPanel(x, y)  )
+	{
+		scaleTool.disableAll(true);
+	}
 }
 
 void AnalysisExpandScene::mousePressed(int x, int y, int button)
 {
 	if(bPanelOn) panel.mousePressed(x,y,button);
+	if( panel.isMouseInPanel(x, y) )
+	{
+		scaleTool.disableAll(true);
+	}
 	
 }
 
@@ -98,8 +181,24 @@ string AnalysisExpandScene::getStatusMessage()
 void AnalysisExpandScene::setupControlPanel()
 {
 	
-//	panel.setup("expand", 250, 10, 530, 270);
-	//panel.update();
+	panel.setup("expand", ofGetWidth()-260, ofGetHeight()-600, 240, 520);
+	panel.addPanel("find space",1, false);
+	panel.addPanel("find facade sides",1, false);
+	panel.addPanel("make new facade",1, false);
+
+	panel.setWhichPanel("find space");
+	panel.addToggle("grid","GRID",false);
+	panel.addToggle("scale tool","SCALE",false);
+	panel.addSlider("zoom","ZOOM",4.f,1.f,20.f,false);
+	panel.addToggle("show intersections", "SHOW_INTERSECT", false);
+	panel.addToggle("show shortest dist", "SHOW_SHORTEST", true);
+	panel.addToggle("expand", "EXPAND", false);
+	
+	vector<string> strSelectBs;
+	strSelectBs.push_back("show all");
+	multiWhichB = panel.addMultiToggle("show which", "SHOW_WHICH_B", 0, strSelectBs);
+
+	panel.update();
 	
 	
 }
@@ -107,11 +206,22 @@ void AnalysisExpandScene::setupControlPanel()
 void AnalysisExpandScene::updateControlPanel()
 {
 	
+		
 	panel.update();
 	
+	if( panel.getValueB("EXPAND") )
+	{
+		panel.setValueB("EXPAND",false);
+		minRectExpander.expand(.1);
+	}
+	
+	/*if( panel.getValueB("DILATION") )
+	{
+		panel.setValueB("DILATION", false);
+		//dilator.doAnalysis();
+	}*/
 	
 }
-
 
 void AnalysisExpandScene::setUserName( string name )
 {
@@ -136,8 +246,45 @@ void AnalysisExpandScene::loadUserFile()
 		barrioOriginal.loadFromXml(filename);
 		cout << "---------------------" << endl;
 		
-		if( barrioOriginal.buildings.size() > 0 )
-			modelRoom.setFromBuilding( barrioOriginal.buildings[0], 4.f);
+		
+	}
+	
+	
+	if( barrioOriginal.buildings.size() >  0 )
+	{
+	 
+	 // calc area so we can sort them
+	 for( int i = 0; i < barrioOriginal.buildings.size(); i++)
+		 barrioOriginal.buildings[i].buildingPoly.setArea();
+		 
+		std::sort(barrioOriginal.buildings.begin(),barrioOriginal.buildings.end(),sort_parea_compare);
+	
+		minRectExpander.setup(barrioOriginal);
+		/*
+		for( int i = 0; i < barrioOriginal.buildings.size(); i++)
+		 dilator.copyBuildingToImage(barrioOriginal.buildings[i], i);
+		
+		dilator.doAnalysis();
+		*/
+	
+		//panel.removeToggle();
+		
+		int whichB = panel.getValueI("SHOW_WHICH_B");
+		
+		vector<string> strSelectBs;
+		strSelectBs.push_back("show all");
+		for( int i = 0; i < barrioOriginal.buildings.size(); i++)
+			strSelectBs.push_back("show "+ofToString(i));
+		
+		multiWhichB->setup("SHOW_WHICH_B", whichB, strSelectBs);
+		multiWhichB->value.setValue(whichB,0,strSelectBs.size()-1);
+		
+		//multiWhichB->setup("show which", whichB, strSelectBs);
+		multiWhichB->setDimensions(180, 17*strSelectBs.size());
+		multiWhichB->xmlName = "SHOW_WHICH_B";
+		//panel.addMultiToggle("show which", "SHOW_WHICH_B", 0, strSelectBs);
+		
+		
 	}
 	
 }
