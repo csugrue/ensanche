@@ -1,0 +1,4 @@
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.5/src/utils/ofxControlPanel/ofxControlPanel.cpp: In constructor 'ofxControlPanel::ofxControlPanel()':
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.5/src/utils/ofxControlPanel/ofxControlPanel.cpp:17: error: 'bNewPanelSelected' was not declared in this scope
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.5/src/utils/ofxControlPanel/ofxControlPanel.cpp: In member function 'void ofxControlPanel::mousePressed(float, float, int)':
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.5/src/utils/ofxControlPanel/ofxControlPanel.cpp:677: error: 'bNewPanelSelected' was not declared in this scope

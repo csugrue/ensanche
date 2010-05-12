@@ -19,6 +19,7 @@
 #include "ensancheModelBuilding.h"
 #include "facadeBoxRipple.h"
 #include "analysisSideAssigner.h"
+#include "analysisExpander.h"
 
 class AnalysisExpandScene: public baseScene{
 	
@@ -72,5 +73,6 @@ public:
 	
 	//
 	AnalysisSideAssigner	sideAssigner;
+	AnalysisExpander		expander;
 	
 };

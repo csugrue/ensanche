@@ -1,0 +1,2 @@
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.5/src/analysisExterior/analysisExpander.cpp: In member function 'void AnalysisExpander::clear()':
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.5/src/analysisExterior/analysisExpander.cpp:26: error: insufficient contextual information to determine type

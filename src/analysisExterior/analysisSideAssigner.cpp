@@ -29,7 +29,7 @@ void AnalysisSideAssigner::assignSidesQuadrants(EnsancheBuilding * building, enE
 	
 	// copy building points
 	poly = building->buildingPoly;
-	poly.setWinding(WIND_CLOCKWISE);
+	//poly.setWinding(WIND_CLOCKWISE);
 	
 	for( int i = 0; i < 4; i++) polyHalfQuads[i].clear();
 	for( int i = 0; i < 4; i++) polyQuarterQuads[i].clear();

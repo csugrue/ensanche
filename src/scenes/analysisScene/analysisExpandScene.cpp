@@ -100,17 +100,25 @@ void AnalysisExpandScene::draw()
 			ofNoFill();
 			ofSetColor(255,0,0,200);
 			//minRectExpander.draw();
-			glLineWidth(3.0);
-			minRectExpander.drawExpandAreas();
-			if( panel.getValueB("SHOW_INTERSECT") ) minRectExpander.drawIntersections( panel.getValueI("SHOW_WHICH_B") - 1 );
-			if( panel.getValueB("SHOW_SHORTEST")  )	minRectExpander.drawShortest( panel.getValueI("SHOW_WHICH_B") - 1  );
 			
-			glLineWidth(1.0);
+			if( panel.getSelectedPanelName() == "find space" ) 
+			{
+			   glLineWidth(3.0);
+			   minRectExpander.drawExpandAreas();
+			   if( panel.getValueB("SHOW_INTERSECT") ) minRectExpander.drawIntersections( panel.getValueI("SHOW_WHICH_B") - 1 );
+			   if( panel.getValueB("SHOW_SHORTEST")  )	minRectExpander.drawShortest( panel.getValueI("SHOW_WHICH_B") - 1  );
+			   glLineWidth(1.0);
 			
+			}else if( panel.getSelectedPanelName() == "find facade sides" ){
+			   sideAssigner.draw();
+			}else if( panel.getSelectedPanelName() == "make new facade" )
+			{
+				expander.draw(zoom);
+			}
+			   
 		glPopMatrix();
 		
 		facadeMakerBox.draw();
-		sideAssigner.draw();
 		
 		scaleTool.draw();
 		
@@ -215,11 +223,40 @@ void AnalysisExpandScene::updateControlPanel()
 		minRectExpander.expand(.1);
 	}
 	
-	/*if( panel.getValueB("DILATION") )
+	if(panel.bNewPanelSelected)
 	{
-		panel.setValueB("DILATION", false);
-		//dilator.doAnalysis();
-	}*/
+		panel.bNewPanelSelected = false;
+		
+		// FIND SIDES HERE
+		// if we switch to side panel, find sides
+		if(panel.getSelectedPanelName() == "find facade sides" )
+		{
+			for( int i = 0; i < barrioOriginal.buildings.size(); i++)
+			{
+				if(minRectExpander.expanders.size() > i ) 
+					sideAssigner.assignSidesQuadrants(&barrioOriginal.buildings[i], minRectExpander.expanders[i]);
+			}	
+		}
+		
+		else if(panel.getSelectedPanelName() == "make new facade" )
+		{
+			expander.clear();
+			for( int i = 0; i < barrioOriginal.buildings.size(); i++)
+			{
+				EnsancheBuilding dstBuilding;
+				if(barrioOriginal.buildings.size() > i && minRectExpander.expanders.size() > i  ) 
+				{
+					barrioOriginal.buildings[i].buildingPoly.setWinding(WIND_CLOCKWISE);
+					sideAssigner.assignSidesQuadrants(&barrioOriginal.buildings[i], minRectExpander.expanders[i]);
+					for( int j = 0; j < 4; j++)	
+						expander.expand(barrioOriginal.buildings[i],dstBuilding,j,sideAssigner.sideIds,minRectExpander.expanders[i]);
+				}
+				
+			}
+		}
+		
+	}
+	
 	
 }
 

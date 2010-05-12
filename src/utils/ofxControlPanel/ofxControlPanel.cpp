@@ -14,7 +14,8 @@ ofxControlPanel::ofxControlPanel(){
     hidden          = false;
     bDraggable      = true;
 	bMouseInPanel	= false;
-    
+    bNewPanelSelected = false;
+	
 	currentXmlFile = "";
     incrementSaveName = "";
     xmlObjects.clear();
@@ -673,7 +674,8 @@ void ofxControlPanel::toggleView(){
 void ofxControlPanel::mousePressed(float x, float y, int button){
     if( hidden ) return;
 
-    bool tabButtonPressed = false;
+    bNewPanelSelected = false;
+	bool tabButtonPressed = false;
 
     if( isInsideRect(x, y, minimizeButton)){
         minimize = !minimize;
@@ -689,7 +691,8 @@ void ofxControlPanel::mousePressed(float x, float y, int button){
     }else if(!minimize){
         for(int i = 0; i < panels.size(); i++){
             if( isInsideRect(x, y, panelTabs[i]) ){
-                selectedPanel = i;
+                if( i != selectedPanel ) bNewPanelSelected = true;
+				selectedPanel = i;
                 tabButtonPressed = true;
                 break;
             }

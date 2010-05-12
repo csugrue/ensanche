@@ -7,6 +7,10 @@
  *
  */
 
+/*
+Finds the possible expand area for the buildings.
+*/
+
 #pragma once
 
 #include "ofMain.h"
