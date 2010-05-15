@@ -28,11 +28,14 @@ class AnalysisSideAssigner{
 		AnalysisSideAssigner();
 		~AnalysisSideAssigner();
 		
+		void clear();
+		
 		// assigns sides by direction of perpendicular, and sorts (unfinished assignment);
 		void assignSides(EnsancheBuilding * building);
-		
+
 		// assigns sides by location in quadrants first and then differences in perpendiculars
 		void assignSidesQuadrants(EnsancheBuilding * building, enExpandData expanders);
+		void assignSidesQuadrants(EnsancheBuilding * building, enExpandData expanders, vector<int> * nSideIds);
 		
 		void draw();
 		

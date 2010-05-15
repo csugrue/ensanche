@@ -20,6 +20,7 @@
 #include "facadeBoxRipple.h"
 #include "analysisSideAssigner.h"
 #include "analysisExpander.h"
+#include "ensancheExpandData.h"
 
 class AnalysisExpandScene: public baseScene{
 	
@@ -50,6 +51,9 @@ public:
 	void setUserName( string name );
 	void loadUserFile();
 	
+	// core function to prepare for making new facades. finds sides + expands out minimum possible
+	void makeInitialExpansion();
+	
 	bool bSetUserName;
 	bool bEnabled;
 	
@@ -65,8 +69,14 @@ public:
 	// scale tool
 	EnsancheScaleTool	scaleTool;
 	
-	// update toggle
+	// update controls
 	guiTypeMultiToggle * multiWhichB;
+	guiTypeSlider	* guiChooseBuliding;
+	guiTypeSlider	* guiChooseSide;
+	
+	// for making changes manually
+	int currBuilding, prevBuilding;
+	int currSide, prevSide;
 	
 	// facade makers
 	FacadeBoxRipple		facadeMakerBox;
@@ -74,5 +84,9 @@ public:
 	//
 	AnalysisSideAssigner	sideAssigner;
 	AnalysisExpander		expander;
+	
+	// save expand data
+	vector<EnsancheExpandData> expandBuildingData;
+	
 	
 };

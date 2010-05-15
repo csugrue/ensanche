@@ -17,6 +17,26 @@ AnalysisSideAssigner::~AnalysisSideAssigner()
 {
 }
 
+void AnalysisSideAssigner::clear()
+{
+	poly.clear();
+	sideIds.clear();
+	ppPts.clear();
+	for( int i = 0; i < 4; i++) polyHalfQuads[i].clear();
+	for( int i = 0; i < 4; i++) polyQuarterQuads[i].clear();
+	//polySimple polyHalfQuads[4];
+	//polySimple polyQuarterQuads[4];
+	//ofPoint centerPoints[4];
+}
+
+
+void AnalysisSideAssigner::assignSidesQuadrants(EnsancheBuilding * building, enExpandData expanders, vector<int> * nSideIds)
+{
+	assignSidesQuadrants(building, expanders);
+	nSideIds->clear();
+	nSideIds->assign(sideIds.begin(),sideIds.end());
+}
+
 void AnalysisSideAssigner::assignSidesQuadrants(EnsancheBuilding * building, enExpandData expanders)
 {
 	// make sure we have proper min rect passed in
@@ -124,11 +144,14 @@ void AnalysisSideAssigner::assignSidesQuadrants(EnsancheBuilding * building, enE
 	//--- go thru and do before/after test assigning sandwhiched pieces to side that "encloses" them
 	checkBeforeAfter();
 	 
-	//--- go thru all unassigned and check if it has a longer segment in one quadrant than the other
-	checkLengthInQuadrant();
+	// NOTE: not sure on order of next two functions. Perhaps better to use combo of both and choose one over other depending on stronger difference...
 	
 	//--- go thru all unassigned that are left and assign based on the difference in angle of its perpendicular to the perpendiscular of the enclosing sides
 	checkAngleDifference(expanders);
+	
+	//--- go thru all unassigned and check if it has a longer segment in one quadrant than the other
+	checkLengthInQuadrant();
+	
 	
 	//--- TO DO: check that no more than one continuos line each and none left unassigned
 		// (try to figure out which is best and reassign...?))

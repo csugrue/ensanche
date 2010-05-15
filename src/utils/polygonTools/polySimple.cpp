@@ -28,6 +28,7 @@ polySimple::polySimple(  const polySimple &  mom )
 	pts.assign(mom.pts.begin(),mom.pts.end());
 	nPts = mom.nPts;
 	area = mom.area;
+
 }
 
 void polySimple::pushVertex( ofPoint pt )

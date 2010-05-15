@@ -24,91 +24,146 @@ void AnalysisExpander::clear()
 {
 	buildings.clear();
 	ends.clear();
+	uidToIndex.clear();
 }
 
-void AnalysisExpander:: expand( 
+void AnalysisExpander::expand( EnsancheBuilding & buildingExpanded, int sideToExpand, enExpandAreas expandAreas, enExpandData epData, endPoints * nEnds )
+{
+	// assumes the endpoint bulding is copied into expanded already
+	
+	/*ofPoint ends = ;
+	
+	ofPoint endPtA = ;
+	ofPoint endPtB = ;
+	
+	// calculate the position of each endpoint to the min rect line
+	ofPoint newEndPtA = distanceToSegment(ofPoint p1, ofPoint p2, ofPoint p3);
+	ofPoint newEndPtB;
+	
+	*/
+
+}
+
+void AnalysisExpander::expand( 
 								EnsancheBuilding building, 
 								EnsancheBuilding & dstBuilding, 
 								int sideToExpand,
 								vector<int>sideIds,
-								enExpandData epData
-								)
+								enExpandData epData,
+								endPoints * nEnds)
 {
 
 		if(sideIds.size() < building.buildingPoly.pts.size()-1 ) return;
 		
-		// copy original to destination
-		dstBuilding.clear();
-		dstBuilding = building;
+		// find end points for this side			
+		findEndPoints(building, sideToExpand, sideIds, epData,nEnds);
+	
+		// remove the in between points
 		
-		// set winding
-		//dstBuilding.buildingPoly.setWinding(WIND_CLOCKWISE);
-		
-		int endFirst = -1;
-		int endLast  = -1;
-		
-		// find end points
-		for( int i = 0; i < sideIds.size(); i++)
+		// expand outwards
+}
+
+void AnalysisExpander::findEndPoints(EnsancheBuilding building, int sideToExpand, vector<int>sideIds,enExpandData epData,endPoints * nEnds)
+{
+	int endFirst = -1;
+	int endLast  = -1;
+	
+	// find end points
+	for( int i = 0; i < sideIds.size(); i++)
+	{
+		cout << i << " sideid: " << sideIds[i] << " mySide " << sideToExpand << endl;
+		if( sideIds[i] == sideToExpand && endFirst == -1 )		endFirst = i;
+		if( sideIds[i] == sideToExpand ) endLast = i;
+		if( endFirst != -1 && sideIds[i] != sideToExpand ) break;
+	}
+	
+	
+	bool bLoopOver = false;
+	
+	// check in case loops over
+	if( endFirst == 0 )
+	{
+		for(int i = sideIds.size()-1; i > 0; i--)
 		{
-			cout << i << " sideid: " << sideIds[i] << " mySide " << sideToExpand << endl;
-			if( sideIds[i] == sideToExpand && endFirst == -1 )		endFirst = i;
-			if( sideIds[i] == sideToExpand ) endLast = i;
+			if( sideIds[i] != sideToExpand ) break;
+			else	endFirst = i;
+			bLoopOver = true;
+		}
+	}
+	
+	if( endLast == sideIds.size()-1 )
+	{
+		for(int i = 0; i < sideIds.size(); i++)
+		{
+			if( sideIds[i] != sideToExpand ) break;
+			else	endFirst = i;
+			bLoopOver = true;
+		}		
+	}
+	
+	endLast+=1;
+	//cout << "bLoopOver " << bLoopOver << " endfirst " << endFirst << " endLast " << endLast << endl;
+	
+	int eL= (endLast > building.buildingPoly.pts.size()-1) ?  0: endLast;
+	
+	nEnds->pts.push_back( building.buildingPoly.pts[endFirst] );
+	nEnds->ids.push_back( endFirst );
+	
+	nEnds->pts.push_back( building.buildingPoly.pts[eL] );
+	nEnds->ids.push_back( endLast );
+	
+	ofPoint endIds;
+	endIds.x = endFirst;
+	endIds.y = eL;
+	nEnds->sideToEndPt.insert ( pair<int,ofPoint>(sideToExpand,endIds) );
+}
+
+void AnalysisExpander::findAllEndPoints(EnsancheBuilding building, vector<int>sideIds,enExpandData epData,endPoints * nEnds)
+{
+	nEnds->pts.clear();
+	nEnds->ids.clear();
+	nEnds->sideToEndPt.clear();
+	
+	for( int i = 0; i < 4; i++)
+	{
+		findEndPoints(building, i, sideIds, epData, nEnds);
+	}
+}
+
+void AnalysisExpander::removeInBetweenPoints(EnsancheBuilding & building, int sideToExpand, vector<int> * sideIds, endPoints * nEnds)
+{
+	ofPoint eIDs	= nEnds->sideToEndPt.find(sideToExpand)->second;
+	int startPt		= (int)(eIDs.x);
+	int endPt		= (int)(eIDs.y);
+	
+	if( startPt > endPt )
+	{
+		cout << "loop over" << endl;
+	}else if( (endPt - startPt) == 1 ){
+		cout << "nothing to remove" << endl;
+	}else{
+		
+		polySimple tempBuilding;
+		tempBuilding.pts.assign(building.buildingPoly.pts.begin(),building.buildingPoly.pts.end());
+		building.buildingPoly.clear();
+		
+		for( int i = startPt+1; i < endPt; i++)
+		{
+			cout << "remove pt: " << i << endl;			
 		}
 		
-		
-		//if(endLast < sideIds.size()-1 ) endLast+=1;
-		//else endLast = 0;
-		
-		bool bLoopOver = false;
-		
-		// check in case loops over
-		if( endFirst == 0 )
+		for( int i = 0; i < tempBuilding.pts.size(); i++)
 		{
-			for(int i = sideIds.size()-1; i > 0; i--)
-			{
-				if( sideIds[i] != sideToExpand ) break;
-				else	endFirst = i;
-				bLoopOver = true;
+			if( i > startPt && i < endPt)
+			;
+			else{
+				cout << "addpoint " << i << endl;
+				building.buildingPoly.pushVertex(tempBuilding.pts[i]);
 			}
 		}
 		
-		if( endLast == sideIds.size()-1 )
-		{
-			for(int i = 0; i < sideIds.size(); i++)
-			{
-				if( sideIds[i] != sideToExpand ) break;
-				else	endFirst = i;
-				bLoopOver = true;
-			}		
-		}
-		
-		endLast+=1;
-		cout << "bLoopOver " << bLoopOver << " endfirst " << endFirst << " endLast " << endLast << endl;
-		
-		if(!bLoopOver)
-		{
-			// remove points in between
-			
-		}
-		
-		if( uidToIndex.find( building.uid ) == uidToIndex.end() )
-		{
-			endPoints ep;
-			ends.push_back(ep);
-			buildings.push_back(dstBuilding);
-			uidToIndex.insert( pair<string,int>( building.uid,(int)(ends.size()-1) ) );
-		}
-		
-		int epId = uidToIndex.find( building.uid )->second;
-		ends[epId].pts.push_back( building.buildingPoly.pts[endFirst] );
-		ends[epId].ids.push_back( endFirst );
-		
-		int eL= (endLast > building.buildingPoly.pts.size()-1) ?  0: endLast;
-		ends[epId].pts.push_back( building.buildingPoly.pts[eL] );
-		ends[epId].ids.push_back( endLast );
-		//buildings.push_back(dstBuilding);
-	//if ( epData[i].sisMeSides[j].sister.find(k) == epData[i].sisMeSides[j].sister.end( ) ){
-
+	}
+	
 }
 
 void AnalysisExpander::draw(float scale)
