@@ -39,13 +39,16 @@ class EnsancheExpandData
 		endPoints ends;
 		
 		// original poly
-		EnsancheBuilding building;
+		EnsancheBuilding momBuilding;
 		
+		// new poly with changes
+		EnsancheBuilding building;
+	
 		// new poly with only end points
-		EnsancheBuilding buildingEndsOnly;
+		//EnsancheBuilding buildingEndsOnly;
 		
 		// new poly with minimum expansions
-		EnsancheBuilding buildingExpanded;
+		//EnsancheBuilding buildingExpanded;
 		
 	protected:
 	

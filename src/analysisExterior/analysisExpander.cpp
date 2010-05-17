@@ -27,22 +27,6 @@ void AnalysisExpander::clear()
 	uidToIndex.clear();
 }
 
-void AnalysisExpander::expand( EnsancheBuilding & buildingExpanded, int sideToExpand, enExpandAreas expandAreas, enExpandData epData, endPoints * nEnds )
-{
-	// assumes the endpoint bulding is copied into expanded already
-	
-	/*ofPoint ends = ;
-	
-	ofPoint endPtA = ;
-	ofPoint endPtB = ;
-	
-	// calculate the position of each endpoint to the min rect line
-	ofPoint newEndPtA = distanceToSegment(ofPoint p1, ofPoint p2, ofPoint p3);
-	ofPoint newEndPtB;
-	
-	*/
-
-}
 
 void AnalysisExpander::expand( 
 								EnsancheBuilding building, 
@@ -56,14 +40,14 @@ void AnalysisExpander::expand(
 		if(sideIds.size() < building.buildingPoly.pts.size()-1 ) return;
 		
 		// find end points for this side			
-		findEndPoints(building, sideToExpand, sideIds, epData,nEnds);
+		findEndPoints(building, sideToExpand, sideIds,nEnds);
 	
 		// remove the in between points
 		
 		// expand outwards
 }
 
-void AnalysisExpander::findEndPoints(EnsancheBuilding building, int sideToExpand, vector<int>sideIds,enExpandData epData,endPoints * nEnds)
+void AnalysisExpander::findEndPoints(EnsancheBuilding building, int sideToExpand, vector<int>sideIds,endPoints * nEnds)
 {
 	int endFirst = -1;
 	int endLast  = -1;
@@ -71,7 +55,7 @@ void AnalysisExpander::findEndPoints(EnsancheBuilding building, int sideToExpand
 	// find end points
 	for( int i = 0; i < sideIds.size(); i++)
 	{
-		cout << i << " sideid: " << sideIds[i] << " mySide " << sideToExpand << endl;
+		//cout << i << " sideid: " << sideIds[i] << " mySide " << sideToExpand << endl;
 		if( sideIds[i] == sideToExpand && endFirst == -1 )		endFirst = i;
 		if( sideIds[i] == sideToExpand ) endLast = i;
 		if( endFirst != -1 && sideIds[i] != sideToExpand ) break;
@@ -118,7 +102,7 @@ void AnalysisExpander::findEndPoints(EnsancheBuilding building, int sideToExpand
 	nEnds->sideToEndPt.insert ( pair<int,ofPoint>(sideToExpand,endIds) );
 }
 
-void AnalysisExpander::findAllEndPoints(EnsancheBuilding building, vector<int>sideIds,enExpandData epData,endPoints * nEnds)
+void AnalysisExpander::findAllEndPoints(EnsancheBuilding building, vector<int>sideIds,endPoints * nEnds)
 {
 	nEnds->pts.clear();
 	nEnds->ids.clear();
@@ -126,44 +110,102 @@ void AnalysisExpander::findAllEndPoints(EnsancheBuilding building, vector<int>si
 	
 	for( int i = 0; i < 4; i++)
 	{
-		findEndPoints(building, i, sideIds, epData, nEnds);
+		findEndPoints(building, i, sideIds, nEnds);
 	}
 }
 
 void AnalysisExpander::removeInBetweenPoints(EnsancheBuilding & building, int sideToExpand, vector<int> * sideIds, endPoints * nEnds)
 {
+	// removes any points that lie between the "ends" of a side so that only a singleline remains that can be replaced with the new facade
+	
+	// get the end points
 	ofPoint eIDs	= nEnds->sideToEndPt.find(sideToExpand)->second;
+	
+	if( nEnds->sideToEndPt.find(sideToExpand) == nEnds->sideToEndPt.end() )
+	{
+	cout << "NO ENDS!" << endl;
+	return;
+	}
+	
 	int startPt		= (int)(eIDs.x);
 	int endPt		= (int)(eIDs.y);
 	
-	if( startPt > endPt )
+	cout << "side: " << sideToExpand << "startPt: " << startPt << " endPt: " << endPt << endl;
+	
+	int tBetween = endPt-startPt;
+	
+	// this is for the loop over end problem
+	if( startPt > endPt)
 	{
-		cout << "loop over" << endl;
-	}else if( (endPt - startPt) == 1 ){
-		cout << "nothing to remove" << endl;
-	}else{
-		
-		polySimple tempBuilding;
-		tempBuilding.pts.assign(building.buildingPoly.pts.begin(),building.buildingPoly.pts.end());
-		building.buildingPoly.clear();
-		
-		for( int i = startPt+1; i < endPt; i++)
-		{
-			cout << "remove pt: " << i << endl;			
-		}
-		
-		for( int i = 0; i < tempBuilding.pts.size(); i++)
-		{
-			if( i > startPt && i < endPt)
-			;
-			else{
-				cout << "addpoint " << i << endl;
-				building.buildingPoly.pushVertex(tempBuilding.pts[i]);
-			}
-		}
-		
+		int tPts = building.buildingPoly.pts.size();
+		tBetween = (tPts-startPt) + endPt;
 	}
 	
+	// test if there are points in between
+	if( tBetween == 1 ){
+	 return;
+	}
+	
+	// record which points will be removed
+	vector<bool> bRemoved;
+	for( int i = 0; i < building.buildingPoly.pts.size(); i++) 
+		bRemoved.push_back(false);
+	
+	// loop from start point to all points
+	
+	
+	int endTotal = startPt + tBetween;
+	
+	// create temp building and copy over data
+	EnsancheBuilding tempBuilding;
+	tempBuilding = building;
+	building.clear();
+	
+	// copy over the sideIds
+	vector<int> tempSides;
+	tempSides.assign(sideIds->begin(),sideIds->end());
+	sideIds->clear();
+	
+	// loop thru and label "in between" points to be removed
+	for( int i = startPt+1; i < endTotal; i++)
+	{
+		
+		int myPt = i % tempBuilding.buildingPoly.pts.size();
+		bRemoved[myPt] = true;
+	}
+	
+	// loop thru and add points not marked for removal
+	for( int i = 0; i < tempBuilding.buildingPoly.pts.size(); i++)
+	{
+		if( !bRemoved[i])
+			building.buildingPoly.pushVertex(tempBuilding.buildingPoly.pts[i]);
+	}
+		
+	// repeat for side ids
+	for( int i = 0; i < tempSides.size(); i++)
+	{
+		if( !bRemoved[i])
+				sideIds->push_back(tempSides[i]);
+	}
+	
+	for( int i = 0; i < tempBuilding.walls.size(); i++)
+	{
+		if( !bRemoved[i+1] )
+		{
+			building.walls.push_back(tempBuilding.walls[i]);
+		}
+	}
+	
+	// NOTE: this is as of yet untested... might not be saving data correctly
+	for( int i = 0; i < building.walls.size(); i++)
+	{
+		building.walls[i].pts[0] = building.buildingPoly.pts[i];
+		building.walls[i].pts[1] = building.buildingPoly.pts[i+1];
+		building.walls[i].posInPoly = i;
+	}
+	
+	// find endpoints again
+	//findAllEndPoints(building, sideIds, nEnds);
 }
 
 void AnalysisExpander::draw(float scale)

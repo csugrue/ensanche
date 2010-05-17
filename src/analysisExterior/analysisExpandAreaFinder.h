@@ -75,13 +75,15 @@ class AnalysisExpandAreaFinder{
 		void drawIntersections( int me = -1 );
 		void drawShortest( int me = -1 );
 		void drawExpandAreas( int me = -1 );
+		void drawMinRectangles( int me = -1 );
 		
 		// expand the area in all directions possible. step = how far to move each interval while testing against neighbors
 		void expand( float step );
 		
 		
 		vector<enExpandData> expanders;
-	
+		vector<enExpandData> expandersOriginal;
+
 	protected:
 		
 		// find the minium enclosing rectangle of each building, for faster calculation of the expansion
@@ -100,7 +102,6 @@ class AnalysisExpandAreaFinder{
 		void limitExpansion(vector<enExpandData> & epData);
 		
 		// minimum circumbscribed rectangle for each building, pts to expand etc.
-		vector<enExpandData> expandersOriginal;
 		vector<EnsancheBuilding> buildings; // save a copy of the buildings for later analysis
 		
 		bool bSetup;

@@ -1,0 +1,1 @@
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.5/src/analysisExterior/analysisExpandAreaFinder.cpp:157: error: no 'void AnalysisExpandAreaFinder::drawMinRectangles(int)' member function declared in class 'AnalysisExpandAreaFinder'

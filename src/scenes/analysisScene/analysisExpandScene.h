@@ -51,8 +51,11 @@ public:
 	void setUserName( string name );
 	void loadUserFile();
 	
-	// core function to prepare for making new facades. finds sides + expands out minimum possible
-	void makeInitialExpansion();
+	void setupEndPointData();
+	void setupExpandData();
+	
+	void findSideIdData();
+	void finInitialExpandData();
 	
 	bool bSetUserName;
 	bool bEnabled;
@@ -73,6 +76,8 @@ public:
 	guiTypeMultiToggle * multiWhichB;
 	guiTypeSlider	* guiChooseBuliding;
 	guiTypeSlider	* guiChooseSide;
+	guiTypeSlider	* guiChooseExpandBuliding;
+	guiTypeSlider	* guiChooseExpandSide;
 	
 	// for making changes manually
 	int currBuilding, prevBuilding;
@@ -86,7 +91,9 @@ public:
 	AnalysisExpander		expander;
 	
 	// save expand data
-	vector<EnsancheExpandData> expandBuildingData;
+	vector<EnsancheExpandData> buildingDataEndPoints;		// preserves side ids and original end points
+	vector<EnsancheExpandData> buildingDataExpanded;		// removed points in between end points an preserves initial minimum expansion
+	
 	
 	
 };

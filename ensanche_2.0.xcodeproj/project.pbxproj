@@ -568,6 +568,7 @@
 		83927D901142CF4F00534A62 /* modelUtils */ = {
 			isa = PBXGroup;
 			children = (
+				8376FB9211075E46001808C2 /* pocoDirectoryLister.h */,
 			);
 			name = modelUtils;
 			sourceTree = "<group>";
@@ -621,7 +622,6 @@
 				8329A272114A78BF001FEEF0 /* ofxOpenCVBlobTracking */,
 				83927E83114317BC00534A62 /* uid */,
 				83927D901142CF4F00534A62 /* modelUtils */,
-				8376FB9211075E46001808C2 /* pocoDirectoryLister.h */,
 				8376FB9311075E46001808C2 /* pocoDirectoryLister.cpp */,
 				8376F2E010FFBAD5001808C2 /* polygonTools */,
 				83D19C4E10F9F13200882687 /* ofxControlPanel */,

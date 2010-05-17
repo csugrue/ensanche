@@ -25,9 +25,9 @@ EnsancheExpandData::EnsancheExpandData( const EnsancheExpandData & mom )
 	ends.pts.assign( mom.ends.pts.begin(), mom.ends.pts.end() );
 	ends.ids.assign( mom.ends.ids.begin(), mom.ends.ids.end() );
 	ends.sideToEndPt = mom.ends.sideToEndPt;
+	
+	momBuilding = mom.momBuilding;
 	building = mom.building;
-	buildingEndsOnly = mom.buildingEndsOnly;
-	buildingExpanded = mom.buildingExpanded;
 	
 }
 
@@ -41,10 +41,9 @@ void EnsancheExpandData::clearEnds()
 void EnsancheExpandData::setup(EnsancheBuilding & origBuilding)
 {
 	building = origBuilding;
-	buildingEndsOnly = origBuilding;
-	buildingExpanded = origBuilding;
+	momBuilding = origBuilding;
 	
-	cout << "setup exdata " << endl;
+	//cout << "setup exdata " << endl;
 	
 }
 
@@ -53,8 +52,7 @@ void EnsancheExpandData::clear()
 	sideIds.clear();
 	clearEnds();
 	building.clear();
-	buildingEndsOnly.clear();
-	buildingExpanded.clear();
+	momBuilding.clear();
 }
 
 void EnsancheExpandData::drawEnds(float scale, ofTrueTypeFont * font)

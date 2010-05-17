@@ -32,12 +32,11 @@ class AnalysisExpander{
 	
 		void clear();
 		
-		// expand given side, assumes that the points in between endpoints are already removed
-		// need: buildingEndoints, buildingExpanded, expandData, ends, sideToExpand
-		void expand( EnsancheBuilding & buildingExpanded, int sideToExpand, enExpandAreas expandAreas, enExpandData epData, endPoints * nEnds );
-		  
+		void expand( EnsancheExpandData & expandBuilding, int sideToExpand, enExpandData epData );
+		
+		
 		// takes in: original building, destination building, expand data, side to expand, 
-		// 	takes in building, dest building, sideIds, side to expand, total length possible to expand or expand data
+		// takes in building, dest building, sideIds, side to expand, total length possible to expand or expand data
 		void expand( 
 						EnsancheBuilding building, 
 						EnsancheBuilding & dstBuilding, 
@@ -46,14 +45,12 @@ class AnalysisExpander{
 						enExpandData epData,
 						endPoints * nEnds);
 	
-	
-		
-		
+			
 		// function finds the end points and adds the data NOT replacing any old data
-		void findEndPoints(EnsancheBuilding building, int sideToExpand, vector<int>sideIds,enExpandData epData,endPoints * nEnds);
+		void findEndPoints(EnsancheBuilding building, int sideToExpand, vector<int>sideIds,endPoints * nEnds);
 		
 		// function finds the end points of all sides sets data replacing any old data
-		void findAllEndPoints(EnsancheBuilding building, vector<int>sideIds,enExpandData epData,endPoints * nEnds);
+		void findAllEndPoints(EnsancheBuilding building, vector<int>sideIds, endPoints * nEnds);
 		
 		// removes the points in between the endpoints for the given side. also removes walls, sideids, and resets endpoints
 		void removeInBetweenPoints(EnsancheBuilding & building, int sideToExpand, vector<int> * sideIds, endPoints * nEnds);

@@ -154,6 +154,26 @@ void AnalysisExpandAreaFinder::drawExpandAreas( int me )
 	}
 }
 
+void AnalysisExpandAreaFinder::drawMinRectangles( int me  )
+{
+	for( int i = 0; i < expandersOriginal.size(); i++)
+	{
+		ofSetColor( getColor(i) );
+		ofNoFill();
+		for( int j = 0; j < expandersOriginal[i].poly.pts.size()-1; j++)
+		{
+			ofSetColor( getColor(j) );
+						
+			ofLine(expandersOriginal[i].poly.pts[j].x,expandersOriginal[i].poly.pts[j].y,
+				   expandersOriginal[i].poly.pts[j+1].x,expandersOriginal[i].poly.pts[j+1].y);
+		}
+		
+		ofFill();
+		ofCircle(expandersOriginal[i].poly.pts[0].x, expandersOriginal[i].poly.pts[0].y, .1);
+	}
+}
+
+
 void AnalysisExpandAreaFinder::draw()
 {
 	
@@ -312,7 +332,7 @@ void AnalysisExpandAreaFinder::expand( float step )
 		}
 		
 		expanders[i].poly = expandersAreas[i].poly;
-		cout << "expanders[i].poly.pts.size()  " << expanders[i].poly.pts.size() << endl;
+		cout << " expanders[i].poly.pts.size()  " << expanders[i].poly.pts.size() << endl;
 	}
 	
 	
