@@ -32,16 +32,13 @@ vector<ofPoint> FacadeBoxRipple::getFacadeLine(ofPoint ptA, ofPoint ptB, ofPoint
 {
 	newPoints.clear();
 	newExPoints.clear();
-	//vector<ofPoint> newPoints;
 	
-	//ofxVec2f 
 	vPtA	= ofxVec2f( ptA.x, ptA.y );
-	//ofxVec2f 
 	vPtB	= ofxVec2f( ptB.x, ptB.y );
 	ofxVec2f vPP	= (vPtB-vPtA).normalize();//ofxVec2f( pp.x, pp.y );
 	
 	// generate a number of points based on length of line
-	float length = (vPtA-vPtB).length();
+	float length = sqrt( (ptA.x-ptB.x)*(ptA.x-ptB.x)+(ptA.y-ptB.y)*(ptA.y-ptB.y) );//.length();
 	
 	int maxPts = length / minLong;
 	int minPts = length / maxLong;
@@ -59,8 +56,15 @@ vector<ofPoint> FacadeBoxRipple::getFacadeLine(ofPoint ptA, ofPoint ptB, ofPoint
 			tLength += rLens[i];
 	}
 	
+	
+	
 	// adjust the lngths so that it is more proportional, last one is not too short or too long
 	float lengthLast = length-tLength;
+	
+	
+	// check if we are not long enough
+	cout << "length : " << length << " tlength: " << tLength << " difflen: " << lengthLast << endl;
+	
 	if( lengthLast < minLong )
 	{
 		while( (length-tLength) < minLong)
@@ -100,22 +104,24 @@ vector<ofPoint> FacadeBoxRipple::getFacadeLine(ofPoint ptA, ofPoint ptB, ofPoint
 	for( int i = 0; i < totalPts; i++)
 	{
 		tLength += rLens[i];
-		newPoints.push_back( ofPoint(ptA.x + tLength*vPP.x, ptA.y) );		
+		newPoints.push_back( ofPoint(ptA.x + tLength*vPP.x, ptA.y + tLength*vPP.y) );		
 	}
 	
 	// insert the last
 	newPoints.push_back( ofPoint(ptB.x,ptB.y) );
 
+	// ??!! save the extrusions, and use to create the next point, or do all the points here??
 	
 	// create extrusions
-	for( int i = 0; i < newPoints.size(); i++)
+	for( int i = 0; i < newPoints.size()-1; i++)
 	{
 		// get a random extrude
 		float extrude = ofRandom(minExtrude,maxExtrude);
 		
 		// 
-		newExPoints.push_back( ofPoint( newPoints[i].x , newPoints[i].y + extrude * pp.y) );
-	
+		newExPoints.push_back( ofPoint( newPoints[i].x  + extrude * pp.x, newPoints[i].y + extrude * pp.y) );
+		newExPoints.push_back( ofPoint( newPoints[i+1].x  + extrude * pp.x, newPoints[i+1].y + extrude * pp.y) );
+
 	}
 	
 	
@@ -127,15 +133,16 @@ vector<ofPoint> FacadeBoxRipple::getFacadeLine(ofPoint ptA, ofPoint ptB, ofPoint
 	
 	int t = 1;
 	
-	for( int i = 1; i < newExPoints.size()-1; i++)
+	for( int i = 1; i < newExPoints.size(); i++)
 	{
-		newLinePoints.push_back( ofPoint(newExPoints[i].x,newExPoints[i-1].y) );
-		newLinePoints.push_back(newExPoints[i]);
+		newLinePoints.push_back( newExPoints[i] );
+		//ofPoint(newExPoints[i].x,newExPoints[i-1].y) );
+		//newLinePoints.push_back(newExPoints[i]);
 	}
 	
 	//insert last
-	int lst = newExPoints.size()-1;
-	newLinePoints.push_back(ofPoint(newExPoints[lst].x,newExPoints[lst-1].y) );
+	//int lst = newExPoints.size()-1;
+	//newLinePoints.push_back(ofPoint(newExPoints[lst].x,newExPoints[lst-1].y) );
 	
 	return newLinePoints;
 	
@@ -152,19 +159,21 @@ void FacadeBoxRipple::draw()
 	ofFill();
 	for( int i = 0; i < newExPoints.size(); i++)
 	{
-		//ofCircle(newExPoints[i].x,newExPoints[i].y,.2);
+		ofCircle(newExPoints[i].x,newExPoints[i].y,.2);
 		
 	}
-	ofFill();
-	ofCircle(vPtA.x, vPtA.y, .2);
-	ofCircle(vPtB.x, vPtB.y, .2);
 	
 	ofNoFill();
 	ofBeginShape();
 		for( int i = 0; i < newLinePoints.size(); i++)
 			ofVertex(newLinePoints[i].x, newLinePoints[i].y);
 	ofEndShape(false);
-
+	
+	ofFill();
+	ofSetColor(0xff0000);
+	ofCircle(vPtA.x, vPtA.y, .4);
+	ofCircle(vPtB.x, vPtB.y, .4);
+	
 }
 
 

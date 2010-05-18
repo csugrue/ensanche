@@ -46,8 +46,16 @@ class EnsancheModelBuilding{
 		void draw2D(bool bDrawWOffset);
 		void draw3D(bool bDrawWOffset);
 		
-		//void setFromPolygon(polyEditable poly, float wallHeight, bool bOffset = true  );
+		// setup the model from the original building (with nFloor info + offsets etc.) 
+		void setupFromBuilding(EnsancheBuilding buildingOriginal );
+		
+		// set new floor (expansion, facade etc)
+		void setFloor(EnsancheBuilding buildingFloor, int floorNum );
+		
+		// add a floor to building
 		void addBuildingFloor(polySimple & buildingPoly,  bool bOffset = true );
+		
+		// generate 3D model from current data
 		void generateModel( float wallHeight );
 		
 		int getNumPts(){ return nPts;}
@@ -69,6 +77,8 @@ class EnsancheModelBuilding{
 		float scale;
 		int editMode;
 		
+		int nFloors;
+		
 		//--- 2d representation
 		vector<polySimple> buildingFloors;
 		
@@ -86,6 +96,6 @@ class EnsancheModelBuilding{
 		float * floorPts;
 		float * texPts;
 		ofPoint lastMouse;
-		int nFloors;
+		
 
 };

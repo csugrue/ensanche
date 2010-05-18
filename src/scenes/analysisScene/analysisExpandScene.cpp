@@ -29,6 +29,7 @@ void AnalysisExpandScene::setup()
 	prevBuilding	= 0;
 	currSide		= 0;
 	prevSide		= 0;
+	prevFBuilding	= 0;
 	
 }
 
@@ -88,17 +89,13 @@ void AnalysisExpandScene::draw()
 			glTranslatef(-boundingBox.width*.5,-boundingBox.height*.5,0);
 			ofFill();
 			ofSetColor(235,235,235,220);
-			barrioOriginal.draw();
+			//barrioOriginal.draw();
 			
 			ofNoFill();
 			ofSetColor(0,0,0,255);
-			barrioOriginal.draw();
+			//barrioOriginal.draw();
 		
-		
-			ofNoFill();
-			ofSetColor(255,0,0,200);
-			//minRectExpander.draw();
-			
+					
 			if( panel.getSelectedPanelName() == "find space" ) 
 			{
 			   glLineWidth(3.0);
@@ -107,13 +104,8 @@ void AnalysisExpandScene::draw()
 			   if( panel.getValueB("SHOW_SHORTEST")  )	minRectExpander.drawShortest( panel.getValueI("SHOW_WHICH_B") - 1  );
 			   glLineWidth(1.0);
 			
-			}/*else if( panel.getSelectedPanelName() == "find facade sides" )
+			}else if( panel.getSelectedPanelName() == "find facade sides" )
 			{
-				sideAssigner.draw();
-			}*/
-			else if( panel.getSelectedPanelName() == "find facade sides" )
-			{
-				//expander.draw(zoom);
 				for( int i = 0;  i < buildingDataEndPoints.size(); i++)
 				{	
 					buildingDataEndPoints[i].building.buildingPoly.draw();
@@ -135,6 +127,14 @@ void AnalysisExpandScene::draw()
 					buildingDataExpanded[i].drawEnds( zoom, &expander.font );
 					buildingDataExpanded[i].drawSideIds();
 				}
+			}else if( panel.getSelectedPanelName() == "make new facade" )
+			{
+				for( int i = 0; i < buildings.size(); i++)
+				{
+					buildings[i].draw2D(true);
+				}
+				
+				facadeMakerBox.draw();
 			}
 			
 			   
@@ -227,17 +227,27 @@ void AnalysisExpandScene::setupControlPanel()
 	panel.setWhichPanel("find facade sides");
 	guiChooseBuliding = panel.addSlider("current building","current_building",0,0,0,true);
 	guiChooseSide = panel.addSlider("choose side","choose_side",0,0,0,true);
-	panel.addSlider("set side id","set_side_id",0,0,4,true);
+	panel.addSlider("set side id","set_side_id",0,0,3,true);
 	//panel.addToggle("remove ends", "remove_ends", false);
 	
 	panel.setWhichPanel("find expansion");
 	guiChooseExpandBuliding = panel.addSlider("current expand","current_expand",0,0,0,true);
-	guiChooseExpandSide = panel.addSlider("choose expand side","choose_expand_side",0,0,4,true);
+	guiChooseExpandSide = panel.addSlider("choose expand side","choose_expand_side",0,0,3,true);
 	panel.addToggle("remove ends", "remove_ends", false);
 	//panel.addToggle("min rect expand", "min_rect_expand", false);
 	panel.addSlider("min expand dist","min_expand_dist",1,0,10,false);
 	panel.addSlider("min facade dist","min_facade_dist",1,0,10,false);
 	panel.addToggle("min expand", "min_expand", false);
+	
+	panel.setWhichPanel("make new facade");
+	guiChooseFacadeBuilding = panel.addSlider("building","current_facade_b",0,0,0,true);
+	guiChooseFacadeFloor	= panel.addSlider("floor","current_facade_flr",0,0,0,true);
+	panel.addSlider("side","current_facade_side",0,0,3,true);
+	panel.addToggle("create new ripple","create_ripple",false);
+	
+	// choose type of facade
+	// choose amount of ripple variation?
+
 	panel.update();
 	
 	
@@ -266,6 +276,13 @@ void AnalysisExpandScene::updateControlPanel()
 		}else if(panel.getSelectedPanelName() == "find expansion" )
 		{
 				setupExpandData();
+		
+		}else if( panel.getSelectedPanelName() == "make new facade")
+		{
+				setUpModels();
+				prevFBuilding = 0;
+				if( barrioOriginal.buildings.size() > 0)
+					guiChooseFacadeFloor->value.setValue(1,0,barrioOriginal.buildings[0].nFloors-1);
 		}
 		
 	}
@@ -337,18 +354,7 @@ void AnalysisExpandScene::updateControlPanel()
 		}
 	}
 	
-	/*if( panel.getValueB("min_rect_expand") )
-	{
-		panel.setValueB("min_rect_expand", false);
-		int currExpandB = panel.getValueI("current_expand");
 
-		if(buildingDataExpanded.size() > currExpandB) 
-		{
-			int sideToExpand = panel.getValueI("choose_expand_side");
-			expander.expandWallToMinRect(buildingDataExpanded[currExpandB],sideToExpand,minRectExpander.expandersOriginal[currExpandB].poly);
-		}
-	}*/
-	
 	if( panel.getValueB("min_expand") )
 	{
 		panel.setValueB("min_expand", false);
@@ -366,12 +372,22 @@ void AnalysisExpandScene::updateControlPanel()
 		}
 	}
 	
-	/*
-	 panel.addSlider("min expand dist","min_expand_dist",1,0,10,false);
-	 panel.addSlider("min facade dist","min_facade_dist",1,0,10,false);
-	 panel.addToggle("min expand", "min_expand", false);
-	 */
-	 
+	if( panel.getSelectedPanelName() == "make new facade" )
+	{
+		int currB = panel.getValueI("current_facade_b") ;
+		if( prevFBuilding != currB)
+		{
+			prevFBuilding = currB;
+			if( barrioOriginal.buildings.size() > currB)
+				guiChooseFacadeFloor->value.setValue(1,0,barrioOriginal.buildings[currB].nFloors-1);
+			
+		}else if( panel.getValueB("create_ripple") ) {
+			panel.setValueB("create_ripple",false);
+			createFacadeLine( currB, panel.getValueI("current_facade_flr"), panel.getValueI("current_facade_side") );
+		}
+		
+	}
+	
 }
 
 void AnalysisExpandScene::findSideIdData()
@@ -420,11 +436,62 @@ void AnalysisExpandScene::setupEndPointData()
 	
 }
 
-void AnalysisExpandScene::finInitialExpandData()
-{
 
+void AnalysisExpandScene::setUpModels()
+{
+	for( int i = 0; i < barrioOriginal.buildings.size(); i++)
+	{
+		EnsancheModelBuilding model;
+		buildings.push_back(model);
+		buildings[i].setupFromBuilding(barrioOriginal.buildings[i]);
+	}
+	
+	for( int i = 0; i < buildingDataExpanded.size(); i++)
+	{
+		setModelInitialExpansion(i);
+	}
 }
 
+
+void AnalysisExpandScene::setModelInitialExpansion(int index)
+{
+	if(buildings.size() > index && buildingDataExpanded.size() > index)
+	{
+		cout << "expanded floors " << index << " : " << buildings[index].nFloors << "floors" << endl;
+		for( int i = 1; i < buildings[index].nFloors; i++)
+		{
+			cout << "set expanded floors " << i << endl;
+			buildings[index].setFloor( buildingDataExpanded[index].building, i);
+		}
+	}
+}
+
+
+void AnalysisExpandScene::createFacadeLine( int ixBuilding, int ixFloor, int sideToAlter )
+{
+	ofPoint ptA, ptB;
+	
+	if( buildingDataExpanded.size() > ixBuilding )
+	{
+		for( int i = 0; i < buildingDataExpanded[ ixBuilding ].sideIds.size(); i++ )
+		{
+			if( buildingDataExpanded[ ixBuilding ].sideIds[i] == sideToAlter )
+			{
+				int nxt = ( i==buildingDataExpanded[ ixBuilding ].sideIds.size()-1 ) ? 0 : i+1;
+				ptA = buildingDataExpanded[ ixBuilding ].building.buildingPoly.pts[i];
+				ptB = buildingDataExpanded[ ixBuilding ].building.buildingPoly.pts[nxt];
+				break;
+			}
+			
+		}
+	}
+	
+	ofxVec2f pp = ofxVec2f(ptB.x-ptA.x,ptB.y-ptA.y);
+	ofPoint ptPP = pp.perpendicular();
+	
+	facadeMakerBox.getFacadeLine( ptA,  ptB,  ptPP);
+	
+}
 
 void AnalysisExpandScene::setUserName( string name )
 {
@@ -458,6 +525,7 @@ void AnalysisExpandScene::loadUserFile()
 		guiChooseSide->value.setValue(0,0,barrioOriginal.buildings[0].buildingPoly.pts.size()-1);
 		guiChooseExpandBuliding->value.setValue(0,0,barrioOriginal.buildings.size()-1);
 		guiChooseExpandSide->value.setValue(0,0,4);//barrioOriginal.buildings[0].buildingPoly.pts.size()-1);
+		guiChooseFacadeBuilding->value.setValue(0,0,barrioOriginal.buildings.size()-1);
 		
 		// calc area so we can sort them
 		for( int i = 0; i < barrioOriginal.buildings.size(); i++)

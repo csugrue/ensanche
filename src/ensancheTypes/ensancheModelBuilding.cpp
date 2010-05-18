@@ -22,6 +22,7 @@ EnsancheModelBuilding::EnsancheModelBuilding()
 	nFloorPts	= 0;
 	nTexPts		= 0;
 	scale		= 1;
+	nFloors		= 0;
 	
 	editMode = MODEL_EDIT_MODE_NORMAL;
 	
@@ -74,6 +75,24 @@ EnsancheModelBuilding::EnsancheModelBuilding(const EnsancheModelBuilding & mom )
 	}
 	// NOTE: does not keep texture
 	bSetWallTexture = false;	
+}
+
+
+void EnsancheModelBuilding::setFloor(EnsancheBuilding buildingFloor, int floorNum )
+{
+	if( buildingFloors.size() > floorNum)
+	{
+		buildingFloors[ floorNum ].clear();
+		buildingFloors[ floorNum ] = buildingFloor.buildingPoly;
+	}
+	
+}
+
+void EnsancheModelBuilding::setupFromBuilding(EnsancheBuilding building)
+{
+	cout << "set up model with " << building.nFloors << " floors " << endl;
+	for( int i = 0; i < building.nFloors; i++)
+		addBuildingFloor( building.buildingPoly );
 }
 
 void EnsancheModelBuilding::setup()

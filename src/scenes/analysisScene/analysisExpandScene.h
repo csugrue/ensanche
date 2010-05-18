@@ -51,11 +51,24 @@ public:
 	void setUserName( string name );
 	void loadUserFile();
 	
+	// initializes vector of bildings to hold data on endpoints of "sides" of the buliding
 	void setupEndPointData();
+	
+	// initializes vector of buildings to hold data on the initial expansion (sans facade ripple) of each building
 	void setupExpandData();
 	
+	// for all buildings, assigns a side to each wall of building
 	void findSideIdData();
-	void finInitialExpandData();
+	
+	// create models that will hold info for all floors, inclding initial expansions
+	void setUpModels();
+	
+	// set the initial expansion for each floor for a building
+	void setModelInitialExpansion(int index);
+	
+	// create a new facade line for the current buildng, side, and floor
+	void createFacadeLine( int ixBuilding, int ixFloor, int sideToAlter);
+	
 	
 	bool bSetUserName;
 	bool bEnabled;
@@ -78,10 +91,13 @@ public:
 	guiTypeSlider	* guiChooseSide;
 	guiTypeSlider	* guiChooseExpandBuliding;
 	guiTypeSlider	* guiChooseExpandSide;
+	guiTypeSlider	* guiChooseFacadeBuilding;
+	guiTypeSlider	* guiChooseFacadeFloor;
 	
 	// for making changes manually
 	int currBuilding, prevBuilding;
 	int currSide, prevSide;
+	int prevFBuilding;
 	
 	// facade makers
 	FacadeBoxRipple		facadeMakerBox;
