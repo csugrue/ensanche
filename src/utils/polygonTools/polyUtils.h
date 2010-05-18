@@ -16,6 +16,7 @@ bool pointInPolygon(float x, float y, vector<ofPoint>pts);
 bool isInsideRect(float x, float y, ofRectangle rect);
 
 bool intersectionTwoLines( ofPoint pt1, ofPoint pt2, ofPoint pt3, ofPoint pt4, ofPoint * iPt );
+bool intersectionTwoLines2( ofPoint pt1, ofPoint pt2, ofPoint pt3, ofPoint pt4, ofPoint * iPt );
 
 bool findClosestIntersectionLineAndPoly( ofPoint a, ofPoint b, vector<ofPoint> pts, ofPoint & closestPoint, int & sideId );
 

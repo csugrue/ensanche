@@ -57,6 +57,30 @@ bool intersectionTwoLines( ofPoint pt1, ofPoint pt2, ofPoint pt3, ofPoint pt4, o
     return true;
 }
 
+bool intersectionTwoLines2( ofPoint pt1, ofPoint pt2, ofPoint pt3, ofPoint pt4, ofPoint * iPt )
+{
+	
+    iPt->x = 0;
+    iPt->y = 0;
+	
+    float ua =  ( (pt4.x-pt3.x)*(pt1.y-pt3.y) - (pt4.y-pt3.y)*(pt1.x-pt3.x) ) /
+	( (pt4.y-pt3.y)*(pt2.x-pt1.x) - (pt4.x-pt3.x)*(pt2.y-pt1.y) );
+	
+    float ub =  ( (pt2.x-pt1.x)*(pt1.y-pt3.y) - (pt2.y-pt1.y)*(pt1.x-pt3.x) ) /
+	( (pt4.y-pt3.y)*(pt2.x-pt1.x) - (pt4.x-pt3.x)*(pt2.y-pt1.y) );
+	
+	
+    if( ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1)
+        ;
+    else
+        return false;
+	
+    iPt->x = pt1.x + ua * (pt2.x-pt1.x);
+    iPt->y = pt1.y + ua * (pt2.y-pt1.y);
+	
+    return true;
+}
+
 bool findClosestIntersectionLineAndPoly( ofPoint a, ofPoint b, vector<ofPoint> pts, ofPoint & closestPoint, int & sideId )
 {
     if(pts.size() <= 0 ) return false;

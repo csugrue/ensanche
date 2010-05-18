@@ -27,24 +27,140 @@ void AnalysisExpander::clear()
 	uidToIndex.clear();
 }
 
-
-void AnalysisExpander::expand( 
-								EnsancheBuilding building, 
-								EnsancheBuilding & dstBuilding, 
-								int sideToExpand,
-								vector<int>sideIds,
-								enExpandData epData,
-								endPoints * nEnds)
+float AnalysisExpander::explandToMinimum(EnsancheExpandData & expandBuilding, int sideToExpand, polySimple polyMin, polySimple polyMax, float minDist, float minForRipple)
 {
-
-		if(sideIds.size() < building.buildingPoly.pts.size()-1 ) return;
-		
-		// find end points for this side			
-		findEndPoints(building, sideToExpand, sideIds,nEnds);
 	
-		// remove the in between points
+	float diffDist = 0.f;
+	
+	// calculate distance between min rect and max rect
+	ofxVec2f centerMin = ofxVec2f( .5*(polyMin.pts[sideToExpand].x+polyMin.pts[sideToExpand+1].x),.5*(polyMin.pts[sideToExpand].y+polyMin.pts[sideToExpand+1].y) );
+	ofxVec2f centerMax = ofxVec2f( .5*(polyMax.pts[sideToExpand].x+polyMax.pts[sideToExpand+1].x),.5*(polyMax.pts[sideToExpand].y+polyMax.pts[sideToExpand+1].y) );
+	
+	float distCenters = (centerMax-centerMin).length();
+	
+	// if distance minus the minDist is too small ( < minRipple), expand to max and return 0
+	// else expand to minDist and return difference distance
+	if( (distCenters - minDist) < minForRipple )
+	{
+		expandWallToMinRect(expandBuilding, sideToExpand, polyMax);
+	}
+	else{
 		
-		// expand outwards
+		// make new poly with the expanded side to the minDist
+		polyInitExpand.clear();
+		//polySimple poly;
+		polyInitExpand = polyMin;
+		
+		vector<ofxVec2f> pps;
+		for( int i = 0; i < polyInitExpand.pts.size(); i++)
+		{
+			int nxt = (i==polyInitExpand.pts.size()-1) ? 0: i+1;
+			ofxVec2f polyPP = ofxVec2f( polyInitExpand.pts[i].x-polyInitExpand.pts[nxt].x,polyInitExpand.pts[i].y-polyInitExpand.pts[nxt].y);
+			polyPP = polyPP.perpendicular();
+			pps.push_back(polyPP);
+			
+		}
+		
+		for( int i = 0; i < polyInitExpand.pts.size(); i++)
+		{
+			int nxt = (i==polyInitExpand.pts.size()-1) ? 0: i+1;
+
+			polyInitExpand.pts[i].x = polyInitExpand.pts[i].x + minDist * pps[i].x;
+			polyInitExpand.pts[i].y = polyInitExpand.pts[i].y + minDist * pps[i].y;
+			polyInitExpand.pts[nxt].x = polyInitExpand.pts[nxt].x + minDist * pps[i].x;
+			polyInitExpand.pts[nxt].y = polyInitExpand.pts[nxt].y + minDist * pps[i].y;
+			
+		}
+		
+		/*int nxt = (sideToExpand==polyInitExpand.pts.size()-1) ? 0: sideToExpand+1;
+		ofxVec2f polyPP = ofxVec2f( polyInitExpand.pts[sideToExpand].x-polyInitExpand.pts[nxt].x,polyInitExpand.pts[sideToExpand].y-polyInitExpand.pts[nxt].y);
+		polyPP = polyPP.perpendicular();
+		
+		polyInitExpand.pts[sideToExpand].x = polyInitExpand.pts[sideToExpand].x + minDist * polyPP.x;
+		polyInitExpand.pts[sideToExpand].y = polyInitExpand.pts[sideToExpand].y + minDist * polyPP.y;
+		polyInitExpand.pts[nxt].x = polyInitExpand.pts[nxt].x + minDist * polyPP.x;
+		polyInitExpand.pts[nxt].y = polyInitExpand.pts[nxt].y + minDist * polyPP.y;
+		*/
+		// expand
+		expandWallToMinRect(expandBuilding, sideToExpand, polyInitExpand);
+		
+		// set remaining distance
+		diffDist = distCenters - minDist;
+	}
+	
+	return diffDist;
+}
+
+void AnalysisExpander::expandWallToMinRect(EnsancheExpandData & expandBuilding, int sideToExpand, polySimple poly)
+{
+	// tries to expand using the angle of the preceding and following sides of the buildings
+	
+	// find the side we want to expand. stops at first found because should be one each at this point
+	int sideIndex = -1;
+	for( int i = 0; i < expandBuilding.sideIds.size(); i++)
+	{
+		if( expandBuilding.sideIds[i] == sideToExpand )
+		{
+			sideIndex = i;
+			break;
+		}
+		
+	}
+	
+	if(sideIndex == -1 )
+	{
+		cout << "ERROR: side not found. " << endl;
+		return;
+	}
+	
+	// find the end pts of the side before
+	int ptsB[2];
+	ptsB[0] = (sideIndex==0) ? expandBuilding.sideIds.size()-1 : sideIndex-1;
+	ptsB[1] = sideIndex;
+	
+	// find the end pts of the side after
+	int ptsA[2];
+	ptsA[0] = (sideIndex==expandBuilding.sideIds.size()-1) ? 1 : sideIndex+2;
+	ptsA[1] = (sideIndex==expandBuilding.sideIds.size()-1) ? 0 : sideIndex+1;
+	
+	// find vectors of before and after
+	ofxVec2f vecBefore, vecAfter;
+	
+	// NOTE: error check these points exist!!!!
+	vecBefore.x = expandBuilding.building.buildingPoly.pts[ ptsB[0] ].x - expandBuilding.building.buildingPoly.pts[ ptsB[1] ].x;
+	vecBefore.y = expandBuilding.building.buildingPoly.pts[ ptsB[0] ].y - expandBuilding.building.buildingPoly.pts[ ptsB[1] ].y;
+	vecBefore = vecBefore.normalize();
+	
+	vecAfter.x = expandBuilding.building.buildingPoly.pts[ ptsA[1] ].x - expandBuilding.building.buildingPoly.pts[ ptsA[0] ].x;
+	vecAfter.y = expandBuilding.building.buildingPoly.pts[ ptsA[1] ].y - expandBuilding.building.buildingPoly.pts[ ptsA[0] ].y;
+	vecAfter = vecAfter.normalize();
+	
+	// find points that intersect with min rectangle
+	ofPoint iPt;
+	
+	// get bounding box so we know that we create a line long enought to intersect
+	ofRectangle boundingBox = poly.getBoundingBox();
+	float len = 10 * MAX(boundingBox.width , boundingBox.height);
+	
+	ofPoint afterPt;
+	afterPt.x = expandBuilding.building.buildingPoly.pts[ ptsA[1] ].x + len * vecAfter.x;
+	afterPt.y = expandBuilding.building.buildingPoly.pts[ ptsA[1] ].y + len * vecAfter.y;
+	
+	if( intersectionTwoLines(expandBuilding.building.buildingPoly.pts[ ptsA[1] ], afterPt, poly.pts[sideToExpand], poly.pts[sideToExpand+1], &iPt) )
+	{
+	expandBuilding.building.buildingPoly.pts[ ptsA[1] ].set(iPt.x,iPt.y);
+	}
+	
+	ofPoint befPt;
+	befPt.x = expandBuilding.building.buildingPoly.pts[ ptsB[1] ].x - len * vecBefore.x;
+	befPt.y = expandBuilding.building.buildingPoly.pts[ ptsB[1] ].y - len * vecBefore.y;
+	
+	if( intersectionTwoLines2(expandBuilding.building.buildingPoly.pts[ ptsB[1] ], befPt, poly.pts[sideToExpand], poly.pts[sideToExpand+1], &iPt) )
+	{
+		//cout << "FOUND INTERSECTION" << endl;
+		expandBuilding.building.buildingPoly.pts[ ptsB[1] ].set(iPt.x,iPt.y);
+	}
+	
 }
 
 void AnalysisExpander::findEndPoints(EnsancheBuilding building, int sideToExpand, vector<int>sideIds,endPoints * nEnds)
@@ -204,8 +320,6 @@ void AnalysisExpander::removeInBetweenPoints(EnsancheBuilding & building, int si
 		building.walls[i].posInPoly = i;
 	}
 	
-	// find endpoints again
-	//findAllEndPoints(building, sideIds, nEnds);
 }
 
 void AnalysisExpander::draw(float scale)

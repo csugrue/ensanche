@@ -125,6 +125,8 @@ void AnalysisExpandScene::draw()
 			{
 				minRectExpander.drawExpandAreas();
 				minRectExpander.drawMinRectangles();
+				ofNoFill();
+				expander.polyInitExpand.draw();
 				
 				ofNoFill();
 				for( int i = 0;  i < buildingDataExpanded.size(); i++)
@@ -232,7 +234,10 @@ void AnalysisExpandScene::setupControlPanel()
 	guiChooseExpandBuliding = panel.addSlider("current expand","current_expand",0,0,0,true);
 	guiChooseExpandSide = panel.addSlider("choose expand side","choose_expand_side",0,0,4,true);
 	panel.addToggle("remove ends", "remove_ends", false);
-	
+	//panel.addToggle("min rect expand", "min_rect_expand", false);
+	panel.addSlider("min expand dist","min_expand_dist",1,0,10,false);
+	panel.addSlider("min facade dist","min_facade_dist",1,0,10,false);
+	panel.addToggle("min expand", "min_expand", false);
 	panel.update();
 	
 	
@@ -332,6 +337,41 @@ void AnalysisExpandScene::updateControlPanel()
 		}
 	}
 	
+	/*if( panel.getValueB("min_rect_expand") )
+	{
+		panel.setValueB("min_rect_expand", false);
+		int currExpandB = panel.getValueI("current_expand");
+
+		if(buildingDataExpanded.size() > currExpandB) 
+		{
+			int sideToExpand = panel.getValueI("choose_expand_side");
+			expander.expandWallToMinRect(buildingDataExpanded[currExpandB],sideToExpand,minRectExpander.expandersOriginal[currExpandB].poly);
+		}
+	}*/
+	
+	if( panel.getValueB("min_expand") )
+	{
+		panel.setValueB("min_expand", false);
+		int currExpandB = panel.getValueI("current_expand");
+		
+		if(buildingDataExpanded.size() > currExpandB) 
+		{
+			int sideToExpand = panel.getValueI("choose_expand_side");
+			expander.explandToMinimum(
+									  buildingDataExpanded[currExpandB],sideToExpand, 
+									  minRectExpander.expandersOriginal[currExpandB].poly, 
+									  minRectExpander.expanders[currExpandB].poly, 
+									  panel.getValueF("min_expand_dist"), 
+									  panel.getValueF("min_facade_dist"));
+		}
+	}
+	
+	/*
+	 panel.addSlider("min expand dist","min_expand_dist",1,0,10,false);
+	 panel.addSlider("min facade dist","min_facade_dist",1,0,10,false);
+	 panel.addToggle("min expand", "min_expand", false);
+	 */
+	 
 }
 
 void AnalysisExpandScene::findSideIdData()

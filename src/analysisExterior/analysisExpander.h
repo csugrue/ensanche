@@ -32,20 +32,13 @@ class AnalysisExpander{
 	
 		void clear();
 		
-		void expand( EnsancheExpandData & expandBuilding, int sideToExpand, enExpandData epData );
+		//void expand( EnsancheExpandData & expandBuilding, int sideToExpand, enExpandData epData );
 		
+		float explandToMinimum(EnsancheExpandData & expandBuilding, int sideToExpand, polySimple polyMin, polySimple polyMax, float minDist, float minRipple);
 		
-		// takes in: original building, destination building, expand data, side to expand, 
-		// takes in building, dest building, sideIds, side to expand, total length possible to expand or expand data
-		void expand( 
-						EnsancheBuilding building, 
-						EnsancheBuilding & dstBuilding, 
-						int sideToExpand,
-						vector<int>sideIds,
-						enExpandData epData,
-						endPoints * nEnds);
-	
-			
+		// expands the side out to the minimum enclosing rectangle (assumes that this is a wall with point removed...)
+		void expandWallToMinRect(EnsancheExpandData & expandBuilding, int sideToExpand, polySimple poly);//enExpandData epData);
+		
 		// function finds the end points and adds the data NOT replacing any old data
 		void findEndPoints(EnsancheBuilding building, int sideToExpand, vector<int>sideIds,endPoints * nEnds);
 		
@@ -63,7 +56,10 @@ class AnalysisExpander{
 		map<string,int> uidToIndex;
 		
 		ofTrueTypeFont font;
-
+		
+		// temp
+		polySimple	polyInitExpand;
+		
 	protected:
 		
 
