@@ -39,7 +39,6 @@ class EnsancheBuilding{
 		
 		// hmm makes sense if dont have polys for all floors?
 		int nFloors;
-		
 		string uid;
 		
 	protected:

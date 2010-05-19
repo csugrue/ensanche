@@ -21,6 +21,7 @@
 #include "analysisSideAssigner.h"
 #include "analysisExpander.h"
 #include "ensancheExpandData.h"
+#include "ensancheNewFacadeModel.h"
 
 class AnalysisExpandScene: public baseScene{
 	
@@ -81,6 +82,7 @@ public:
 	
 	// expanded models
 	vector<EnsancheModelBuilding>	buildings;
+	vector<EnsancheNewFacadeModel>	fBuildings;
 	
 	// scale tool
 	EnsancheScaleTool	scaleTool;

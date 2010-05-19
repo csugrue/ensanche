@@ -45,7 +45,12 @@ class EnsancheModelBuildingAdv{
 		void draw2D(bool bDrawWOffset);
 		void draw3D(bool bDrawWOffset);
 		
-		//void setFromPolygon(polyEditable poly, float wallHeight, bool bOffset = true  );
+		// setup the model from the original building (with nFloor info + offsets etc.) 
+		void setupFromBuilding(EnsancheBuilding buildingOriginal );
+	
+		// set new floor (expansion, facade etc)
+		void setFloor(EnsancheBuilding buildingFloor, int floorNum );
+		
 		void addBuildingFloor(EnsancheBuilding & building, bool bOffset = true );
 		void generateModel( float wallHeight );
 		
@@ -79,7 +84,8 @@ class EnsancheModelBuildingAdv{
 		
 		ofTexture * textureWalls[MODEL_T_TEXTURES];
 		bool bSetWallTextures[MODEL_T_TEXTURES];
-		
+		int nFloors;
+
 	protected:
 		
 		//-- for model with varying textures
@@ -97,6 +103,5 @@ class EnsancheModelBuildingAdv{
 		float * floorPts;
 		float * texPts;
 		ofPoint lastMouse;
-		int nFloors;
 
 };

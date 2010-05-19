@@ -22,11 +22,15 @@ EnsancheModelBuildingAdv::EnsancheModelBuildingAdv()
 	nFloorPts	= 0;
 	nTexPts		= 0;
 	scale		= 1;
+	nFloors		= 0;
 	
 	editMode = MODEL_EDIT_MODE_NORMAL;
 	
 	bSetWallTexture = false;
 	memset(bSetWallTextures,0,MODEL_T_TEXTURES*sizeof(bool));
+	
+	memset(nptsv,0,MODEL_T_TEXTURES*sizeof(int));
+	memset(ntexptsv,0,MODEL_T_TEXTURES*sizeof(int));
 }
 
 EnsancheModelBuildingAdv::~EnsancheModelBuildingAdv()
@@ -40,7 +44,12 @@ EnsancheModelBuildingAdv::~EnsancheModelBuildingAdv()
 	
 	buildingFloors.clear();
 	
-	//!! NOTE delete other arrays!!
+	//!! NOTE check if this is ok for delete other arrays!!
+	for( int i = 0; i < MODEL_T_TEXTURES; i++)
+	{
+		if(nptsv[i] > 0) delete [] ptsv[i];
+		if(ntexptsv[i] > 0) delete [] texptsv[i];
+	}
 }
 
 EnsancheModelBuildingAdv::EnsancheModelBuildingAdv(const EnsancheModelBuildingAdv & mom )
@@ -131,6 +140,9 @@ void EnsancheModelBuildingAdv::clear()
 	buildingFloors.clear();
 	
 	bSetWallTexture = false;
+	
+	memset(nptsv,0,MODEL_T_TEXTURES*sizeof(int));
+	memset(ntexptsv,0,MODEL_T_TEXTURES*sizeof(int));
 }
 
 void EnsancheModelBuildingAdv::setWallTexture(ofTexture * tex, int type)
@@ -265,6 +277,22 @@ void EnsancheModelBuildingAdv::draw3D(bool bDrawWOffset)
  
  }
  */
+void EnsancheModelBuildingAdv::setFloor(EnsancheBuilding buildingFloor, int floorNum )
+{
+	if( buildingFloors.size() > floorNum)
+	{
+		buildingFloors[ floorNum ].clear();
+		buildingFloors[ floorNum ] = buildingFloor.buildingPoly;
+	}
+	
+}
+
+void EnsancheModelBuildingAdv::setupFromBuilding(EnsancheBuilding building)
+{
+	cout << "set up model with " << building.nFloors << " floors " << endl;
+	for( int i = 0; i < building.nFloors; i++)
+		addBuildingFloor( building);//.buildingPoly );
+}
 
 void EnsancheModelBuildingAdv::addBuildingFloor( EnsancheBuilding & building, bool bOffset )
 {

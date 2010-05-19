@@ -43,6 +43,7 @@
 		83927E5F11430F1300534A62 /* sysdep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83927E5E11430F1300534A62 /* sysdep.cpp */; };
 		83927F4011438A0F00534A62 /* uidGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83927F3F11438A0F00534A62 /* uidGenerator.cpp */; };
 		8396E68011746B3800AA48B9 /* ensancheModelBuildingAdv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8396E67E11746B3800AA48B9 /* ensancheModelBuildingAdv.cpp */; };
+		83CA15D811A3E4AB00DE146C /* ensancheNewFacadeModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83CA15D711A3E4AB00DE146C /* ensancheNewFacadeModel.cpp */; };
 		83D19C6510F9F13200882687 /* ofxControlPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D19C6010F9F13200882687 /* ofxControlPanel.cpp */; };
 		83D19CAB10FA2B0200882687 /* baseScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D19CA910FA2B0200882687 /* baseScene.cpp */; };
 		83D19CAF10FA2CFC00882687 /* sceneUserInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83D19CAE10FA2CFC00882687 /* sceneUserInput.cpp */; };
@@ -228,6 +229,8 @@
 		83927F3F11438A0F00534A62 /* uidGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = uidGenerator.cpp; path = utils/uuid/uidGenerator.cpp; sourceTree = "<group>"; };
 		8396E67E11746B3800AA48B9 /* ensancheModelBuildingAdv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ensancheModelBuildingAdv.cpp; path = ensancheTypes/ensancheModelBuildingAdv.cpp; sourceTree = "<group>"; };
 		8396E67F11746B3800AA48B9 /* ensancheModelBuildingAdv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ensancheModelBuildingAdv.h; path = ensancheTypes/ensancheModelBuildingAdv.h; sourceTree = "<group>"; };
+		83CA15D611A3E4AB00DE146C /* ensancheNewFacadeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ensancheNewFacadeModel.h; path = ensancheTypes/ensancheNewFacadeModel.h; sourceTree = "<group>"; };
+		83CA15D711A3E4AB00DE146C /* ensancheNewFacadeModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ensancheNewFacadeModel.cpp; path = ensancheTypes/ensancheNewFacadeModel.cpp; sourceTree = "<group>"; };
 		83D19C4F10F9F13200882687 /* guiBaseObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guiBaseObject.h; sourceTree = "<group>"; };
 		83D19C5010F9F13200882687 /* guiColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guiColor.h; sourceTree = "<group>"; };
 		83D19C5110F9F13200882687 /* guiCustomImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guiCustomImpl.h; sourceTree = "<group>"; };
@@ -584,6 +587,8 @@
 				83927D9D1142D3D200534A62 /* ensancheModelRoom.cpp */,
 				835E976B1144E4A0006B36DE /* ensancheModelBarrio.h */,
 				835E976C1144E4A0006B36DE /* ensancheModelBarrio.cpp */,
+				83CA15D611A3E4AB00DE146C /* ensancheNewFacadeModel.h */,
+				83CA15D711A3E4AB00DE146C /* ensancheNewFacadeModel.cpp */,
 			);
 			name = ensancheModelTypes;
 			sourceTree = "<group>";
@@ -1528,6 +1533,7 @@
 				83DDD07911832C4F007567E9 /* facadeBoxRipple.cpp in Sources */,
 				833190301199B45300469062 /* analysisExpander.cpp in Sources */,
 				833190FC119ABDD400469062 /* ensancheExpandData.cpp in Sources */,
+				83CA15D811A3E4AB00DE146C /* ensancheNewFacadeModel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -131,16 +131,22 @@ void AnalysisExpandScene::draw()
 			{
 				for( int i = 0; i < buildings.size(); i++)
 				{
-					buildings[i].draw2D(true);
+					//buildings[i].draw2D(true);
 				}
 				
-				facadeMakerBox.draw();
+				for( int i = 0; i < fBuildings.size(); i++)
+				{
+					fBuildings[i].draw2D(true);
+				}
+				
+				//facadeMakerBox.draw();
+				
 			}
 			
 			   
 		glPopMatrix();
 		
-		facadeMakerBox.draw();
+		//facadeMakerBox.draw();
 		
 		scaleTool.draw();
 		
@@ -384,6 +390,8 @@ void AnalysisExpandScene::updateControlPanel()
 		}else if( panel.getValueB("create_ripple") ) {
 			panel.setValueB("create_ripple",false);
 			createFacadeLine( currB, panel.getValueI("current_facade_flr"), panel.getValueI("current_facade_side") );
+		
+			
 		}
 		
 	}
@@ -444,6 +452,10 @@ void AnalysisExpandScene::setUpModels()
 		EnsancheModelBuilding model;
 		buildings.push_back(model);
 		buildings[i].setupFromBuilding(barrioOriginal.buildings[i]);
+		
+		EnsancheNewFacadeModel fmodel;
+		fBuildings.push_back(fmodel);
+		fBuildings[i].setupFromBuilding(barrioOriginal.buildings[i]);
 	}
 	
 	for( int i = 0; i < buildingDataExpanded.size(); i++)
@@ -464,6 +476,16 @@ void AnalysisExpandScene::setModelInitialExpansion(int index)
 			buildings[index].setFloor( buildingDataExpanded[index].building, i);
 		}
 	}
+	
+	if(fBuildings.size() > index && buildingDataExpanded.size() > index)
+	{
+		cout << "f expanded floors " << index << " : " << fBuildings[index].nFloors << "floors" << endl;
+		for( int i = 1; i < fBuildings[index].nFloors; i++)
+		{
+			cout << "f set expanded floors " << i << endl;
+			fBuildings[index].setFloor( buildingDataExpanded[index].building, i);
+		}
+	}
 }
 
 
@@ -471,13 +493,16 @@ void AnalysisExpandScene::createFacadeLine( int ixBuilding, int ixFloor, int sid
 {
 	ofPoint ptA, ptB;
 	
+	int st,nxt;
+	
 	if( buildingDataExpanded.size() > ixBuilding )
 	{
 		for( int i = 0; i < buildingDataExpanded[ ixBuilding ].sideIds.size(); i++ )
 		{
 			if( buildingDataExpanded[ ixBuilding ].sideIds[i] == sideToAlter )
 			{
-				int nxt = ( i==buildingDataExpanded[ ixBuilding ].sideIds.size()-1 ) ? 0 : i+1;
+				st = i;
+				nxt = ( i==buildingDataExpanded[ ixBuilding ].sideIds.size()-1 ) ? 0 : i+1;
 				ptA = buildingDataExpanded[ ixBuilding ].building.buildingPoly.pts[i];
 				ptB = buildingDataExpanded[ ixBuilding ].building.buildingPoly.pts[nxt];
 				break;
@@ -489,8 +514,15 @@ void AnalysisExpandScene::createFacadeLine( int ixBuilding, int ixFloor, int sid
 	ofxVec2f pp = ofxVec2f(ptB.x-ptA.x,ptB.y-ptA.y);
 	ofPoint ptPP = pp.perpendicular();
 	
-	facadeMakerBox.getFacadeLine( ptA,  ptB,  ptPP);
+	vector <ofPoint> fLine;
+	fLine = facadeMakerBox.getFacadeLine( ptA,  ptB,  ptPP);
 	
+	if(fBuildings.size() > ixBuilding)
+	{
+		//int floorNum, int startPt, int endPt, int sideId );
+		
+		fBuildings[ ixBuilding ].insertFacadeLine(fLine, ixFloor, st, nxt, sideToAlter);
+	}
 }
 
 void AnalysisExpandScene::setUserName( string name )
