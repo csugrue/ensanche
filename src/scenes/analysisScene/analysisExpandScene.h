@@ -112,6 +112,7 @@ public:
 	vector<EnsancheExpandData> buildingDataEndPoints;		// preserves side ids and original end points
 	vector<EnsancheExpandData> buildingDataExpanded;		// removed points in between end points an preserves initial minimum expansion
 	
-	
+	ofTexture textureWalls[MODEL_T_TEXTURES];
+	EnsancheNewFacadeModel fmodel;
 	
 };

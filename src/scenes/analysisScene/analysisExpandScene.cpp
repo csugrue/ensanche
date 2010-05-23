@@ -31,6 +31,14 @@ void AnalysisExpandScene::setup()
 	prevSide		= 0;
 	prevFBuilding	= 0;
 	
+	for( int i = 0; i < MODEL_T_TEXTURES; i++)
+	{
+		ofImage mtxImg;
+		mtxImg.loadImage("textures/wallTexture_"+ofToString(i)+".jpg");
+		textureWalls[i].allocate(mtxImg.width,mtxImg.height,GL_RGB,false);
+		textureWalls[i].loadData(mtxImg.getPixels(),mtxImg.width,mtxImg.height,GL_RGB);
+		textureWalls[i].setTextureWrap(GL_REPEAT, GL_REPEAT);
+	}
 }
 
 AnalysisExpandScene::~AnalysisExpandScene()
@@ -127,6 +135,7 @@ void AnalysisExpandScene::draw()
 					buildingDataExpanded[i].drawEnds( zoom, &expander.font );
 					buildingDataExpanded[i].drawSideIds();
 				}
+			
 			}else if( panel.getSelectedPanelName() == "make new facade" )
 			{
 				for( int i = 0; i < buildings.size(); i++)
@@ -136,7 +145,12 @@ void AnalysisExpandScene::draw()
 				
 				for( int i = 0; i < fBuildings.size(); i++)
 				{
-					fBuildings[i].draw2D(true);
+					fBuildings[i].draw2D(true,true);
+					glEnable(GL_DEPTH_TEST);
+					fBuildings[i].draw3D2(true);
+					glDisable(GL_DEPTH_TEST);
+					//if( i==panel.getValueI("current_facade_b") ) fBuildings[i].drawAllFloors(true);
+					
 				}
 				
 				//facadeMakerBox.draw();
@@ -146,13 +160,24 @@ void AnalysisExpandScene::draw()
 			   
 		glPopMatrix();
 		
-		//facadeMakerBox.draw();
+		
 		
 		scaleTool.draw();
 		
 	glPopMatrix();
 	
-	
+	glPushMatrix();
+		glTranslatef(30,ofGetHeight(),0);
+		
+		glScalef(zoom,zoom,1);
+		
+		if( panel.getSelectedPanelName() == "make new facade" )
+		{
+			int i=panel.getValueI("current_facade_b");
+			if( fBuildings.size() > i ) fBuildings[i].drawAllFloors(true);
+		}
+		
+	glPopMatrix();
 	// control panel
 	if(bPanelOn) panel.draw();
 }
@@ -410,6 +435,7 @@ void AnalysisExpandScene::findSideIdData()
 void AnalysisExpandScene::setupExpandData()
 {
 
+	cout << "Setup expand data." << endl;
 	buildingDataExpanded.clear();
 	
 	for( int i = 0; i < buildingDataEndPoints.size(); i++)
@@ -447,27 +473,41 @@ void AnalysisExpandScene::setupEndPointData()
 
 void AnalysisExpandScene::setUpModels()
 {
+	cout << "Setup models " << endl;
+	
 	for( int i = 0; i < barrioOriginal.buildings.size(); i++)
 	{
-		EnsancheModelBuilding model;
-		buildings.push_back(model);
-		buildings[i].setupFromBuilding(barrioOriginal.buildings[i]);
+		//EnsancheModelBuilding model;
+		//buildings.push_back(model);
+		//buildings[i].setupFromBuilding(barrioOriginal.buildings[i]);
 		
-		EnsancheNewFacadeModel fmodel;
+		
 		fBuildings.push_back(fmodel);
+		fBuildings[i].setup();
 		fBuildings[i].setupFromBuilding(barrioOriginal.buildings[i]);
+		
+		fBuildings[ i ].generateModel(EN_FLOOR_HEIGHT);
 	}
 	
 	for( int i = 0; i < buildingDataExpanded.size(); i++)
 	{
 		setModelInitialExpansion(i);
 	}
+	
+	
+	
+
+	
+	for( int i = 0; i < fBuildings.size(); i++){
+		for( int j = 0; j < MODEL_T_TEXTURES; j++)
+			fBuildings[i].setWallTexture(&textureWalls[j],j);
+	}
 }
 
 
 void AnalysisExpandScene::setModelInitialExpansion(int index)
 {
-	if(buildings.size() > index && buildingDataExpanded.size() > index)
+	/*if(buildings.size() > index && buildingDataExpanded.size() > index)
 	{
 		cout << "expanded floors " << index << " : " << buildings[index].nFloors << "floors" << endl;
 		for( int i = 1; i < buildings[index].nFloors; i++)
@@ -475,7 +515,7 @@ void AnalysisExpandScene::setModelInitialExpansion(int index)
 			cout << "set expanded floors " << i << endl;
 			buildings[index].setFloor( buildingDataExpanded[index].building, i);
 		}
-	}
+	}*/
 	
 	if(fBuildings.size() > index && buildingDataExpanded.size() > index)
 	{
@@ -483,7 +523,7 @@ void AnalysisExpandScene::setModelInitialExpansion(int index)
 		for( int i = 1; i < fBuildings[index].nFloors; i++)
 		{
 			cout << "f set expanded floors " << i << endl;
-			fBuildings[index].setFloor( buildingDataExpanded[index].building, i);
+			fBuildings[index].setFloor( buildingDataExpanded[index].building, i, buildingDataExpanded[index].sideIds, buildingDataExpanded[index].ends.sideToEndPt);
 		}
 	}
 }
@@ -495,7 +535,10 @@ void AnalysisExpandScene::createFacadeLine( int ixBuilding, int ixFloor, int sid
 	
 	int st,nxt;
 	
-	if( buildingDataExpanded.size() > ixBuilding )
+	// don't expand gorund floor
+	if(ixFloor == 0 ) return;
+	
+	/*if( buildingDataExpanded.size() > ixBuilding )
 	{
 		for( int i = 0; i < buildingDataExpanded[ ixBuilding ].sideIds.size(); i++ )
 		{
@@ -509,12 +552,29 @@ void AnalysisExpandScene::createFacadeLine( int ixBuilding, int ixFloor, int sid
 			}
 			
 		}
+	}*/
+	
+	if( fBuildings.size() > ixBuilding && fBuildings[ ixBuilding ].floorData.size() > ixFloor )
+	{
+		for( int i = 0; i < fBuildings[ ixBuilding ].floorData[ixFloor].sideIds.size(); i++ )
+		{
+			if( fBuildings[ ixBuilding ].floorData[ixFloor].sideIds[i] == sideToAlter )
+			{
+				st = i;
+				nxt = ( i==fBuildings[ ixBuilding ].floorData[ixFloor].sideIds.size()-1 ) ? 0 : i+1;
+				ptA = fBuildings[ ixBuilding ].buildingFloors[ixFloor].pts[i];
+				ptB = fBuildings[ ixBuilding ].buildingFloors[ixFloor].pts[nxt];
+				break;
+			}
+			
+		}
 	}
 	
 	ofxVec2f pp = ofxVec2f(ptB.x-ptA.x,ptB.y-ptA.y);
 	ofPoint ptPP = pp.perpendicular();
 	
 	vector <ofPoint> fLine;
+	cout << "get facade line " << endl;
 	fLine = facadeMakerBox.getFacadeLine( ptA,  ptB,  ptPP);
 	
 	if(fBuildings.size() > ixBuilding)
@@ -522,6 +582,7 @@ void AnalysisExpandScene::createFacadeLine( int ixBuilding, int ixFloor, int sid
 		//int floorNum, int startPt, int endPt, int sideId );
 		
 		fBuildings[ ixBuilding ].insertFacadeLine(fLine, ixFloor, st, nxt, sideToAlter);
+		//fBuildings[ ixBuilding ].generateModel(EN_FLOOR_HEIGHT);
 	}
 }
 

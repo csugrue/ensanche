@@ -8,10 +8,12 @@
  */
 
 #include "ensancheModelBuildingAdv.h"
+#include "ensancheConstants.h"
 
 typedef struct newFacadeFloorData{
 	vector<int> sideIds;
-	vector<ofPoint> endPts;
+	ofPoint endPtIndex[4];
+	bool sideAltered[4];
 };
 
 class EnsancheNewFacadeModel : public EnsancheModelBuildingAdv{
@@ -21,12 +23,16 @@ class EnsancheNewFacadeModel : public EnsancheModelBuildingAdv{
 		~EnsancheNewFacadeModel();
 		EnsancheNewFacadeModel( const EnsancheNewFacadeModel & mom );
 		
-		void setupFromModelBuilding(EnsancheModelBuildingAdv & mom);
-		
+		void setupFromBuilding(EnsancheBuilding buildingOriginal );
+
+		void setFloor(EnsancheBuilding buildingFloor, int floorNum, vector<int>sideIds, map<int,ofPoint> sideToEndPt);
+
 		// insert new facade line into the side of floor
 		void insertFacadeLine( vector<ofPoint> fLine, int floorNum, int startPt, int endPt, int sideId );
 		
+		void draw2D(bool bDrawSideColorCoded, bool bDrawWOffset);
 		void draw();
+		void drawAllFloors(bool bDrawSideColorCoded);
 		
 		// new facade should be in buildingFloors
 		

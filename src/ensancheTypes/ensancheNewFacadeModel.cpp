@@ -30,6 +30,9 @@ EnsancheNewFacadeModel::EnsancheNewFacadeModel()
 	
 	memset(nptsv,0,MODEL_T_TEXTURES*sizeof(int));
 	memset(ntexptsv,0,MODEL_T_TEXTURES*sizeof(int));
+	
+	bEnabled = true;
+
 }
 
 EnsancheNewFacadeModel::~EnsancheNewFacadeModel()
@@ -104,16 +107,61 @@ EnsancheNewFacadeModel::EnsancheNewFacadeModel(const EnsancheNewFacadeModel & mo
 	// memset(ntexptsv,0,MODEL_T_TEXTURES*sizeof(int));
 }
 
+void EnsancheNewFacadeModel::setupFromBuilding(EnsancheBuilding buildingOriginal )
+{
+	EnsancheModelBuildingAdv::setupFromBuilding( buildingOriginal );
+	
+	// add data
+	for( int i = 0; i < buildingFloors.size(); i++)
+	{
+		newFacadeFloorData fdata;
+		floorData.push_back(fdata);
+		for( int j = 0; j < 4; j++)
+		{
+			floorData[i].endPtIndex[j].set(0,0);
+			floorData[i].sideAltered[j] = false;
+		}
+	}
+	
+}
+
+void EnsancheNewFacadeModel::setFloor(EnsancheBuilding buildingFloor, int floorNum, vector<int> sideIds,  map<int,ofPoint> sideToEndPt)
+{
+	EnsancheModelBuildingAdv::setFloor( buildingFloor,  floorNum );
+	
+	if( floorData.size() > floorNum )
+	{
+		floorData[floorNum].sideIds.clear();
+		
+		// copy side ids
+		for( int i = 0; i < sideIds.size(); i++)
+		{
+			floorData[floorNum].sideIds.push_back(sideIds[i]);
+		}
+		
+		//if( epts.size() >= 4)
+		//{
+			for( int i = 0; i < 4; i++)
+			{
+				//map<int,ofPoint> sideToEndPt
+				cout << "set ednpts " <<  sideToEndPt.find(i)->second.x << " " << sideToEndPt.find(i)->second.y << endl;
+				floorData[floorNum].endPtIndex[i]= sideToEndPt.find(i)->second ;//epts[i].x,epts[i].y);
+			}
+		//}
+		
+	}
+}
+
 void EnsancheNewFacadeModel::insertFacadeLine( vector<ofPoint> fLine, int floorNum, int startPt, int endPt, int sideId )
 {
 	if( buildingFloors.size() < floorNum ) return;
+	if( floorData.size() > floorNum && floorData[ floorNum ].sideAltered[ sideId ]==true ) return;
 	
+	cout << "INSERT FACADE LINE " << floorNum << endl;
 	// create a temporary poly to hold the point data
 	polySimple tempPoly = buildingFloors[ floorNum ];
-	
-	// create temporary struct to hold the sideId data and endPoint data
-	
-	// create temporary struct for walls of this floor
+		
+	// ?? create temporary struct for walls of this floor
 	
 	// clear original data
 	buildingFloors[ floorNum ].clear();
@@ -124,6 +172,7 @@ void EnsancheNewFacadeModel::insertFacadeLine( vector<ofPoint> fLine, int floorN
 	for( int i = 0; i < tempPoly.pts.size(); i++)
 	{
 		buildingFloors[ floorNum ].pushVertex( tempPoly.pts[i] );
+		
 		if( i == startPt){
 			for( int j = 0; j < fLine.size(); j++)
 				buildingFloors[ floorNum ].pushVertex( fLine[j] );
@@ -131,5 +180,177 @@ void EnsancheNewFacadeModel::insertFacadeLine( vector<ofPoint> fLine, int floorN
 		
 	}
 	
+	if( floorData.size() > floorNum)
+	{
+		floorData[ floorNum ].sideAltered[ sideId ] = true; 
+		
+		// insert sides
+		vector<int> tempSides;
+		tempSides.assign( floorData[ floorNum ].sideIds.begin(),floorData[ floorNum ].sideIds.end() );
+		floorData[ floorNum ].sideIds.clear();
+		 
+		for( int i = 0; i < tempSides.size(); i++)
+		{
+			floorData[ floorNum ].sideIds.push_back( tempSides[i] );
+			
+			if( i == startPt){
+				for( int j = 0; j < fLine.size(); j++)
+					floorData[ floorNum ].sideIds.push_back(sideId);
+			}
+			
+		}
+		
+		
+		// insert new wall texture ids for inserted points
+		//vector<wallTextureIds> wallTexIds;
+		if( wallTexIds.size() > floorNum )
+		{
+			wallTextureIds tempWallIds;
+			tempWallIds.tId.assign( wallTexIds[ floorNum ].tId.begin(),wallTexIds[ floorNum ].tId.end() );
+			wallTexIds[ floorNum ].tId.clear();
+			
+			for( int i = 0; i < tempSides.size(); i++)
+			{
+				wallTexIds[ floorNum ].tId.push_back( wallTexIds[ floorNum ].tId[i] );
+				
+				// NOTE: this needs types to be applied to make sense!
+				if( i == startPt){
+					for( int j = 0; j < fLine.size(); j++)
+						wallTexIds[ floorNum ].tId.push_back( j%MODEL_T_TEXTURES );
+				}
+				
+			}
+		}
+
+		// insert ends
+		for( int i = 0; i < 4; i++)
+		{
+			if( floorData[ floorNum ].endPtIndex[i].x > startPt ) floorData[ floorNum ].endPtIndex[i].x += fLine.size();
+			if( floorData[ floorNum ].endPtIndex[i].y > startPt ) floorData[ floorNum ].endPtIndex[i].y += fLine.size();
+		}
+	}
+	
+	
+	//generateModel(EN_FLOOR_HEIGHT);
+}
+
+
+
+void EnsancheNewFacadeModel::draw2D(bool bDrawSideColorCoded, bool bDrawWOffset)
+{
+	if(!bDrawSideColorCoded) EnsancheModelBuildingAdv::draw2D(bDrawWOffset);
+	
+	else{
+		glPushMatrix();
+		
+		if(bDrawWOffset) glTranslatef(offSet.x,offSet.y,0);
+		
+		for(int i = 0; i < buildingFloors.size(); i++)
+		{
+			
+			ofNoFill();
+			for( int j = 0; j < buildingFloors[i].pts.size(); j++)
+			{
+					int nxt = (j==buildingFloors[i].pts.size()-1) ? 0 : j+1;
+					int sideId = -1;
+					
+					if( floorData.size() > i && floorData[i].sideIds.size() > j )
+					{
+						switch( floorData[i].sideIds[j] )
+						{
+							case 0: ofSetColor(255,0,0); break;
+							case 1: ofSetColor(0,255,0); break;
+							case 2: ofSetColor(0,0,255); break;
+							case 3: ofSetColor(255,0,255); break;
+							case -2: ofSetColor(0,255,255); break;
+							default: ofSetColor(0,0,0); break;
+						
+						}
+						sideId = floorData[i].sideIds[j];
+					}
+					
+				ofLine(buildingFloors[i].pts[j].x, buildingFloors[i].pts[j].y,buildingFloors[i].pts[nxt].x, buildingFloors[i].pts[nxt].y);
+				
+				ofNoFill();
+				for( int k = 0 ; k < 4; k++)
+				{
+					if( floorData.size() > i && ((int)floorData[i].endPtIndex[k].x == j || (int)floorData[i].endPtIndex[k].y == j) ) 
+					{
+						//cout << "sideId " << sideId << "stpt  " << floorData[i].endPtIndex[k].x << " ept " << floorData[i].endPtIndex[k].y << endl;
+						ofFill();
+					}
+				}
+				ofCircle(buildingFloors[i].pts[j].x, buildingFloors[i].pts[j].y, .75);	
+			}
+			
+			//buildingFloors[i].bDrawnWithPoints = false;
+			//buildingFloors[i].draw();
+		}
+		
+		glPopMatrix();
+	
+	}
 	
 }
+
+
+void EnsancheNewFacadeModel::drawAllFloors(bool bDrawSideColorCoded)
+{
+	// find largest w and height
+	float bbW = 0;
+	float bbH = 0;
+	
+	for( int i = 0; i < buildingFloors.size(); i++)
+	{
+		ofRectangle bb = buildingFloors[i].getBoundingBox();
+		if( i ==0 || bb.width > bbW ) bbW = bb.width;
+		if( i ==0 || bb.height > bbH ) bbH = bb.height;
+	}
+	
+	
+	glPushMatrix();
+	
+		glTranslatef(0, -bbH, 0);
+		
+		for(int i = 0; i < buildingFloors.size(); i++)
+		{
+		
+			//glPushMatrix();
+				
+				if(i>0) glTranslatef(bbW+(.1*bbW),0,0);
+				
+				ofNoFill();
+				for( int j = 0; j < buildingFloors[i].pts.size(); j++)
+				{
+					int nxt = (j==buildingFloors[i].pts.size()-1) ? 0 : j+1;
+					int sideId = -1;
+				
+					if( bDrawSideColorCoded && floorData.size() > i && floorData[i].sideIds.size() > j )
+					{
+						switch( floorData[i].sideIds[j] )
+						{
+							case 0: ofSetColor(255,0,0); break;
+							case 1: ofSetColor(0,255,0); break;
+							case 2: ofSetColor(0,0,255); break;
+							case 3: ofSetColor(255,0,255); break;
+							case -2: ofSetColor(0,255,255); break;
+							default: ofSetColor(0,0,0); break;
+							
+						}
+						sideId = floorData[i].sideIds[j];
+					}
+				
+					ofLine(buildingFloors[i].pts[j].x, buildingFloors[i].pts[j].y,buildingFloors[i].pts[nxt].x, buildingFloors[i].pts[nxt].y);
+				}
+			
+			//glPopMatrix();
+		
+		}
+	
+	glPopMatrix();
+	
+
+
+	
+}
+

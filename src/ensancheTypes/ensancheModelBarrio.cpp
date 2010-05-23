@@ -225,7 +225,7 @@ void EnsancheModelBarrio::addBuildings(EnsancheBarrio * barrio)
 	for( int i = 0; i < barrio->buildings.size(); i++){
 		for( int j = 0; j < MODEL_T_TEXTURES; j++)
 			buildingsAdv[i].setWallTexture(&textureWalls[j],j);
-		buildingsAdv[i].generateModel(4.f);
+		//buildingsAdv[i].generateModel(4.f);
 	}
 	
 	for( int i = 0; i < barrio->buildings.size(); i++)	

@@ -24,8 +24,8 @@ void AnalysisFacadeMaker::createFacade(EnsancheModelBuilding * newBuilding, Ensa
 
 	
 	// insert the floors
-	for( int i = 0; i < building.nFloors; i++)
-		newBuilding->addBuildingFloor(building.buildingPoly);
+	//for( int i = 0; i < building.nFloors; i++)
+	//	newBuilding->addBuildingFloor(building.buildingPoly);
 	
 
 	if(building.nFloors > 1)

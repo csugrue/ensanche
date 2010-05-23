@@ -31,6 +31,8 @@ EnsancheModelBuildingAdv::EnsancheModelBuildingAdv()
 	
 	memset(nptsv,0,MODEL_T_TEXTURES*sizeof(int));
 	memset(ntexptsv,0,MODEL_T_TEXTURES*sizeof(int));
+	
+	bEnabled = false;
 }
 
 EnsancheModelBuildingAdv::~EnsancheModelBuildingAdv()
@@ -181,6 +183,129 @@ void EnsancheModelBuildingAdv::draw2D(bool bDrawWOffset)
 	
 }
 
+void EnsancheModelBuildingAdv::draw3D2(bool bDrawWOffset)
+{
+	cout << "draw 3d2" << endl;
+	
+	float tx0 = 0;
+	float ty0 = 0;
+	float tx1 = (bSetWallTexture) ? 2.5*textureWall->texData.tex_t : 1;
+	float ty1 = (bSetWallTexture) ? textureWall->texData.tex_u : 1;
+	
+	
+	float tempPts[13];
+	memset(tempPts, 0, 13*sizeof(float));
+	
+	float tempTexpts[9];
+	memset(tempTexpts, 0, 9*sizeof(float));
+	
+	// leave, maybe need offset later??
+	ofRectangle boundingBox = ofRectangle(0,0,0,0);
+	float wallHeight = EN_FLOOR_HEIGHT;
+	
+	glPushMatrix();
+	
+		
+		//if( bDrawWOffset) glTranslatef(offSet.x,0.f,offSet.y);
+		
+		glTranslatef(center.x,center.y,center.z);
+		glScalef(scale,scale,scale);
+		glRotatef(rotation.x,1,0,0);
+		glRotatef(rotation.y,0,1,0);
+		glRotatef(rotation.z,0,0,1);
+		glTranslatef(-center.x,-center.y,-center.z);
+		
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+		
+		for( int i = 0; i < buildingFloors.size(); i++)
+		{
+			if( wallTexIds.size() < i ){
+				cout << "wallTexIds.size()" << wallTexIds.size() << " buildingFloors.size() " << buildingFloors.size() << endl;
+				continue;
+			}
+			
+			
+			
+			for( int j = 0; j < buildingFloors[i].pts.size()-1; j++)
+			{
+				
+				int tnpts = 0;
+				int ntexpts = 0;
+				
+				tempPts[ tnpts ]	= buildingFloors[i].pts[j].x-boundingBox.x;
+				tempPts[ tnpts+1]	= i * wallHeight;
+				tempPts[ tnpts+2]	= buildingFloors[i].pts[j].y-boundingBox.y;
+				tnpts += 3;
+			
+				tempPts[ tnpts ]	= buildingFloors[i].pts[j+1].x-boundingBox.x;
+				tempPts[ tnpts+1]	= i * wallHeight;
+				tempPts[ tnpts+2]	= buildingFloors[i].pts[j+1].y-boundingBox.y;
+				tnpts += 3;
+			
+				tempPts[ tnpts]		= buildingFloors[i].pts[j+1].x-boundingBox.x;
+				tempPts[ tnpts+1]	= (i * wallHeight)+wallHeight;
+				tempPts[ tnpts+2]	= buildingFloors[i].pts[j+1].y-boundingBox.y;
+				tnpts += 3;
+			
+				tempPts[ tnpts]		= buildingFloors[i].pts[j].x-boundingBox.x;
+				tempPts[ tnpts+1]	= (i * wallHeight)+wallHeight;
+				tempPts[ tnpts+2]	= buildingFloors[i].pts[j].y-boundingBox.y;
+				tnpts += 3;
+				
+				int total = (int)(tnpts/3.f);
+				
+				
+				// get len wall
+				float len = sqrt( (buildingFloors[i].pts[j].x-buildingFloors[i].pts[j+1].x)*(buildingFloors[i].pts[j].x-buildingFloors[i].pts[j+1].x) + 
+								  (buildingFloors[i].pts[j].y-buildingFloors[i].pts[j+1].y)*(buildingFloors[i].pts[j].y-buildingFloors[i].pts[j+1].y) );
+				
+				float pct = len / 4.f;
+				tempTexpts[ ntexpts ]	= tx0;		tempTexpts[ ntexpts+1] = ty0;
+				tempTexpts[ ntexpts+2] = pct*tx1;	tempTexpts[ ntexpts+3] = ty0;
+				tempTexpts[ ntexpts+4] = pct*tx1;	tempTexpts[ ntexpts+5] = 2*ty1;
+				tempTexpts[ ntexpts+6] = tx0;		tempTexpts[ ntexpts+7] = 2*ty1; 
+				ntexpts+= 8;
+				
+				int texID = (wallTexIds[i].tId.size()>j) ? wallTexIds[i].tId[j] : 0;
+				
+				if(bSetWallTextures[texID]){
+					
+					//textureWall->setTextureWrap(GL_REPEAT, GL_REPEAT);
+					glEnable(textureWalls[texID]->texData.textureTarget);
+					
+					// bind the texture
+					glBindTexture( textureWalls[texID]->texData.textureTarget, (GLuint)textureWalls[texID]->texData.textureID );
+					
+					glTexParameterf(textureWalls[texID]->texData.textureTarget, GL_TEXTURE_WRAP_S, GL_REPEAT);
+					glTexParameterf(textureWalls[texID]->texData.textureTarget, GL_TEXTURE_WRAP_T, GL_REPEAT);
+					
+					
+					
+					glTexCoordPointer(2, GL_FLOAT, 0, tempTexpts);
+					
+				}
+				
+				
+				glVertexPointer(3, GL_FLOAT, 0, tempPts);
+				glDrawArrays(GL_QUADS, 0, total);
+			}
+		
+			
+			
+			//if(bSetWallTextures[i])  glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+			//cout << "id " << " nptsv: " << nptsv[id] << " nTotalPts[id] " << nTotalPts[id] << endl;
+		}
+	
+	
+	//if(bSetWallTextures[i])  
+	glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+	glDisableClientState(GL_VERTEX_ARRAY);	
+		
+	glPopMatrix();
+	
+}
+
 void EnsancheModelBuildingAdv::draw3D(bool bDrawWOffset)
 {
 
@@ -283,6 +408,33 @@ void EnsancheModelBuildingAdv::setFloor(EnsancheBuilding buildingFloor, int floo
 	{
 		buildingFloors[ floorNum ].clear();
 		buildingFloors[ floorNum ] = buildingFloor.buildingPoly;
+		
+		if(buildingFloor.buildingPoly.pts.size()>1)
+		{
+		  int lst = buildingFloor.buildingPoly.pts.size()-1;
+		  if(	buildingFloor.buildingPoly.pts[0].x != buildingFloor.buildingPoly.pts[lst].y && 
+				buildingFloor.buildingPoly.pts[0].y != buildingFloor.buildingPoly.pts[lst].y)
+			 {
+			 buildingFloors[ floorNum ].pushVertex(buildingFloor.buildingPoly.pts[0]);
+			 }
+			 
+		}
+		
+		for(int i = 0; i < buildingFloors[ floorNum ].pts.size(); i++)
+		{
+			//buildingFloors[ floorNum ].pts[i].x -= offSet.x;
+			//buildingFloors[ floorNum ].pts[i].y -= offSet.y;
+		}
+		
+		// NOTE: fix this to be proper types
+		if( wallTexIds.size() > floorNum)
+		{
+			wallTexIds[floorNum].tId.clear();
+		
+			// get type from each wall
+			for( int i = 0; i <  buildingFloors[ floorNum ].pts.size(); i++)
+				wallTexIds[floorNum].tId.push_back(0);//i%MODEL_T_TEXTURES);
+		}
 	}
 	
 }
@@ -290,12 +442,15 @@ void EnsancheModelBuildingAdv::setFloor(EnsancheBuilding buildingFloor, int floo
 void EnsancheModelBuildingAdv::setupFromBuilding(EnsancheBuilding building)
 {
 	cout << "set up model with " << building.nFloors << " floors " << endl;
+	buildingFloors.clear();
 	for( int i = 0; i < building.nFloors; i++)
 		addBuildingFloor( building);//.buildingPoly );
 }
 
 void EnsancheModelBuildingAdv::addBuildingFloor( EnsancheBuilding & building, bool bOffset )
 {
+	
+	cout << "Adv add building floor" << endl;
 	
 	if( nFloors == 0 ){
 	 ofPoint c = building.buildingPoly.getCentroid();
@@ -329,8 +484,8 @@ void EnsancheModelBuildingAdv::addBuildingFloor( EnsancheBuilding & building, bo
 	{
 		for(int i = 0; i < buildingFloors[ bdOn ].pts.size(); i++)
 		{
-			buildingFloors[ bdOn ].pts[i].x -= boundingBox.x;
-			buildingFloors[ bdOn ].pts[i].y -= boundingBox.y;
+			//buildingFloors[ bdOn ].pts[i].x -= boundingBox.x;
+			//buildingFloors[ bdOn ].pts[i].y -= boundingBox.y;
 		}
 	}
 	
@@ -344,19 +499,29 @@ void EnsancheModelBuildingAdv::addBuildingFloor( EnsancheBuilding & building, bo
 void EnsancheModelBuildingAdv::generateModel( float wallHeight )
 {
 	
+	return;
+	
+	//!! NOTE check if this is ok for delete other arrays!!
+	for( int i = 0; i < MODEL_T_TEXTURES; i++)
+	{
+		if(nptsv[i] > 0) delete [] ptsv[i];
+		if(ntexptsv[i] > 0) delete [] texptsv[i];
+	}
+	
+	// memset the totals
+	memset(nptsv,0,MODEL_T_TEXTURES*sizeof(int));
+	memset(ntexptsv,0,MODEL_T_TEXTURES*sizeof(int));
+	
 	// y inverted
 	if(wallHeight > 0 ) wallHeight *= -1;
 	
 	// set the center y position of model
 	center.y = (buildingFloors.size()*wallHeight ) * .5;
 	
-	// memset the totals
-	memset(nptsv,0,MODEL_T_TEXTURES*sizeof(int));
-	memset(ntexptsv,0,MODEL_T_TEXTURES*sizeof(int));
-	
 	// calculate totatls for each type of texture
 	for( int i = 0; i < wallTexIds.size(); i++)
 	{
+		cout << "i: " << i << " wallTexIds[i].tId.size() " << wallTexIds[i].tId.size() << endl;
 		for( int j = 0; j < wallTexIds[i].tId.size(); j++)
 		{
 			int id = wallTexIds[i].tId[j];
@@ -373,16 +538,26 @@ void EnsancheModelBuildingAdv::generateModel( float wallHeight )
 		ntexptsv[i] = (ntexptsv[i]*4)*2;
 	}
 	
+	
 	// allocate memory for pts for textures
+	int nTotalPts[4];
+	int nTotalTxPts[4];
+	
 	for( int i = 0; i < MODEL_T_TEXTURES; i++)
 	{
-		ptsv[i]		= new float[ nptsv[i]	];
-		texptsv[i]	= new float[ ntexptsv[i] ];
+		nTotalPts[i] = nptsv[i]	;
+		nTotalTxPts[i] = ntexptsv[i];
+		if(nptsv[i]>0)
+		{
+			ptsv[i]		= new float[ nptsv[i]	];
+			texptsv[i]	= new float[ ntexptsv[i] ];
+		}
 	}
 	
-	// reset totals 
+	
 	memset(nptsv,0,MODEL_T_TEXTURES*sizeof(int));
 	memset(ntexptsv,0,MODEL_T_TEXTURES*sizeof(int)); 
+	
 	
 	// leave, maybe need offset later??
 	ofRectangle boundingBox = ofRectangle(0,0,0,0);
@@ -390,12 +565,28 @@ void EnsancheModelBuildingAdv::generateModel( float wallHeight )
 	// create pts
 	for( int i = 0; i < buildingFloors.size(); i++)
 	{
+		if( wallTexIds.size() < i ){
+		 cout << "wallTexIds.size()" << wallTexIds.size() << " buildingFloors.size() " << buildingFloors.size() << endl;
+		 continue;
+		}
+		
 		for( int j = 0; j < buildingFloors[i].pts.size()-1; j++)
 		{
+			if( wallTexIds[i].tId.size() < j+1 ){
+			 cout << "wallTexIds[i].tId.size() < j+1 " << (j+1) << endl;
+			 continue;
+			}
+			
 			int id = wallTexIds[i].tId[j];
 			if( id >= MODEL_T_TEXTURES || id < 0 ) id = 0;
 			
-			cout << "i: " << i << " j: " << j << "id " << id << " walltype " << wallTexIds[i].tId[j] << endl;
+			//cout << "i: " << i << " j: " << j << "id " << id << " walltype " << wallTexIds[i].tId[j] << endl;
+			//cout << "id " << " nptsv: " << nptsv[id] << " nTotalPts[id] " << nTotalPts[id] << endl;
+			
+			if(nptsv[id]+12 > nTotalPts[id]){
+			 cout << "nptsv[id]+12 " << nptsv[id]+12 << " nTotalPts[id] " << nTotalPts[id] << endl;
+			 continue;
+			}
 			
 			ptsv[id][ nptsv[id] ]	= buildingFloors[i].pts[j].x-boundingBox.x;
 			ptsv[id][ nptsv[id]+1]	= i * wallHeight;
@@ -417,7 +608,11 @@ void EnsancheModelBuildingAdv::generateModel( float wallHeight )
 			ptsv[id][ nptsv[id]+2]	= buildingFloors[i].pts[j].y-boundingBox.y;
 			nptsv[id] += 3;
 		}
+		
+		//cout << "id " << " nptsv: " << nptsv[id] << " nTotalPts[id] " << nTotalPts[id] << endl;
 	}
+	
+	
 	
 	float tx0 = 0;
 	float ty0 = 0;
@@ -428,8 +623,12 @@ void EnsancheModelBuildingAdv::generateModel( float wallHeight )
 	// create texture pts
 	for( int i = 0; i < buildingFloors.size(); i++)
 	{
+		if( wallTexIds.size() < i ) continue;
+		
 		for( int j = 0; j < buildingFloors[i].pts.size()-1; j++)
 		{
+			
+			if( wallTexIds[i].tId.size() < j+1 ) continue;
 			
 			int id = wallTexIds[i].tId[j];
 			if( id >= MODEL_T_TEXTURES || id < 0 ) id = 0;

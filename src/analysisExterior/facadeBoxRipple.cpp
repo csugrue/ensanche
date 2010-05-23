@@ -64,6 +64,7 @@ vector<ofPoint> FacadeBoxRipple::getFacadeLine(ofPoint ptA, ofPoint ptB, ofPoint
 	
 	// check if we are not long enough
 	cout << "length : " << length << " tlength: " << tLength << " difflen: " << lengthLast << endl;
+	if(tLength == 0 ) return newLinePoints;
 	
 	if( lengthLast < minLong )
 	{

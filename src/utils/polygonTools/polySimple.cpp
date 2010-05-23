@@ -68,7 +68,7 @@ void polySimple::draw()
 		// NOTE: change to points not circles (this is slow)
 		for( int i = 0; i < pts.size(); i++)
 		{
-			ofCircle(pts[i].x,pts[i].y,2);
+			ofCircle(pts[i].x,pts[i].y,1);
 		}
 	}
 	

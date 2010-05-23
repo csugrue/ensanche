@@ -18,6 +18,7 @@ Each floor can be different.
 #include "ofEvents.h"
 #include "polyEditable.h"
 #include "ensancheBuilding.h"
+#include "ensancheConstants.h"
 
 #define MODEL_EDIT_MODE_NORMAL 0
 #define MODEL_EDIT_MODE_SHIFT 1
@@ -44,6 +45,7 @@ class EnsancheModelBuildingAdv{
 		void draw( int drawMode = MODEL_DRAW_MODE_3D, bool bDrawWOffset = false );
 		void draw2D(bool bDrawWOffset);
 		void draw3D(bool bDrawWOffset);
+		void draw3D2(bool bDrawWOffset);
 		
 		// setup the model from the original building (with nFloor info + offsets etc.) 
 		void setupFromBuilding(EnsancheBuilding buildingOriginal );
