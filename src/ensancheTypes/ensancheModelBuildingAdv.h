@@ -53,7 +53,7 @@ class EnsancheModelBuildingAdv{
 		// set new floor (expansion, facade etc)
 		void setFloor(EnsancheBuilding buildingFloor, int floorNum );
 		
-		void addBuildingFloor(EnsancheBuilding & building, bool bOffset = true );
+		void addBuildingFloor(EnsancheBuilding & building, bool bOffset = false );
 		void generateModel( float wallHeight );
 		
 		int getNumPts(){ return nPts;}

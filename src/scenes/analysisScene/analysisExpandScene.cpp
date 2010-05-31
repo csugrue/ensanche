@@ -72,25 +72,31 @@ void AnalysisExpandScene::preDraw()
 
 void AnalysisExpandScene::draw()
 {
+	float zoom = panel.getValueF("ZOOM");
+	
 	ofBackground(255,255,255);
+	ofEnableAlphaBlending();
 	
 	//grid
 	ofSetColor(200,200,200,255);
 	if(panel.getValueB("GRID")) enDrawGrid(10,10);
 	
 	ofRectangle boundingBox = barrioOriginal.getGroupBoundingBox();
-	scaleTool.setScale( panel.getValueF("ZOOM"));
 	ofPoint transPreRotate = ofPoint( ofGetWidth()*.5,ofGetHeight()*.5);
 	ofPoint transPstRotate = ofPoint(0,0);//-boundingBox.width,-boundingBox.height,0);
 	
+	scaleTool.setScale( zoom );
 	scaleTool.setOffset(transPreRotate,transPstRotate);
-
+	
+	minRectExpander.scaleTool.setScale(zoom);
+	minRectExpander.scaleTool.setOffset(transPreRotate,transPstRotate);
+	
 	// 2d model
 	glPushMatrix();
 		
 		glTranslatef(ofGetWidth()*.5,ofGetHeight()*.5,0);
 		
-		float zoom = panel.getValueF("ZOOM");
+		
 		glScalef(zoom,zoom,1);
 	
 		glPushMatrix();
@@ -106,11 +112,31 @@ void AnalysisExpandScene::draw()
 					
 			if( panel.getSelectedPanelName() == "find space" ) 
 			{
-			   glLineWidth(3.0);
-			   minRectExpander.drawExpandAreas();
-			   if( panel.getValueB("SHOW_INTERSECT") ) minRectExpander.drawIntersections( panel.getValueI("SHOW_WHICH_B") - 1 );
-			   if( panel.getValueB("SHOW_SHORTEST")  )	minRectExpander.drawShortest( panel.getValueI("SHOW_WHICH_B") - 1  );
-			   glLineWidth(1.0);
+				// original 
+				ofPushStyle();
+				
+					ofFill();
+					ofSetColor(205,205,205,255*minRectExpander.gAlpha);
+					minRectExpander.drawExpandAreas();
+					
+					ofFill();
+					ofSetColor(255,255,255,220);
+					barrioOriginal.draw();
+					
+					ofNoFill();
+					ofSetColor(80,80,80,255);
+					ofEnableSmoothing();
+					glLineWidth(2);
+					barrioOriginal.draw();
+					ofDisableSmoothing();
+				
+					//glLineWidth(3.0);
+					
+					if( panel.getValueB("SHOW_INTERSECT") ) minRectExpander.drawIntersections( panel.getValueI("SHOW_WHICH_B") - 1 );
+					if( panel.getValueB("SHOW_SHORTEST")  )	minRectExpander.drawShortest( panel.getValueI("SHOW_WHICH_B") - 1  );
+					//glLineWidth(1.0);
+					
+				ofPopStyle();
 			
 			}else if( panel.getSelectedPanelName() == "find facade sides" )
 			{
@@ -120,6 +146,7 @@ void AnalysisExpandScene::draw()
 					buildingDataEndPoints[i].drawEnds( zoom, &expander.font );
 					buildingDataEndPoints[i].drawSideIds();
 				}
+				sideAssigner.draw();
 				
 			}else if( panel.getSelectedPanelName() == "find expansion"  )
 			{
@@ -138,22 +165,11 @@ void AnalysisExpandScene::draw()
 			
 			}else if( panel.getSelectedPanelName() == "make new facade" )
 			{
-				for( int i = 0; i < buildings.size(); i++)
-				{
-					//buildings[i].draw2D(true);
-				}
 				
 				for( int i = 0; i < fBuildings.size(); i++)
 				{
-					fBuildings[i].draw2D(true,true);
-					glEnable(GL_DEPTH_TEST);
-					fBuildings[i].draw3D2(true);
-					glDisable(GL_DEPTH_TEST);
-					//if( i==panel.getValueI("current_facade_b") ) fBuildings[i].drawAllFloors(true);
-					
+					fBuildings[i].draw2D(true,false);
 				}
-				
-				//facadeMakerBox.draw();
 				
 			}
 			
@@ -178,6 +194,30 @@ void AnalysisExpandScene::draw()
 		}
 		
 	glPopMatrix();
+	
+	glPushMatrix();
+		
+		glTranslatef(ofGetWidth()*.5,ofGetHeight()*.5,0);
+	
+		glScalef(zoom,zoom,1);
+	
+		if( panel.getSelectedPanelName() == "make new facade" )
+		{
+			
+			for( int i = 0; i < fBuildings.size(); i++)
+			{
+				//fBuildings[i].draw2D(true,true);
+				
+				glColor4f(.85,.85,.85,.8);
+				glEnable(GL_DEPTH_TEST);
+				fBuildings[i].draw3D2(false);
+				glDisable(GL_DEPTH_TEST);
+				
+			}
+						
+		}
+	glPopMatrix();
+	
 	// control panel
 	if(bPanelOn) panel.draw();
 }
@@ -284,16 +324,21 @@ void AnalysisExpandScene::setupControlPanel()
 	
 }
 
+static float lastTime = 0;
+
 void AnalysisExpandScene::updateControlPanel()
 {
 	
+	float dt = ofGetElapsedTimef()-lastTime;
+	lastTime = ofGetElapsedTimef();
 		
 	panel.update();
 	
 	if( panel.getValueB("EXPAND") )
 	{
-		panel.setValueB("EXPAND",false);
-		minRectExpander.expand(.1);
+		//panel.setValueB("EXPAND",false);
+		// NOTE: this should be fixed rate not w/dt and have separate animator
+		minRectExpander.expand(1.5*dt);
 	}
 	
 	if(panel.bNewPanelSelected)
@@ -626,6 +671,7 @@ void AnalysisExpandScene::loadUserFile()
 		 
 		std::sort(barrioOriginal.buildings.begin(),barrioOriginal.buildings.end(),sort_parea_compare);
 	
+		cout << "Analysis: set up expand area finder " << endl;
 		minRectExpander.setup(barrioOriginal);
 		
 		int whichB = panel.getValueI("SHOW_WHICH_B");
@@ -642,5 +688,110 @@ void AnalysisExpandScene::loadUserFile()
 		multiWhichB->xmlName = "SHOW_WHICH_B";		
 		
 	}
+	
+	cout << "Analysis: user data loaded." << endl;
+	
+}
+
+
+
+void AnalysisExpandScene::saveUserFile()
+{
+	
+	
+	//ofxXmlSettings xml;
+	//xml.loadFile(filename);
+	
+	if( bSetUserName )
+	{
+	
+	// load model
+	string dir = USER_DIRECTORY;
+	string filename = dir+username+"/"+username+XML_FILE_FACADE;
+		
+	cout << "saving expanded facade data to " << filename << endl;
+		
+	ofxXmlSettings xml;
+	xml.addTag("ensanche");
+	xml.pushTag("ensanche");
+		
+		// record user
+		xml.addTag("client");
+		xml.pushTag("client");
+			xml.setValue("username", username);
+		xml.popTag();
+		
+		xml.addTag("exterior");
+		xml.pushTag("exterior");
+			
+			xml.addTag("architecture");
+			xml.pushTag("architecture");
+			
+				for( int i = 0; i < fBuildings.size(); i++)
+				{
+						
+					xml.addTag("building");
+					
+					int nFloors = fBuildings[i].buildingFloors.size();//nFloors;
+					xml.setAttribute("building","nFloors",nFloors,i);
+					
+					cout << "saving building " << i << " with " << nFloors << " floors" << endl;
+					
+					xml.pushTag("building", i);
+						
+						for( int f = 0; f < nFloors; f++)
+						{
+							//buildings[i].addBuildingFloor( barrio->buildings[i] );
+							xml.addTag("floor");
+							xml.pushTag("floor",f);
+							
+									int nWalls = fBuildings[i].buildingFloors[f].pts.size()-1;
+									
+									cout << "floor " << f << " saving " << nWalls << " walls " << endl;
+									
+									for( int j = 0; j < fBuildings[i].buildingFloors[f].pts.size()-1; j++)
+									{
+										ofPoint m1,m2;
+										m1 = fBuildings[i].buildingFloors[f].pts[j];
+										m2 = fBuildings[i].buildingFloors[f].pts[j+1];
+
+										int sideId = 0;
+										if(fBuildings[i].floorData.size() > f && fBuildings[i].floorData[f].sideIds.size() > j ) 
+											sideId = fBuildings[i].floorData[f].sideIds[j];
+										
+										xml.addTag("wall");
+
+										xml.setAttribute("wall","uid",getUid(),j);
+										xml.setAttribute("wall","side",sideId,j);
+										xml.pushTag("wall",j);
+											xml.addTag("pt");
+											xml.setAttribute("pt","x",m1.x,0);
+											xml.setAttribute("pt","y",m1.y,0);
+											xml.addTag("pt");
+											xml.setAttribute("pt","x",m2.x,1);
+											xml.setAttribute("pt","y",m2.y,1);
+										xml.popTag();
+										
+									}
+									
+									//buildings[nB].addClosingWall();
+							xml.popTag(); // floors
+							
+						}
+						
+					xml.popTag(); // building
+						
+				} // end i
+					
+			xml.popTag(); // arch
+			
+		xml.popTag(); //exterior
+		
+	xml.popTag(); //ensanche
+	
+	xml.saveFile(filename);
+	
+	} //end if user
+	
 	
 }

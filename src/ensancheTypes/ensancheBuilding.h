@@ -24,7 +24,7 @@ class EnsancheBuilding{
 		void setup();
 		void draw();
 	
-		void addWall( ofPoint m1, ofPoint m2, int uid );
+		void addWall( ofPoint m1, ofPoint m2, int uid, int typeId = 0 );
 		void addClosingWall();
 		
 		//--- set from xml

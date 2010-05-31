@@ -51,6 +51,7 @@ public:
 	
 	void setUserName( string name );
 	void loadUserFile();
+	void saveUserFile();
 	
 	// initializes vector of bildings to hold data on endpoints of "sides" of the buliding
 	void setupEndPointData();

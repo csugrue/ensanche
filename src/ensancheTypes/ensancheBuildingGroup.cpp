@@ -69,13 +69,15 @@ void EnsancheBuildingGroup::draw()
 		if( buildings[i]->type == EN_BUILDING_ME )  ofSetColor(255,255,255,alpha);
 		else										ofSetColor(255,180,180,alpha);
 		
-		buildings[i]->polySimple::draw();
-		buildings[i]->polyEditable::draw();
+		//buildings[i]->bClosed = false;
+		//buildings[i]->polySimple::draw();
+		buildings[i]->polyEditable::draw(false);
 		
 		ofNoFill();
 		
 		if( i != selectedId )	ofSetColor(255,255,255,255);
 		else					ofSetColor(255,0,0,255);
+		
 		
 		buildings[i]->polySimple::draw();
 		if(bDrawData) buildings[i]->drawData();

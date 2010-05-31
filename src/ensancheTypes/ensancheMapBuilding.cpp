@@ -15,6 +15,7 @@ EnsancheMapBuilding::EnsancheMapBuilding()
 	nFloors = 0;
 	type = EN_BUILDING_NEIGHBOR;
 	uid = getUid();
+	moveBy = .25;
 }
 
 EnsancheMapBuilding::EnsancheMapBuilding( const EnsancheMapBuilding & mom )
@@ -33,9 +34,11 @@ void EnsancheMapBuilding::drawData( )
 		ofPoint center = getCentroid();
 		ofFill();
 		ofSetColor(255,255,255,180);
-		ofRect(center.x-2,center.y-12,80,16);
+		//ofRect(center.x-2,center.y-12,80,16);
 		
 		ofSetColor(0,0,0,255);
-		ofDrawBitmapString( "Floors: " + ofToString(nFloors), center.x, center.y);
+		//ofDrawBitmapString( "Floors: " + ofToString(nFloors), center.x, center.y);
+		ofDrawBitmapString( ofToString(nFloors), center.x, center.y);
+
 	}
 }

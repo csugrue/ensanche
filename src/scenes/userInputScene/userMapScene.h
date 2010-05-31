@@ -82,8 +82,20 @@ class userMapScene: public baseScene{
 	//--- buildings
 	EnsancheBuildingGroup buildingGroup;
 	
+	//--- copy / past
+	void copyBuilding();
+	void pasteBuilding();
+	EnsancheMapBuilding copyMBuilding;
+	bool bCopied;
+	int copyId;
+	
 	//--- interface
 	ofPoint mouse;
 	int lastSelectedBuilding;
+	
+	ofTrueTypeFont	titleFont;
+	string title_traceMeBarrio;
+	string title_traceMeVecinos;
+	void loadTextFromXML();
 	
 };

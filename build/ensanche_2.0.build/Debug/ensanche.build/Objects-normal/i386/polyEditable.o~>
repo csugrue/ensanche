@@ -1,0 +1,2 @@
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.5/src/utils/polygonTools/polyEditable.cpp:345: error: prototype for 'void polyEditable::draw(bool)' does not match any in class 'polyEditable'
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.5/src/utils/polygonTools/polyEditable.h:48: error: candidate is: virtual void polyEditable::draw()

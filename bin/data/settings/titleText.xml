@@ -1,0 +1,21 @@
+<ensanche>
+    <text>
+        <userInputScene>
+            <mapScene>
+                <TraceMeBarrio>Trace la silueta de cada edificio que desee ensanchar...</TraceMeBarrio>
+                <TraceVecinos>Trace la silueta de los edificios adyacentes...</TraceVecinos>
+            </mapScene>
+            
+            <interiorScene>
+                <FPTraceLimits>Trace los l√≠mites de su apartamento</FPTraceLimits>
+                <FPTraceWalls>Trace las paredes</FPTraceWalls>
+                <FPAddWindows>Añada las ventanas</FPAddWindows>
+                <FPAddEntrance>Señale la posición de la entrada</FPAddEntrance>
+                <FPAddAgua>Señale el lugar, si lo sabe, de las cañerías de servicio de agua fría</FPAddAgua>
+                <FPLabelRooms>Señale el tipo de cada habitación</FPLabelRooms>
+                <FPAddScale>Añada una línea a escala</FPAddScale>
+            </interiorScene>
+            
+        </userInputScene>
+    </text>
+</ensanche>

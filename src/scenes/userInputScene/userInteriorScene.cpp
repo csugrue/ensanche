@@ -34,6 +34,11 @@ void userInteriorScene::setup()
 	
 	lastSaveTime = ofGetElapsedTimef();
 	
+	
+	titleFont.loadFont("fonts/verdana.ttf", 18,true,true,true);
+	loadTextFromXML();
+	
+	
 	// NOTE: temporary
 	enFloorPlan.setup();
 }
@@ -162,17 +167,19 @@ void userInteriorScene::draw()
 		ofNoFill();
 		ofSetColor(255,0,0);
 		
-		fpLimits.draw();
+		glLineWidth(2);
+		fpLimits.draw(fpLimits.bClosed);
+		glLineWidth(1);
 		
 		pilars.draw();
 	
 		//NOTE: move to own func??
-		calcWindowsToWalls();
+		if(fpLimits.pts.size() > 0 ) calcWindowsToWalls();
 		for( int i = 0; i < windows.polyFWs.size(); i++)
 		{
-			ofPoint a = windows.polyFWs[i]->getCentroid();
-			ofPoint b = closeWindowWall[i].closePt;
-			ofLine(a.x,a.y,b.x,b.y);
+			//ofPoint a = windows.polyFWs[i]->getCentroid();
+			//ofPoint b = closeWindowWall[i].closePt;
+			//ofLine(a.x,a.y,b.x,b.y);
 			
 		}
 		
@@ -200,6 +207,32 @@ void userInteriorScene::draw()
 	
 	
 	if(bPanelOn) panel.draw();
+	else{
+	
+		
+		for(int i = 0; i < 100; i++)
+		{
+			ofSetColor(255,255,255,255*((100-i)/100.f));
+			ofRect(0,i+2,ofGetWidth(),-2);
+		}
+		
+		ofSetColor(80,80,80,255);
+		
+		if(panel.getSelectedPanelName()=="add structure")
+		{
+			switch(panel.getValueI("piso_structure") )
+			{
+				case 0: titleFont.drawString(title_limits,20,40); break;
+				case 1: titleFont.drawString(title_walls,20,40);break;
+				case 2: titleFont.drawString(title_windows,20,40);break;
+			}
+			
+		}else if(panel.getSelectedPanelName()=="add layout data")
+			titleFont.drawString(title_rooms,20,40);
+		else if(panel.getSelectedPanelName()=="add scale")
+			titleFont.drawString(title_scale,20,40);
+	}
+	
 }
 
 void userInteriorScene::keyPressed(int key)
@@ -223,6 +256,8 @@ void userInteriorScene::keyPressed(int key)
 			panel.setValueF("pixel_per_meter",scaleVal-.0001);
 		}
 	}
+	
+	if( key == OF_KEY_F1 ) bPanelOn = !bPanelOn;
 	
 }
 
@@ -340,7 +375,7 @@ void userInteriorScene::setupControlPanel()
 	panel.addMultiToggle("labels","labels", 0, room_labels);
 	
 	panel.setWhichPanel("add scale");
-	panel.addSlider("pixel per meter","pixel_per_meter",.1,0,1,false);
+	panel.addSlider("pixel per meter","pixel_per_meter",.1,0,.05,false);
 
 	panel.update();
 	
@@ -891,3 +926,25 @@ void userInteriorScene::saveUserFile()
 }
 
 
+void userInteriorScene::loadTextFromXML()
+{
+	ofxXmlSettings xml;
+	
+	string filename = XML_PATH_TO_TITLE_TEXT;
+	xml.loadFile(filename);
+	
+	title_limits = subsChars( "Trace los límites de su apartamento" );
+	//xml.getValue("ensanche:text:userInputScene:interiorScene:FPTraceLimits","Trace los límites de su apartamento") );
+	title_walls = subsChars("Trace las paredes");
+	// xml.getValue("ensanche:text:userInputScene:interiorScene:FPTraceWalls","Trace las paredes");
+	title_windows = subsChars("Añada las ventanas");
+	//xml.getValue("ensanche:text:userInputScene:interiorScene:FPAddWindows","Añada las ventanas");
+	title_agua = subsChars("Señale el lugar, si lo sabe, de las cañerías de servicio de agua fría");
+	//xml.getValue("ensanche:text:userInputScene:interiorScene:FPAddAgua","Señale el lugar, si lo sabe, de las cañerías de servicio de agua fría");
+	title_rooms = subsChars("Señale el tipo de cada habitación");
+	//xml.getValue("ensanche:text:userInputScene:interiorScene:FPLabelRooms","Señale el tipo de cada habitación");
+	title_scale = subsChars("Añada una línea a escala");
+	//xml.getValue("ensanche:text:userInputScene:interiorScene:FPAddScale","Añada una línea a escala");
+
+	
+}

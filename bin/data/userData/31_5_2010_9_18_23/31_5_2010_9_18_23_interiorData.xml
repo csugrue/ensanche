@@ -1,0 +1,145 @@
+<ensanche>
+    <client>
+        <username>31_5_2010_9_18_23</username>
+    </client>
+    <floorplan>
+        <representation>
+            <zoom>1.500000</zoom>
+            <rotation>-1.000000</rotation>
+            <position>
+                <x>-574.000000</x>
+                <y>55.000000</y>
+            </position>
+            <scanFilename>floorPlans/scan_0.jpg</scanFilename>
+            <scale>0.027778</scale>
+            <boundingBox>
+                <x>524.158997</x>
+                <y>112.098145</y>
+                <width>332.033875</width>
+                <height>237.092285</height>
+            </boundingBox>
+            <fpLimits bClosed="1">
+                <pt x="526.208252" y="112.098145"></pt>
+                <pt x="524.158997" y="344.097748"></pt>
+                <pt x="853.120361" y="349.190430"></pt>
+                <pt x="856.192871" y="115.857742"></pt>
+            </fpLimits>
+            <pilar width="8.150000">
+                <pt x="845.498962" y="246.762161"></pt>
+                <pt x="853.648987" y="246.762161"></pt>
+            </pilar>
+            <pilar width="8.150000">
+                <pt x="855.365173" y="148.443817"></pt>
+                <pt x="847.215149" y="148.443817"></pt>
+            </pilar>
+            <pilar width="8.150000">
+                <pt x="684.824463" y="341.305756"></pt>
+                <pt x="692.974487" y="341.305756"></pt>
+            </pilar>
+            <pilar width="8.150000">
+                <pt x="524.503784" y="339.191559"></pt>
+                <pt x="532.653809" y="339.191559"></pt>
+            </pilar>
+            <pilar width="8.150000">
+                <pt x="530.295105" y="244.930740"></pt>
+                <pt x="530.295105" y="236.780746"></pt>
+            </pilar>
+            <pilar width="9.800000">
+                <pt x="531.011414" y="138.444931"></pt>
+                <pt x="531.011414" y="146.594925"></pt>
+            </pilar>
+            <pilar width="9.800000">
+                <pt x="686.730347" y="146.657089"></pt>
+                <pt x="696.530396" y="146.657089"></pt>
+            </pilar>
+            <pilar width="9.800000">
+                <pt x="689.311584" y="246.197693"></pt>
+                <pt x="689.311584" y="236.397705"></pt>
+            </pilar>
+            <window>
+                <pt x="832.145203" y="348.865784"></pt>
+                <pt x="802.118469" y="348.400940"></pt>
+            </window>
+            <window>
+                <pt x="728.172180" y="347.054810"></pt>
+                <pt x="702.166809" y="347.054810"></pt>
+            </window>
+            <window>
+                <pt x="674.157959" y="346.419922"></pt>
+                <pt x="649.509644" y="346.038330"></pt>
+            </window>
+            <window>
+                <pt x="622.883301" y="345.530640"></pt>
+                <pt x="594.190186" y="345.280212"></pt>
+            </window>
+        </representation>
+        <architecture>
+            <room uid="c5dd0952-6c8b-11df-9e88-496cdf0178f8">
+                <wall uid="c5dc91ca-6c8b-11df-9e88-496cdf0178f8">
+                    <pt x="0.000000" y="0.055557"></pt>
+                    <pt x="0.055556" y="6.500053"></pt>
+                </wall>
+                <wall uid="c5dca124-6c8b-11df-9e88-496cdf0178f8">
+                    <pt x="0.055556" y="6.500053"></pt>
+                    <pt x="9.194521" y="6.482018"></pt>
+                    <window uid="c5dca87c-6c8b-11df-9e88-496cdf0178f8">
+                        <pt x="8.611806" y="6.483171"></pt>
+                        <pt x="7.777625" y="6.484817"></pt>
+                    </window>
+                    <window uid="c5dcad22-6c8b-11df-9e88-496cdf0178f8">
+                        <pt x="5.723205" y="6.483278"></pt>
+                        <pt x="5.000937" y="6.495885"></pt>
+                    </window>
+                    <window uid="c5dcaef8-6c8b-11df-9e88-496cdf0178f8">
+                        <pt x="4.222718" y="6.491831"></pt>
+                        <pt x="3.537957" y="6.493182"></pt>
+                    </window>
+                    <window uid="c5dcb024-6c8b-11df-9e88-496cdf0178f8">
+                        <pt x="2.798197" y="6.491989"></pt>
+                        <pt x="2.001159" y="6.498945"></pt>
+                    </window>
+                </wall>
+                <wall uid="c5dca2fa-6c8b-11df-9e88-496cdf0178f8">
+                    <pt x="9.194521" y="6.482018"></pt>
+                    <pt x="9.166739" y="0.000000"></pt>
+                </wall>
+                <wall uid="c5dca3f4-6c8b-11df-9e88-496cdf0178f8">
+                    <pt x="9.166739" y="0.000000"></pt>
+                    <pt x="0.000000" y="0.055557"></pt>
+                </wall>
+                <pilar uid="c5dcb434-6c8b-11df-9e88-496cdf0178f8" width="0.226391">
+                    <pt x="8.933190" y="3.640894"></pt>
+                    <pt x="9.159548" y="3.636944"></pt>
+                </pilar>
+                <pilar uid="c5dcb8b2-6c8b-11df-9e88-496cdf0178f8" width="0.226391">
+                    <pt x="9.159548" y="0.905440"></pt>
+                    <pt x="8.933192" y="0.909391"></pt>
+                </pilar>
+                <pilar uid="c5dcba92-6c8b-11df-9e88-496cdf0178f8" width="0.226391">
+                    <pt x="4.516488" y="6.344620"></pt>
+                    <pt x="4.742845" y="6.340669"></pt>
+                </pilar>
+                <pilar uid="c5dcbbb4-6c8b-11df-9e88-496cdf0178f8" width="0.226391">
+                    <pt x="0.062754" y="6.363623"></pt>
+                    <pt x="0.289111" y="6.359673"></pt>
+                </pilar>
+                <pilar uid="c5dcbcb8-6c8b-11df-9e88-496cdf0178f8" width="0.226391">
+                    <pt x="0.177904" y="3.742837"></pt>
+                    <pt x="0.173952" y="3.516481"></pt>
+                </pilar>
+                <pilar uid="c5dcbdda-6c8b-11df-9e88-496cdf0178f8" width="0.272224">
+                    <pt x="0.146175" y="0.784978"></pt>
+                    <pt x="0.150126" y="1.011334"></pt>
+                </pilar>
+                <pilar uid="c5dcbede-6c8b-11df-9e88-496cdf0178f8" width="0.272224">
+                    <pt x="4.475058" y="0.937569"></pt>
+                    <pt x="4.747242" y="0.932818"></pt>
+                </pilar>
+                <pilar uid="c5dcc302-6c8b-11df-9e88-496cdf0178f8" width="0.272224">
+                    <pt x="4.595005" y="3.700935"></pt>
+                    <pt x="4.590254" y="3.428753"></pt>
+                </pilar>
+            </room>
+        </architecture>
+    </floorplan>
+</ensanche>

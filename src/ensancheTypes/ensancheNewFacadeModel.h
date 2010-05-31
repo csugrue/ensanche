@@ -6,6 +6,7 @@
  *  Copyright 2010 csugrue. All rights reserved.
  *
  */
+#pragma once
 
 #include "ensancheModelBuildingAdv.h"
 #include "ensancheConstants.h"
@@ -31,8 +32,9 @@ class EnsancheNewFacadeModel : public EnsancheModelBuildingAdv{
 		void insertFacadeLine( vector<ofPoint> fLine, int floorNum, int startPt, int endPt, int sideId );
 		
 		void draw2D(bool bDrawSideColorCoded, bool bDrawWOffset);
-		void draw();
+		//void draw();
 		void drawAllFloors(bool bDrawSideColorCoded);
+		
 		
 		// new facade should be in buildingFloors
 		
@@ -42,6 +44,8 @@ class EnsancheNewFacadeModel : public EnsancheModelBuildingAdv{
 		// endpoints + side ids for each floor
 		vector<newFacadeFloorData> floorData;
 				
-		
+	protected:
 	
+
+		void drawCeiling( int floorId );
 };

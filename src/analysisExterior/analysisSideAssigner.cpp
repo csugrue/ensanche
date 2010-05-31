@@ -153,6 +153,8 @@ void AnalysisSideAssigner::assignSidesQuadrants(EnsancheBuilding * building, enE
 	checkLengthInQuadrant();
 	
 	
+	
+	
 	//--- TO DO: check that no more than one continuos line each and none left unassigned
 		// (try to figure out which is best and reassign...?))
 }
@@ -353,7 +355,7 @@ void AnalysisSideAssigner::draw()
 		//ofCircle(centerPoints[i].x,centerPoints[i].y,.2);
 		//centerPoints[i];
 		polyHalfQuads[i].draw();
-		//polyQuarterQuads[i].draw();
+		polyQuarterQuads[i].draw();
 	}
 	
 }

@@ -185,7 +185,7 @@ void EnsancheModelBuildingAdv::draw2D(bool bDrawWOffset)
 
 void EnsancheModelBuildingAdv::draw3D2(bool bDrawWOffset)
 {
-	cout << "draw 3d2" << endl;
+	//cout << "draw 3d2" << endl;
 	
 	float tx0 = 0;
 	float ty0 = 0;
@@ -201,12 +201,12 @@ void EnsancheModelBuildingAdv::draw3D2(bool bDrawWOffset)
 	
 	// leave, maybe need offset later??
 	ofRectangle boundingBox = ofRectangle(0,0,0,0);
-	float wallHeight = EN_FLOOR_HEIGHT;
+	float wallHeight = -EN_FLOOR_HEIGHT;
 	
 	glPushMatrix();
 	
 		
-		//if( bDrawWOffset) glTranslatef(offSet.x,0.f,offSet.y);
+		if( bDrawWOffset) glTranslatef(offSet.x,0.f,offSet.y);
 		
 		glTranslatef(center.x,center.y,center.z);
 		glScalef(scale,scale,scale);
@@ -217,6 +217,8 @@ void EnsancheModelBuildingAdv::draw3D2(bool bDrawWOffset)
 		
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+		
+		ofSetColor(255, 255, 255,255);
 		
 		for( int i = 0; i < buildingFloors.size(); i++)
 		{
@@ -291,17 +293,39 @@ void EnsancheModelBuildingAdv::draw3D2(bool bDrawWOffset)
 				glDrawArrays(GL_QUADS, 0, total);
 			}
 		
-			
-			
 			//if(bSetWallTextures[i])  glDisableClientState( GL_TEXTURE_COORD_ARRAY );
 			//cout << "id " << " nptsv: " << nptsv[id] << " nTotalPts[id] " << nTotalPts[id] << endl;
 		}
 	
 	
-	//if(bSetWallTextures[i])  
-	glDisableClientState( GL_TEXTURE_COORD_ARRAY );
-	glDisableClientState(GL_VERTEX_ARRAY);	
+		//if(bSetWallTextures[i])  
+		glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+		glDisableClientState(GL_VERTEX_ARRAY);	
 		
+	
+		// ceilings
+		ofFill();
+		//ofSetColor(255, 0, 0,255);
+	
+		for( int i = 0; i < buildingFloors.size(); i++)
+		{
+		//ofRectangle bb = buildingFloors[i].getBoundingBox();
+		glPushMatrix();
+			glBegin(GL_POLYGON);
+				for( int j = 0; j < buildingFloors[i].pts.size();j++)
+					glVertex3f(buildingFloors[i].pts[j].x, -(i+1)*EN_FLOOR_HEIGHT, buildingFloors[i].pts[j].y);
+			glEnd();
+			
+		glPopMatrix();
+		
+		/*	ofBeginShape(true);
+		for( int j = 0; j < buildingFloors[i].pts.size();j++)
+		{
+			ofVertex(buildingFloors[i].pts[j].x, (i+1)*EN_FLOOR_HEIGHT, buildingFloors[i].pts[j].y);
+		}
+		ofEndShape(true,true);*/
+	}
+	
 	glPopMatrix();
 	
 }
@@ -433,7 +457,18 @@ void EnsancheModelBuildingAdv::setFloor(EnsancheBuilding buildingFloor, int floo
 		
 			// get type from each wall
 			for( int i = 0; i <  buildingFloors[ floorNum ].pts.size(); i++)
-				wallTexIds[floorNum].tId.push_back(0);//i%MODEL_T_TEXTURES);
+			{
+				if(buildingFloor.walls.size() > i)
+				{
+					int tid = buildingFloor.walls[i].type;
+					if(tid < MODEL_T_TEXTURES )
+						wallTexIds[floorNum].tId.push_back(tid);
+					else
+						wallTexIds[floorNum].tId.push_back(0);
+				}
+				else
+					wallTexIds[floorNum].tId.push_back(0);							//i%MODEL_T_TEXTURES);
+			}
 		}
 	}
 	
@@ -444,13 +479,19 @@ void EnsancheModelBuildingAdv::setupFromBuilding(EnsancheBuilding building)
 	cout << "set up model with " << building.nFloors << " floors " << endl;
 	buildingFloors.clear();
 	for( int i = 0; i < building.nFloors; i++)
-		addBuildingFloor( building);//.buildingPoly );
+		addBuildingFloor( building, false);//.buildingPoly );
 }
 
 void EnsancheModelBuildingAdv::addBuildingFloor( EnsancheBuilding & building, bool bOffset )
 {
 	
 	cout << "Adv add building floor" << endl;
+	
+	if(buildingFloors.size() <= 0 )
+	{
+	ofRectangle boundingBox = building.buildingPoly.getBoundingBox();
+	offSet.set(boundingBox.x,boundingBox.y);
+	}
 	
 	if( nFloors == 0 ){
 	 ofPoint c = building.buildingPoly.getCentroid();
@@ -477,22 +518,32 @@ void EnsancheModelBuildingAdv::addBuildingFloor( EnsancheBuilding & building, bo
 	
 	if(buildingFloors[ bdOn ].pts.size() > 0 ) buildingFloors[ bdOn ].pushVertex(buildingFloors[ bdOn ].pts[0]);
 	
-	ofRectangle boundingBox = building.buildingPoly.getBoundingBox();
-	offSet.set(boundingBox.x,boundingBox.y);
 	
 	if(bOffset) 
 	{
 		for(int i = 0; i < buildingFloors[ bdOn ].pts.size(); i++)
 		{
-			//buildingFloors[ bdOn ].pts[i].x -= boundingBox.x;
-			//buildingFloors[ bdOn ].pts[i].y -= boundingBox.y;
+			buildingFloors[ bdOn ].pts[i].x -= offSet.x;
+			buildingFloors[ bdOn ].pts[i].y -= offSet.y;
 		}
 	}
 	
 	
 	// get type from each wall
 	for( int i = 0; i <  buildingFloors[ bdOn ].pts.size(); i++)
-		wallTexIds[wallTexIds.size()-1].tId.push_back(i%MODEL_T_TEXTURES);//building.walls[i].type);
+	{
+		//wallTexIds[wallTexIds.size()-1].tId.push_back(i%MODEL_T_TEXTURES);//building.walls[i].type);
+		if(building.walls.size() > i)
+		{
+			int tid = building.walls[i].type;
+			if(tid < MODEL_T_TEXTURES )
+				wallTexIds[wallTexIds.size()-1].tId.push_back(tid);
+			else
+				wallTexIds[wallTexIds.size()-1].tId.push_back(0);
+		}
+		else
+			wallTexIds[wallTexIds.size()-1].tId.push_back(0);							//i%MODEL_T_TEXTURES);
+	}
 	
 }
 

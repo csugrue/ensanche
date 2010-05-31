@@ -176,24 +176,27 @@ void AnalysisModelScene::loadUserFile()
 {	
 	if( bSetUserName )
 	{
-		EnsancheBarrio	barrioOriginal;
+		//EnsancheBarrio	barrioOriginal;
 		
 		// load model
 		string dir = USER_DIRECTORY;
-		string filename = dir+username+"/"+username+XML_FILE_MAP;
+		string filename = dir+username+"/"+username+XML_FILE_FACADE;
 		
 		cout << "---------------------" << endl;
 		cout << "Analysis Model Scene: loading " << filename << endl;
 		
-		barrioOriginal.loadFromXml(filename);
+		//barrioOriginal.loadFromXml(filename);
+		modelBarrio.clear();
+		modelBarrio.loadFromXml(filename);
+		
 		cout << "---------------------" << endl;
 		
-		if( barrioOriginal.buildings.size() > 0 )
-		{
+		//if( barrioOriginal.buildings.size() > 0 )
+		//{
 			
-			modelBarrio.clear();
-			modelBarrio.addBuildings(&barrioOriginal);
-		}
+			//modelBarrio.clear();
+			//modelBarrio.addBuildings(&barrioOriginal);
+		//}
 	}
 	
 	

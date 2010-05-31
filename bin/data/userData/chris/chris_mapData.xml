@@ -6,8 +6,8 @@
         <representation>
             <map>
                 <position>
-                    <x>135.000153</x>
-                    <y>105.000610</y>
+                    <x>190.000214</x>
+                    <y>120.000671</y>
                 </position>
                 <rotation>-3.000000</rotation>
             </map>
@@ -17,12 +17,6 @@
                     <pt x="124.005310" y="101.008308"></pt>
                     <pt x="251.882278" y="106.708687"></pt>
                     <pt x="259.056519" y="-11.077251"></pt>
-                </building>
-                <building bClosed="1" type="1" floors="8" uid="f8e75cce-35ba-11df-b677-c12adf01ffb2">
-                    <pt x="343.589783" y="-172.216782"></pt>
-                    <pt x="266.577637" y="-81.396935"></pt>
-                    <pt x="360.156891" y="-2.874439"></pt>
-                    <pt x="437.568420" y="-91.789566"></pt>
                 </building>
                 <building bClosed="1" type="1" floors="4" uid="f8e762a0-35ba-11df-b677-c12adf01ffb2">
                     <pt x="293.628510" y="181.762680"></pt>
@@ -55,130 +49,118 @@
                     <pt x="251.916733" y="270.700928"></pt>
                     <pt x="258.310211" y="186.920731"></pt>
                 </building>
+                <building bClosed="0" type="1" floors="1" uid="c15a1c7c-6c12-11df-b677-c12adf01ffb2">
+                    <pt x="-460.556580" y="-369.464539"></pt>
+                    <pt x="-490.515503" y="-371.034637"></pt>
+                </building>
             </barrio>
         </representation>
         <architecture>
             <building nFloors="6" uid="f8e754a4-35ba-11df-b677-c12adf01ffb2">
                 <floor>
-                    <wall uid="37dcac9c-6435-11df-b677-c12adf01ffb2">
-                        <pt x="44.705681" y="22.964283"></pt>
-                        <pt x="44.566795" y="39.492058"></pt>
+                    <wall uid="934df37a-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="44.705681" y="0.000000"></pt>
+                        <pt x="44.566788" y="16.527775"></pt>
                     </wall>
-                    <wall uid="37dcad5a-6435-11df-b677-c12adf01ffb2">
-                        <pt x="44.566795" y="39.492058"></pt>
-                        <pt x="62.344582" y="39.353172"></pt>
+                    <wall uid="934df492-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="44.566788" y="16.527775"></pt>
+                        <pt x="62.344574" y="16.388889"></pt>
                     </wall>
-                    <wall uid="37dcae0e-6435-11df-b677-c12adf01ffb2">
-                        <pt x="62.344582" y="39.353172"></pt>
-                        <pt x="62.483459" y="22.964283"></pt>
-                    </wall>
-                </floor>
-            </building>
-            <building nFloors="8" uid="f8e75cce-35ba-11df-b677-c12adf01ffb2">
-                <floor>
-                    <wall uid="37dcaff8-6435-11df-b677-c12adf01ffb2">
-                        <pt x="73.036804" y="0.000000"></pt>
-                        <pt x="63.015480" y="13.156376"></pt>
-                    </wall>
-                    <wall uid="37dcb0b6-6435-11df-b677-c12adf01ffb2">
-                        <pt x="63.015480" y="13.156376"></pt>
-                        <pt x="76.565559" y="23.367115"></pt>
-                    </wall>
-                    <wall uid="37dcb160-6435-11df-b677-c12adf01ffb2">
-                        <pt x="76.565559" y="23.367115"></pt>
-                        <pt x="86.656120" y="10.472023"></pt>
+                    <wall uid="934df596-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="62.344574" y="16.388889"></pt>
+                        <pt x="62.483459" y="0.000000"></pt>
                     </wall>
                 </floor>
             </building>
             <building nFloors="4" uid="f8e762a0-35ba-11df-b677-c12adf01ffb2">
                 <floor>
-                    <wall uid="37dcb340-6435-11df-b677-c12adf01ffb2">
-                        <pt x="68.680275" y="49.459602"></pt>
-                        <pt x="68.541374" y="61.959572"></pt>
+                    <wall uid="934df85c-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="68.680275" y="26.495319"></pt>
+                        <pt x="68.541374" y="38.995289"></pt>
                     </wall>
-                    <wall uid="37dcb3f4-6435-11df-b677-c12adf01ffb2">
-                        <pt x="68.541374" y="61.959572"></pt>
-                        <pt x="86.735817" y="60.709572"></pt>
+                    <wall uid="934df96a-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="68.541374" y="38.995289"></pt>
+                        <pt x="86.735809" y="37.745289"></pt>
                     </wall>
-                    <wall uid="37dcb49e-6435-11df-b677-c12adf01ffb2">
-                        <pt x="86.735817" y="60.709572"></pt>
-                        <pt x="87.985817" y="50.292915"></pt>
+                    <wall uid="934dfa78-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="86.735809" y="37.745289"></pt>
+                        <pt x="87.985825" y="27.328625"></pt>
                     </wall>
                 </floor>
             </building>
             <building nFloors="6" uid="f8e7684a-35ba-11df-b677-c12adf01ffb2">
                 <floor>
-                    <wall uid="37dcb660-6435-11df-b677-c12adf01ffb2">
-                        <pt x="53.819176" y="50.015106"></pt>
-                        <pt x="37.985840" y="49.459557"></pt>
+                    <wall uid="934dfdb6-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="53.819168" y="27.050823"></pt>
+                        <pt x="37.985832" y="26.495266"></pt>
                     </wall>
-                    <wall uid="37dcb70a-6435-11df-b677-c12adf01ffb2">
-                        <pt x="37.985840" y="49.459557"></pt>
-                        <pt x="37.985840" y="61.126221"></pt>
+                    <wall uid="934dfec4-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="37.985832" y="26.495266"></pt>
+                        <pt x="37.985832" y="38.161938"></pt>
                     </wall>
-                    <wall uid="37dcb7b4-6435-11df-b677-c12adf01ffb2">
-                        <pt x="37.985840" y="61.126221"></pt>
-                        <pt x="45.763618" y="61.820663"></pt>
+                    <wall uid="934dffc8-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="37.985832" y="38.161938"></pt>
+                        <pt x="45.763611" y="38.856388"></pt>
                     </wall>
-                    <wall uid="37dcb868-6435-11df-b677-c12adf01ffb2">
-                        <pt x="45.763618" y="61.820663"></pt>
-                        <pt x="46.458061" y="60.431778"></pt>
+                    <wall uid="934e00d6-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="45.763611" y="38.856388"></pt>
+                        <pt x="46.458061" y="37.467495"></pt>
                     </wall>
-                    <wall uid="37dcb8fe-6435-11df-b677-c12adf01ffb2">
-                        <pt x="46.458061" y="60.431778"></pt>
-                        <pt x="53.124718" y="59.876221"></pt>
+                    <wall uid="934e01c6-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="46.458061" y="37.467495"></pt>
+                        <pt x="53.124718" y="36.911938"></pt>
                     </wall>
                 </floor>
             </building>
             <building nFloors="6" uid="f8e76f02-35ba-11df-b677-c12adf01ffb2">
                 <floor>
-                    <wall uid="37dcbb60-6435-11df-b677-c12adf01ffb2">
-                        <pt x="21.830856" y="38.693283"></pt>
-                        <pt x="7.981258" y="31.014709"></pt>
+                    <wall uid="934e04be-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="21.830856" y="15.729000"></pt>
+                        <pt x="7.981258" y="8.050426"></pt>
                     </wall>
-                    <wall uid="37dcbc14-6435-11df-b677-c12adf01ffb2">
-                        <pt x="7.981258" y="31.014709"></pt>
-                        <pt x="5.120037" y="36.100040"></pt>
+                    <wall uid="934e05c2-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="7.981258" y="8.050426"></pt>
+                        <pt x="5.120033" y="13.135757"></pt>
                     </wall>
-                    <wall uid="37dcbcbe-6435-11df-b677-c12adf01ffb2">
-                        <pt x="5.120037" y="36.100040"></pt>
-                        <pt x="0.000000" y="44.546059"></pt>
+                    <wall uid="934e06d0-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="5.120033" y="13.135757"></pt>
+                        <pt x="0.000000" y="21.581776"></pt>
                     </wall>
-                    <wall uid="37dcbd72-6435-11df-b677-c12adf01ffb2">
-                        <pt x="0.000000" y="44.546059"></pt>
-                        <pt x="6.499477" y="48.001892"></pt>
+                    <wall uid="934e07d4-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="0.000000" y="21.581776"></pt>
+                        <pt x="6.499477" y="25.037601"></pt>
                     </wall>
-                    <wall uid="37dcbe12-6435-11df-b677-c12adf01ffb2">
-                        <pt x="6.499477" y="48.001892"></pt>
-                        <pt x="8.502270" y="42.460144"></pt>
+                    <wall uid="934e08ce-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="6.499477" y="25.037601"></pt>
+                        <pt x="8.502270" y="19.495861"></pt>
                     </wall>
-                    <wall uid="37dcbebc-6435-11df-b677-c12adf01ffb2">
-                        <pt x="8.502270" y="42.460144"></pt>
-                        <pt x="13.112629" y="44.439606"></pt>
+                    <wall uid="934e09dc-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="8.502270" y="19.495861"></pt>
+                        <pt x="13.112625" y="21.475315"></pt>
                     </wall>
-                    <wall uid="37dcc02e-6435-11df-b677-c12adf01ffb2">
-                        <pt x="13.112629" y="44.439606"></pt>
-                        <pt x="10.366264" y="49.900597"></pt>
+                    <wall uid="934e0acc-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="13.112625" y="21.475315"></pt>
+                        <pt x="10.366261" y="26.936314"></pt>
                     </wall>
-                    <wall uid="37dcc0e2-6435-11df-b677-c12adf01ffb2">
-                        <pt x="10.366264" y="49.900597"></pt>
-                        <pt x="15.850590" y="51.715553"></pt>
+                    <wall uid="934e0bbc-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="10.366261" y="26.936314"></pt>
+                        <pt x="15.850586" y="28.751270"></pt>
                     </wall>
                 </floor>
             </building>
             <building nFloors="6" uid="f8e778bc-35ba-11df-b677-c12adf01ffb2">
                 <floor>
-                    <wall uid="37dcc27c-6435-11df-b677-c12adf01ffb2">
-                        <pt x="58.541397" y="50.292854"></pt>
-                        <pt x="58.541405" y="61.820633"></pt>
+                    <wall uid="934e0ee6-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="58.541389" y="27.328571"></pt>
+                        <pt x="58.541397" y="38.856350"></pt>
                     </wall>
-                    <wall uid="37dcc326-6435-11df-b677-c12adf01ffb2">
-                        <pt x="58.541405" y="61.820633"></pt>
-                        <pt x="63.541405" y="62.098412"></pt>
+                    <wall uid="934e0fea-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="58.541397" y="38.856350"></pt>
+                        <pt x="63.541405" y="39.134121"></pt>
                     </wall>
-                    <wall uid="37dcc3d0-6435-11df-b677-c12adf01ffb2">
-                        <pt x="63.541405" y="62.098412"></pt>
-                        <pt x="63.819183" y="50.431740"></pt>
+                    <wall uid="934e10f8-6c3b-11df-b677-c12adf01ffb2">
+                        <pt x="63.541405" y="39.134121"></pt>
+                        <pt x="63.819176" y="27.467457"></pt>
                     </wall>
                 </floor>
             </building>

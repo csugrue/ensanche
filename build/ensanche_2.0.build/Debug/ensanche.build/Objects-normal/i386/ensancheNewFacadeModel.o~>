@@ -1,0 +1,1 @@
+/Users/chris/Documents/openFrameworks/of_preRelease_v0061_osxSL_FAT/apps/ensanche/ensanche_v2.0.5/src/ensancheTypes/ensancheNewFacadeModel.cpp:358: error: no 'void EnsancheNewFacadeModel::drawCeiling(int)' member function declared in class 'EnsancheNewFacadeModel'

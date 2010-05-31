@@ -10,7 +10,7 @@
 
 #include "polyEditable.h"
 #include "ensancheModelBuilding.h"
-#include "ensancheModelBuildingAdv.h"
+#include "ensancheNewFacadeModel.h"
 #include "ensancheBarrio.h"
 
 class EnsancheModelBarrio{
@@ -27,7 +27,9 @@ class EnsancheModelBarrio{
 		void drawWithCamera();
 		void draw2D();
 		
-		void addBuildings(EnsancheBarrio * barrio);
+		void loadFromXml( string filename);
+		
+		//void addBuildings(EnsancheBarrio * barrio);
 		//void addBuilding(EnsancheBuilding * building, float wallHeight, bool bOffset);
 		
 		void mouseDragged(ofMouseEventArgs& event);
@@ -47,8 +49,8 @@ class EnsancheModelBarrio{
 		
 		
 		//--- vector of buildings
-		vector<EnsancheModelBuilding> buildings;
-		vector<EnsancheModelBuildingAdv> buildingsAdv;
+		//vector<EnsancheModelBuilding> buildings;
+		vector<EnsancheNewFacadeModel> buildings;
 	
 		void setDrawMode( int dMode) { drawMode = dMode;}
 		int drawMode;

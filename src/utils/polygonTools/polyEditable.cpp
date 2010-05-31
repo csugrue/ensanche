@@ -33,7 +33,7 @@ polyEditable::polyEditable()
 	transPstRotate.set(0,0); 
 	lastMouse.set(0,0);
 	moveOffSet.set(0,0);
-	
+	moveBy			= 1;
 }
 
 polyEditable::~polyEditable()
@@ -98,6 +98,8 @@ polyEditable::polyEditable( const polyEditable &  mom )
 	mode = mom.mode;		
 	prevMode = mom.prevMode;
 	bTempMode = mom.bTempMode;
+	moveBy = mom.moveBy;
+	
 }
 //--------------------------------------------------------------
 //
@@ -173,36 +175,46 @@ void polyEditable::keyPressed(ofKeyEventArgs& event)
 		if(  mode == POLY_EDIT_MODE_MOVE_PTS )
 		{
 			selectedPoint++;
-			selectedPoint %= pts.size();
+			selectedPoint %= (int)(pts.size());
 		} 
 			
 	}
 	
 	cout << "key " << event.key << " " << OF_KEY_BACKSPACE << endl;
 	if( event.key == OF_KEY_BACKSPACE ) removePoint();
+
 	
 	if( event.key == OF_KEY_UP )
 	{
-		if( mode == POLY_EDIT_MODE_MOVE_ALL )		moveAllPointsBy( ofPoint(0,-1) );
-		else if( mode == POLY_EDIT_MODE_MOVE_PTS )	movePointBy( selectedPoint, ofPoint(0,-1) );
+		ofxVec2f mup = ofxVec2f(0,-moveBy);
+		mup.rotate(-gRotation);
+		if( mode == POLY_EDIT_MODE_MOVE_ALL )		moveAllPointsBy( ofPoint(mup.x,mup.y) );//ofPoint(0,-1) );
+		else if( mode == POLY_EDIT_MODE_MOVE_PTS )	movePointBy( selectedPoint, ofPoint(mup.x,mup.y) );//ofPoint(0,-1) );
 	}
 	else if( event.key == OF_KEY_DOWN)
 	{
-		if( mode == POLY_EDIT_MODE_MOVE_ALL )		moveAllPointsBy( ofPoint(0,1) );
-		else if( mode == POLY_EDIT_MODE_MOVE_PTS )	movePointBy( selectedPoint, ofPoint(0,1) );
+		ofxVec2f mdwn = ofxVec2f(0,moveBy);
+		mdwn.rotate(-gRotation);
+		if( mode == POLY_EDIT_MODE_MOVE_ALL )		moveAllPointsBy( ofPoint(mdwn.x,mdwn.y) );
+		else if( mode == POLY_EDIT_MODE_MOVE_PTS )	movePointBy( selectedPoint, ofPoint(mdwn.x,mdwn.y) );
 
 	}
 	else if( event.key == OF_KEY_LEFT )
 	{
-		if( mode == POLY_EDIT_MODE_MOVE_ALL )		moveAllPointsBy( ofPoint(-1,0) );
-		else if( mode == POLY_EDIT_MODE_MOVE_PTS )	movePointBy( selectedPoint, ofPoint(-1,0) );
+		ofxVec2f m = ofxVec2f(-moveBy,0);
+		m.rotate(-gRotation);
+		
+		if( mode == POLY_EDIT_MODE_MOVE_ALL )		moveAllPointsBy( ofPoint(m.x,m.y) );
+		else if( mode == POLY_EDIT_MODE_MOVE_PTS )	movePointBy( selectedPoint, ofPoint(m.x,m.y) );
 		else if( mode == POLY_EDIT_MODE_ROTATE )	rotate(-.5);
 
 	}
 	else if( event.key == OF_KEY_RIGHT )
 	{
-		if( mode == POLY_EDIT_MODE_MOVE_ALL )		moveAllPointsBy( ofPoint(1,0) );
-		else if( mode == POLY_EDIT_MODE_MOVE_PTS )	movePointBy( selectedPoint, ofPoint(1,0) );
+		ofxVec2f m = ofxVec2f(moveBy,0);
+		m.rotate(-gRotation);
+		if( mode == POLY_EDIT_MODE_MOVE_ALL )		moveAllPointsBy( ofPoint(m.x,m.y) );
+		else if( mode == POLY_EDIT_MODE_MOVE_PTS )	movePointBy( selectedPoint, ofPoint(m.x,m.y));
 		else if( mode == POLY_EDIT_MODE_ROTATE )	rotate(.5);
 
 	}
@@ -342,16 +354,21 @@ void polyEditable::mouseReleased(ofMouseEventArgs& event)
 //
 //--------------------------------------------------------------
 
-void polyEditable::draw()
+void polyEditable::draw(bool bDrawClosed)
 {	
 		
-	polySimple::draw();
-
+	//polySimple::draw();
+	ofBeginShape();
+	for( int i = 0; i < pts.size(); i++)
+	{
+		ofVertex(pts[i].x,pts[i].y);
+	}
+	ofEndShape(bDrawClosed);
 	
 	if( mode == POLY_EDIT_MODE_MOVE_ALL)
 	{
-		ofRectangle boundingBox = getBoundingBox();
-		ofRect( boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
+		//ofRectangle boundingBox = getBoundingBox();
+		//ofRect( boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
 	}
 	
 	
@@ -364,6 +381,17 @@ void polyEditable::draw()
 		if(pts.size() > selectedPoint) ofCircle(pts[selectedPoint].x, pts[selectedPoint].y, 4);
 		if(mode == POLY_EDIT_MODE_MOVE_PTS )
 		{
+		ofFill();
+		ofSetColor(255, 255, 255,255);
+		if(pts.size() > selectedPoint) ofCircle(pts[selectedPoint].x, pts[selectedPoint].y, 1);
+		
+		ofNoFill();
+		ofSetColor(255, 0, 0,0);
+		if(pts.size() > selectedPoint) ofCircle(pts[selectedPoint].x, pts[selectedPoint].y, 1);
+		}
+		
+		/*if(mode == POLY_EDIT_MODE_MOVE_PTS )
+		{
 			ofNoFill();
 			ofSetColor(100,100,100,200);
 			for( int i = 0; i < pts.size(); i++)
@@ -371,7 +399,7 @@ void polyEditable::draw()
 				
 				if( i != selectedPoint) ofCircle(pts[i].x, pts[i].y, 4);
 			}
-		}
+		}*/
 	}
 	
 	//}else 

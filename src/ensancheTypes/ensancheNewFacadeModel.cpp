@@ -31,7 +31,7 @@ EnsancheNewFacadeModel::EnsancheNewFacadeModel()
 	memset(nptsv,0,MODEL_T_TEXTURES*sizeof(int));
 	memset(ntexptsv,0,MODEL_T_TEXTURES*sizeof(int));
 	
-	bEnabled = true;
+	bEnabled = false;
 
 }
 
@@ -353,4 +353,22 @@ void EnsancheNewFacadeModel::drawAllFloors(bool bDrawSideColorCoded)
 
 	
 }
+
+
+void EnsancheNewFacadeModel::drawCeiling(int i)
+{
+	ofRectangle bb = buildingFloors[i].getBoundingBox();
+	glPushMatrix();
+		//glTranslatef(bb.x+bb.width*.5, <#GLfloat y#>, <#GLfloat z#>)
+		glTranslatef(0,(i+1)*EN_FLOOR_HEIGHT, 0);
+		glRotatef(90,1,0,0);
+		ofBeginShape();
+		for( int j = 0; j < buildingFloors[i].pts.size();j++)
+		{
+			ofVertex(buildingFloors[i].pts[j].x, buildingFloors[i].pts[j].y);
+		}
+		ofEndShape();
+	glPopMatrix();
+}
+
 

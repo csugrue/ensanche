@@ -10,6 +10,8 @@
 #include "polyEditable.h"
 #include "ensancheConstants.h"
 
+// Note: prob remove this..
+#include "ofxQtVideoSaver.h"
 
 class testApp : public ofBaseApp{
 
@@ -49,7 +51,13 @@ class testApp : public ofBaseApp{
 		//---- error / status report
 		
 	
-	
+		//---- saving to movie file
+		ofxQtVideoSaver	movieSaver;
+		bool bRecordingMovie;
+		bool bUseRecorder;
+		bool bGrabScreen;
+		int screenGrabCounter;
+		string screenGrabPath;
 
 };
 

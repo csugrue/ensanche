@@ -22,6 +22,8 @@ class EnsancheScaleTool : public polyGroup
 		
 		void setup();
 		void addPoly();
+		void addPoly( ofPoint m0, ofPoint m1, float width );
+		
 		void draw();
 		void setPixelPerMeter(float ppm);
 	
@@ -30,7 +32,8 @@ class EnsancheScaleTool : public polyGroup
 	
 		float pixelPerMeter;
 		ofPoint mouse;
-	
+		bool bStraighten;
+		
 	protected:
 		
 		ofTrueTypeFont font;

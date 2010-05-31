@@ -94,6 +94,9 @@ void sceneUserInput::keyPressed(int key)
 		if( key == '!' && currentSubScene == USER_SUB_INT ) userScenes[currentSubScene]->loadUserFile();
 		if( key == '@' && currentSubScene == USER_SUB_INT ) userScenes[currentSubScene]->saveUserFile();
 	}
+	
+	if( key == OF_KEY_F1) bPanelOn = !bPanelOn;
+
 }
 
 void sceneUserInput::keyReleased(int key)

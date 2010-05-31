@@ -117,7 +117,7 @@ void polyFixWidth::draw()
 	if( pts.size() > 1 && pts.size() < 2 )
 	{
 		ofSetColor(255,0,0,255);
-		ofLine( pts[0].x, pts[0].y, pts[1].x, pts[1].y);
+		//ofLine( pts[0].x, pts[0].y, pts[1].x, pts[1].y);
 	}
 	
 	if( pts.size() == 2 )

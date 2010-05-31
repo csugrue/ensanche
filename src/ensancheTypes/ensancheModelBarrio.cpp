@@ -80,7 +80,7 @@ void EnsancheModelBarrio::draw2D()
 {
 	for( int i = 0; i < buildings.size(); i++)
 	{
-		buildings[i].draw( MODEL_DRAW_MODE_2D, true );
+		buildings[i].draw2D(false,false);//( MODEL_DRAW_MODE_2D, true );
 	}
 }
 
@@ -102,7 +102,7 @@ void EnsancheModelBarrio::draw()
 
 			for( int i = 0; i < buildings.size(); i++)
 			{
-				buildings[i].draw( drawMode, true );
+				//buildings[i].draw( drawMode, true );
 			}
 			
 			
@@ -175,13 +175,14 @@ void EnsancheModelBarrio::drawWithCamera()
 			// draw the buildings
 			for( int i = 0; i < buildings.size(); i++)
 			{
+				buildings[i].draw3D2(false);
 				//buildings[i].draw( drawMode, true );
 			}
 			
-			for( int i = 0; i < buildingsAdv.size(); i++)
-			{
-				buildingsAdv[i].draw( drawMode, true );
-			}
+			//for( int i = 0; i < buildingsAdv.size(); i++)
+		//{
+				//buildingsAdv[i].draw( drawMode, true );
+		//	}
 			
 		glPopMatrix();
 	
@@ -191,23 +192,23 @@ void EnsancheModelBarrio::drawWithCamera()
 	ofSetupScreen();
 }
 
-
+/*
 void EnsancheModelBarrio::addBuildings(EnsancheBarrio * barrio)
 {
 	for( int i = 0; i < barrio->buildings.size(); i++)
 	{
-		buildings.push_back( EnsancheModelBuilding() );
+		//buildings.push_back( EnsancheModelBuilding() );
+		//buildings[i].setup();
+		
+		//for( int j = 0; j < barrio->buildings[i].nFloors; j++)
+		//	buildings[i].addBuildingFloor( barrio->buildings[i].buildingPoly);
+		
+		// multi texture
+		buildings.push_back( EnsancheModelBuildingAdv() );
 		buildings[i].setup();
 		
 		for( int j = 0; j < barrio->buildings[i].nFloors; j++)
-			buildings[i].addBuildingFloor( barrio->buildings[i].buildingPoly);
-		
-		// multi texture
-		buildingsAdv.push_back( EnsancheModelBuildingAdv() );
-		buildingsAdv[i].setup();
-		
-		for( int j = 0; j < barrio->buildings[i].nFloors; j++)
-			buildingsAdv[i].addBuildingFloor( barrio->buildings[i] );
+			buildings[i].addBuildingFloor( barrio->buildings[i] );
 		
 		//cout << "setting texture " << i << endl;
 		
@@ -217,22 +218,22 @@ void EnsancheModelBarrio::addBuildings(EnsancheBarrio * barrio)
 	boundingBox = barrio->getGroupBoundingBox();
 	center.set( boundingBox.x+boundingBox.width*.5, 0.f, boundingBox.y + boundingBox.height*.5);
 	
-	for( int i = 0; i < barrio->buildings.size(); i++){
-			buildings[i].setWallTexture(&textureWall);
-			buildings[i].generateModel(4.f);
-	}
+	//for( int i = 0; i < barrio->buildings.size(); i++){
+	//		buildings[i].setWallTexture(&textureWall);
+	//		buildings[i].generateModel(4.f);
+	//}
 	
 	for( int i = 0; i < barrio->buildings.size(); i++){
 		for( int j = 0; j < MODEL_T_TEXTURES; j++)
-			buildingsAdv[i].setWallTexture(&textureWalls[j],j);
+			buildings[i].setWallTexture(&textureWalls[j],j);
 		//buildingsAdv[i].generateModel(4.f);
 	}
 	
-	for( int i = 0; i < barrio->buildings.size(); i++)	
-		cout << i << " use texture " << buildings[i].bSetWallTexture << endl;
+	//for( int i = 0; i < barrio->buildings.size(); i++)	
+	//	cout << i << " use texture " << buildings[i].bSetWallTexture << endl;
 	// calc bounding and center for all
 }
-
+*/
 void EnsancheModelBarrio::mouseDragged(ofMouseEventArgs& event)
 {
 	if(!bEnabled) return;
@@ -263,3 +264,90 @@ void EnsancheModelBarrio::mousePressed(ofMouseEventArgs& event)
 
 }
 
+void EnsancheModelBarrio::loadFromXml( string filename )
+{
+	cout << "loading model barrio data from " << filename << endl;
+	
+	ofxXmlSettings xml;
+	xml.loadFile(filename);
+	
+	if( xml.pushTag("ensanche") )
+	{
+		if( xml.pushTag("exterior") )
+		{
+			if( xml.pushTag("architecture") )
+			{
+				int nBuildings = xml.getNumTags("building");
+				cout << "barrio loading " << nBuildings << " buildings" << endl;
+				
+				if( nBuildings > 0 )
+				{
+					clear();
+					
+					for( int i = 0; i < nBuildings; i++)
+					{
+						// new building
+						buildings.push_back( EnsancheNewFacadeModel() );
+						buildings[i].setup();
+						
+						
+						int nFloors = xml.getAttribute("building","nFloors",1,i);
+						cout << "loading building " << i << " with " << nFloors << " floors" << endl;
+						//buildings[i].nFloors = nFloors;
+						//buildings[nB].uid = xml.getAttribute("building","uid",getUid(),i);
+						
+						// add walls
+						xml.pushTag("building", i);
+						
+							for( int f = 0; f < nFloors; f++)
+							{
+							
+							EnsancheBuilding tempBuilding;
+							
+							//buildings[i].addBuildingFloor( barrio->buildings[i] );
+							xml.pushTag("floor",f);
+							
+								int nWalls = xml.getNumTags("wall");
+							
+								for( int j = 0; j < nWalls; j++)
+								{
+								ofPoint m1,m2;
+								int uid = xml.getAttribute("wall","uid",0,j);
+								int sideId = xml.getAttribute("wall","side",0,j);
+								xml.pushTag("wall",j);
+									m1.x = xml.getAttribute("pt","x",0.f,0);
+									m1.y = xml.getAttribute("pt","y",0.f,0);
+									m2.x = xml.getAttribute("pt","x",0.f,1);
+									m2.y = xml.getAttribute("pt","y",0.f,1);
+								xml.popTag();
+								
+								tempBuilding.addWall(m1,m2,uid,sideId);
+								}
+							
+								tempBuilding.addClosingWall();
+								
+								//add floor to model;
+								buildings[i].addBuildingFloor( tempBuilding );
+								
+							xml.popTag();
+							
+						}
+						
+						xml.popTag(); // building
+						
+					} // end i
+					
+				} // end if nBuildings
+				xml.popTag(); // arch
+			} // end if arch
+			
+			xml.popTag(); //exterior
+		} // end if ext
+		xml.popTag();
+	} //end if ensanche
+	
+	for( int i = 0; i < buildings.size(); i++){
+		for( int j = 0; j < MODEL_T_TEXTURES; j++)
+			buildings[i].setWallTexture(&textureWalls[j],j);
+	}
+}

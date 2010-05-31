@@ -45,7 +45,7 @@ public:
 	virtual void movePointBy( int index, ofPoint pt);			// moves one point at position index by pt.x,pt.y
 	virtual void rotate(float r);								// rotates entire polygon around its center (bounding box center)
 	
-	virtual void draw();										
+	virtual void draw(bool bDrawClosed=false);										
 	
 	virtual void keyPressed(ofKeyEventArgs& event);
 	virtual void keyReleased(ofKeyEventArgs& event);
@@ -81,6 +81,7 @@ public:
 	float invScale;				// for mouse input, if we are scaling globally, need proper mouse coords
 	float gRotation;			// for mouse input, if we are rotating in draw, need proper mouse coords
 	ofPoint transPreRotate,transPstRotate; // this is to reverse engineer translation outside draw for mouse input...maybe there is a matri math op to do this better
+	float moveBy;
 	
 	protected:
 		int mode;		// current editing mode

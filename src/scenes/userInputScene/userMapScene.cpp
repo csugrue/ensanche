@@ -30,6 +30,12 @@ void userMapScene::setup()
 	userdir = "none";
 	username = "none";
 	lastSelectedBuilding = -1;
+	bCopied = false;
+	
+	
+	titleFont.loadFont("fonts/verdana.ttf", 18,true,true,true);
+	loadTextFromXML();
+
 }
 
 userMapScene::~userMapScene()
@@ -166,6 +172,12 @@ void userMapScene::draw()
 	
 	//--- draw controls
 	if(bPanelOn) panel.draw();
+	else{
+	
+		//--- draw titles
+		ofSetColor(255,255,255,255);
+		titleFont.drawString(title_traceMeBarrio,20,40);
+	}
 	
 	
 
@@ -173,6 +185,8 @@ void userMapScene::draw()
 
 void userMapScene::keyPressed(int key)
 {
+	cout << "key: " << key << endl;
+	
 	if( key == OF_KEY_F1) bPanelOn = !bPanelOn;
 	
 	if( panel.isAnyTextBoxActive() ){
@@ -183,12 +197,18 @@ void userMapScene::keyPressed(int key)
 		return;
 	}
 	
+	if( panel.getSelectedPanelName() == "edit buildings")
+	{
+		if( key == 3 ) copyBuilding();
+		else if( key == 22 ) pasteBuilding();
+	}
+	
+	
 	
 }
 
 void userMapScene::keyReleased(int key)
 {
-
 }
 
 void userMapScene::mouseMoved(int x, int y)
@@ -207,6 +227,8 @@ void userMapScene::mouseMoved(int x, int y)
 	
 	mouse.x = x;
 	mouse.y = y;
+	
+   
 }
 
 void userMapScene::mouseDragged(int x, int y, int button)
@@ -225,6 +247,7 @@ void userMapScene::mouseDragged(int x, int y, int button)
 void userMapScene::mousePressed(int x, int y, int button)
 {
 	if(bPanelOn) panel.mousePressed(x,y,button);
+	
 	
 	
 }
@@ -251,7 +274,7 @@ void userMapScene::setupControlPanel()
 	panel.addToggle("grid", "grid", false);
 	panel.addToggle("reset map", "reset_map", false);
 	panel.addToggle("save tiles", "save_tiles", false);
-	panel.addSlider("zoom","ZOOM",1,.25,2,false);
+	panel.addSlider("zoom","ZOOM",1,.25,4,false);
 	panel.addSlider("shade","SHADE",1,0,1,false);
 	
 	panel.setWhichPanel("edit buildings");
@@ -508,6 +531,8 @@ void userMapScene::loadUserFile()
 					if(xml.pushTag("barrio") )
 					{
 						int nBdgs = xml.getNumTags("building");
+						cout << "nBdgs " << nBdgs << endl;
+						
 						
 						for( int i = 0; i < buildingGroup.buildings.size(); i++)
 							delete buildingGroup.buildings[i];
@@ -552,4 +577,48 @@ void userMapScene::loadUserFile()
 		}
 		
 	}
+}
+
+
+void userMapScene::copyBuilding()
+{
+	if( buildingGroup.selectedId >= 0 )
+	{
+		copyId = buildingGroup.selectedId;
+		//copyMBuilding = *(buildingGroup.buildings[buildingGroup.selectedId]);
+		bCopied = true;
+	}
+}
+
+void userMapScene::pasteBuilding()
+{
+	if( bCopied )
+	{
+		buildingGroup.addBuilding();
+		int lst = buildingGroup.buildings.size()-1;
+		buildingGroup.buildings[lst]->nFloors = buildingGroup.buildings[copyId]->nFloors;
+		buildingGroup.buildings[lst]->type = buildingGroup.buildings[copyId]->type;
+		//buildingGroup.buildings[lst]->uid = buildingGroup.buildings[lst]->.uid;
+		for( int i = 0; i < buildingGroup.buildings[copyId]->pts.size(); i++)
+		{	
+			ofPoint p = ofPoint(buildingGroup.buildings[copyId]->pts[i].x+1,buildingGroup.buildings[copyId]->pts[i].y+1);
+			buildingGroup.buildings[lst]->addPoint(p);
+		}
+		
+	}
+}
+
+
+void userMapScene::loadTextFromXML()
+{
+	ofxXmlSettings xml;
+	
+	string filename = XML_PATH_TO_TITLE_TEXT;
+	xml.loadFile(filename);
+	
+	title_traceMeBarrio = xml.getValue("ensanche:text:userInputScene:mapScene:TraceMeBarrio","Trace la silueta de cada edificio que desee ensanchar...");
+	title_traceMeVecinos = xml.getValue("ensanche:text:userInputScene:mapScene:TraceVecinos","Trace la silueta de los edificios adyacentes...");
+	
+
+	
 }

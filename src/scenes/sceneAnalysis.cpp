@@ -81,6 +81,8 @@ void SceneAnalysis::keyPressed(int key)
 	if( currentSubScene >= 0 &&  !analysisScenes[currentSubScene]->panel.isAnyTextBoxActive() ){
 		;
 	}
+	
+	if( key == 's'  ) analysisScenes[currentSubScene]->saveUserFile();
 }
 
 void SceneAnalysis::keyReleased(int key)

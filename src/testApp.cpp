@@ -32,7 +32,17 @@ void testApp::setup(){
 	panel.setSelectedPanel("user");
 	panel.setMinimized(true);
 	
-	//scenes[1]->panel.setSelectedPanel("interior");
+	
+	// Note: temp movie saving stuff
+	movieSaver.setup(640,480, "ensanche2.mov" );
+	movieSaver.setCodecType( OF_QT_SAVER_CODEC_QUALITY_NORMAL );
+	bRecordingMovie = false;
+	bUseRecorder = false;
+	bGrabScreen = false;
+	screenGrabCounter = 0;
+	screenGrabPath = "screenGrabs/"+getTimeString() + "_";
+	
+	ofSetFrameRate(30);
 
 }
 //--------------------------------------------------------------
@@ -61,11 +71,51 @@ void testApp::draw(){
 	scenes[currentScene]->draw();
 	if(bPanelOn) panel.draw();
 
+	// draw movie area
+	ofNoFill();
+	if(bUseRecorder){
+		if(bRecordingMovie)	ofSetColor(255,0,0,255);
+		else				ofSetColor(100,100,100,255);
+		
+		ofRect(ofGetWidth()/2 - 321, ofGetHeight()/2-241, 642, 482);
+	}
+	
+	if(bRecordingMovie)
+	{
+		int x = ofGetWidth()/2 - 320;
+		int y = ofGetHeight()/2 - 240;
+		ofImage img;
+		img.grabScreen(x,y,640,480);
+		movieSaver.addFrame(img.getPixels());
+
+	}
+	
+	
+	if(bGrabScreen)
+	{
+		ofImage img;
+		img.grabScreen(0,0,ofGetWidth(),ofGetHeight());
+		
+		string filename = screenGrabPath+ofToString(screenGrabCounter)+".png";
+		img.saveImage(filename);
+		
+		cout << "saving screen grab to " << filename << endl;
+		screenGrabCounter++;
+		bGrabScreen = false;
+		
+	}
+	
 }
 
 //--------------------------------------------------------------
 void testApp::keyPressed  (int key){
 	
+	if( key == OF_KEY_F4 )
+	{
+		cout << "TOGGLE_MOVIE!" << endl;
+		if(bRecordingMovie) movieSaver.finishMovie();
+		bRecordingMovie = !bRecordingMovie;
+	}
 	
 	if( panel.isAnyTextBoxActive() ){
 		if( key == OF_KEY_BACKSPACE) panel.deleteLastChar();
@@ -76,6 +126,13 @@ void testApp::keyPressed  (int key){
 	}
 	
 	scenes[currentScene]->keyPressed(key);
+	
+	if( key == OF_KEY_F3 )
+		bUseRecorder = !bUseRecorder;
+	
+	if( key == OF_KEY_F1) bPanelOn = !bPanelOn;
+	
+	if( key == OF_KEY_F2) bGrabScreen = true;
 	
 	// Note: must check any text box active for scenes!!
 	// if( key == 'f' ) ofToggleFullscreen();

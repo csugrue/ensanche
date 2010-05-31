@@ -85,6 +85,16 @@ class userInteriorScene: public baseScene{
 	
 	EnsancheFloorPlan	enFloorPlan;
 	
+	//interface
+	ofTrueTypeFont	titleFont;
+	string title_limits;
+	string title_windows;
+	string title_walls;
+	string title_agua;
+	string title_rooms;
+	string title_scale;
+	
+	void loadTextFromXML();
 	
 protected:
 	

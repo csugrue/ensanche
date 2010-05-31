@@ -32,5 +32,7 @@ class EnsancheMapBuilding: public polyEditable{
 		
 		// unique id
 		string uid;
-	
+		
+		
+		// 
 };

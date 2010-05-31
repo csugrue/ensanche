@@ -40,6 +40,9 @@ void AnalysisExpandAreaFinder::setup( EnsancheBarrio barrioOriginal )
 	// we are set to go!
 	bSetup = true;
 	
+	scaleTool.setup();
+	
+	gAlpha = 0;
 	expand(0);
 }
 
@@ -60,6 +63,7 @@ void AnalysisExpandAreaFinder::clear()
 	buildings.clear();
 	
 	bSetup = false;
+	gAlpha  = 0;
 }
 
 //-------------------------- DRAWING
@@ -99,7 +103,11 @@ void AnalysisExpandAreaFinder::drawIntersections( int me )
 
 void AnalysisExpandAreaFinder::drawShortest( int me )
 {
-	for( int i = 0; i < expandersOriginal.size(); i++)
+	scaleTool.draw();
+	
+	return;
+	
+	for( int i = 0; i < expanders.size(); i++)
 	{
 	
 		if( me >= 0 && i != me ) continue;
@@ -136,22 +144,33 @@ void AnalysisExpandAreaFinder::drawExpandAreas( int me )
 {
 	for( int i = 0; i < expandersAreas.size(); i++)
 	{
-		ofSetColor( getColor(i) );
+		ofBeginShape();
+		for( int j = 0; j < expandersAreas[i].poly.pts.size(); j++)
+		{
+		ofVertex(expandersAreas[i].poly.pts[j].x,expandersAreas[i].poly.pts[j].y);
+		}
+		ofEndShape();
+	}
+	
+	/*for( int i = 0; i < expandersAreas.size(); i++)
+	{
+		//ofSetColor( getColor(i) );
 		ofNoFill();
-		//expandersAreas[i].poly.draw();
 		for( int j = 0; j < expandersAreas[i].poly.pts.size()-1; j++)
 		{
-			ofSetColor( getColor(j) );
+			//ofSetColor( getColor(j) );
 			
-			if(expandersAreas[i].bSideMaxed[j]) ofSetColor(0xff0000);
+			if(expandersAreas[i].bSideMaxed[j]){ 
+			ofSetColor(0xff0000);
 			
 			ofLine(expandersAreas[i].poly.pts[j].x,expandersAreas[i].poly.pts[j].y,
 				   expandersAreas[i].poly.pts[j+1].x,expandersAreas[i].poly.pts[j+1].y);
+			}
 		}
 		
-		ofFill();
-		ofCircle(expandersAreas[i].poly.pts[0].x, expandersAreas[i].poly.pts[0].y, .1);
-	}
+		//ofFill();
+		//ofCircle(expandersAreas[i].poly.pts[0].x, expandersAreas[i].poly.pts[0].y, .1);
+	}*/
 }
 
 void AnalysisExpandAreaFinder::drawMinRectangles( int me  )
@@ -272,7 +291,8 @@ void AnalysisExpandAreaFinder::expand( float step )
 {
 	if(!bSetup) return;
 	
-
+	if( step > 0 && gAlpha < 1) gAlpha+= 2*step;
+	
 	//----- check if we have expand structs
 	if(expandersAreas.size() != expanders.size() )
 	{
@@ -284,6 +304,7 @@ void AnalysisExpandAreaFinder::expand( float step )
 			tempArea.poly = expanders[i].poly;			
 			tempArea.poly.bDrawnWithPoints = false;
 			tempArea.uid = expanders[i].uid;
+			memset(tempArea.distMoved,0,4*sizeof(float));
 			expandersAreas.push_back(tempArea);
 		}
 		
@@ -294,6 +315,8 @@ void AnalysisExpandAreaFinder::expand( float step )
 	findIntersectingLines(expanders);
 	findShortestDistances(expanders);
 	
+	
+	limitExpansion(expanders,step*2);
 	
 	//----- for all buildings, expand out by step
 	for( int i = 0; i < expanders.size(); i++)
@@ -309,6 +332,8 @@ void AnalysisExpandAreaFinder::expand( float step )
 			expandersAreas[i].poly.pts[j].x += step * expanders[i].pps[j].x;
 			expandersAreas[i].poly.pts[j].y += step * expanders[i].pps[j].y;
 			
+			expandersAreas[i].distMoved[j] += step;
+			
 			if(j < expandersAreas[i].poly.pts.size()-1)
 			{
 			expandersAreas[i].poly.pts[j+1].x += step * expanders[i].pps[j].x;
@@ -321,6 +346,7 @@ void AnalysisExpandAreaFinder::expand( float step )
 				expandersAreas[i].poly.pts[lst].x += step * expanders[i].pps[j].x;
 				expandersAreas[i].poly.pts[lst].y += step * expanders[i].pps[j].y;
 			}
+			
 			
 		}
 		
@@ -336,14 +362,15 @@ void AnalysisExpandAreaFinder::expand( float step )
 	}
 	
 	
-	limitExpansion(expanders);
+	limitExpansion(expanders,0);
+
 	
 }
 
 void AnalysisExpandAreaFinder::findIntersectingLines(vector<enExpandData> & epData)
 {
 	
-	float step = 1.f;
+	float step = 1.0f;
 	float dLen = 5000.f; // NOTE: this is rather arbitrary, and should base on group bounding box??
 	
 	// for each side, find spaced out intersections with other buildings but only keeping the closest
@@ -360,7 +387,7 @@ void AnalysisExpandAreaFinder::findIntersectingLines(vector<enExpandData> & epDa
 			float len			= diffVec.length();
 			ofxVec2f normVec	= diffVec.normalized();
 			
-			int npts = (int)(len/step);
+			int npts = (int)(len/step);//+1;
 			
 			
 			// go through inserted points on the side and find the intersection with the other building
@@ -376,8 +403,8 @@ void AnalysisExpandAreaFinder::findIntersectingLines(vector<enExpandData> & epDa
 				if( p == 0 )
 				{
 					int lst = (j+1)%4;
-					//pp.x = .5*pp.x-.5*epData[i].pps[lst].x;
-					//pp.y = .5*pp.y-.5*epData[i].pps[lst].y;
+					pp.x = .5*pp.x-.5*epData[i].pps[lst].x;
+					pp.y = .5*pp.y-.5*epData[i].pps[lst].y;
 				}
 				
 				endPts[1] = ofPoint(endPts[0].x + dLen * pp.x, endPts[0].y + dLen * pp.y);
@@ -411,7 +438,7 @@ void AnalysisExpandAreaFinder::findIntersectingLines(vector<enExpandData> & epDa
 							expanders[i].ePts[ lpt ] = closestPoint;
 							
 							// insert a new pairing if it does not exist
-							if ( epData[i].sisMeSides[j].sister.find(k) == epData[i].sisMeSides[j].sister.end( ) ){
+							if ( epData[i].sisMeSides[j].sister.find(k) == epData[i].sisMeSides[j].sister.end() ){
 								bRecordedSide = true;
 								epData[i].sisMeSides[j].sister.insert(pair<int, int>(k, closestSide));
 								// cout << "insert me: " << i << " side: " << j << " sister: " << k << " side: " << closestSide << endl;
@@ -452,6 +479,7 @@ void AnalysisExpandAreaFinder::findIntersectingLines(vector<enExpandData> & epDa
 
 void AnalysisExpandAreaFinder::findShortestDistances(vector<enExpandData> & epData)
 {
+	scaleTool.clear();
 	
 	//---- loop thru all expand rects
 	for( int i = 0; i < epData.size(); i++)
@@ -490,7 +518,7 @@ void AnalysisExpandAreaFinder::findShortestDistances(vector<enExpandData> & epDa
 					
 					//if we have a pairing
 					if( 
-					epData[i].sisMeSides[j].sister.find(k) != epData[i].sisMeSides[j].sister.end( )  &&
+					epData[i].sisMeSides[j].sister.find(k) != epData[i].sisMeSides[j].sister.end()  &&
 					epData[i].sisMeSides[j].sister[k] == p) 
 						;
 					else 
@@ -514,7 +542,7 @@ void AnalysisExpandAreaFinder::findShortestDistances(vector<enExpandData> & epDa
 						{
 							
 							// if the the side is intersecting another, stop moving
-							if( isIntersectionPoly(eA, eB, epData[h].poly.pts) )
+							/*if( isIntersectionPoly(eA, eB, epData[h].poly.pts) )
 								bIntersection = true;
 								
 							if( isIntersectionPoly(eA, eB, buildings[h].buildingPoly.pts) )
@@ -523,7 +551,7 @@ void AnalysisExpandAreaFinder::findShortestDistances(vector<enExpandData> & epDa
 							// if extended point is in another building, stop moving								
 							if( h != i && pointInPolygon(eB.x, eB.y, epData[h].poly.pts) )
 								bIntersection = true;	
-							
+							*/
 						}
 						
 						// record this data
@@ -538,8 +566,10 @@ void AnalysisExpandAreaFinder::findShortestDistances(vector<enExpandData> & epDa
 								epData[i].iSides[lst].sisterSide = p;
 								epData[i].iSides[lst].sisterIndex = k;
 								epData[i].iSides[lst].bSideStopper = false;
+								
+								scaleTool.addPoly(eA,eB,1);
+						}
 						
-						}	
 					
 						
 					} // end if minLine
@@ -597,20 +627,29 @@ void AnalysisExpandAreaFinder::findShortestDistances(vector<enExpandData> & epDa
 		}
 		
 		// replace with the temp
-		epData[i].iSides.clear();
-		epData[i].iSides.assign(tSides.begin(), tSides.end() );
+		//epData[i].iSides.clear();
+		//epData[i].iSides.assign(tSides.begin(), tSides.end() );
 		
 	}
 	
 	
 }
 
-void AnalysisExpandAreaFinder::limitExpansion(vector<enExpandData> & epData)
+void AnalysisExpandAreaFinder::limitExpansion(vector<enExpandData> & epData,float step)
 {
 	// for each set of sides, test distance between and if it is close to min, stop expanding both
 	for( int i = 0; i < epData.size(); i++)
 	{
 		// for each iSides
+		for( int j = 0; j < 4; j++)
+		{
+			 if( expandersAreas[i].distMoved[j] > 4 )
+			 {
+				 expandersAreas[i].bSideMaxed[j] = true;
+			 }
+			 
+		}
+		
 		for(int j = 0; j < epData[i].iSides.size(); j++)
 		{
 			int side = epData[i].iSides[j].mySide;
@@ -618,18 +657,24 @@ void AnalysisExpandAreaFinder::limitExpansion(vector<enExpandData> & epData)
 			
 			ofxVec2f eA = epData[i].iSides[j].sPt;
 			ofxVec2f eB = epData[i].iSides[j].ePt;
-			float dist = (eA-eB).length();
+			float dist = (eA-eB).length()-step;
 						
 			// get min based on height of shorter of two buildings
 			int sis = epData[i].iSides[j].sisterIndex;
 			int nLessFloors = MIN(expanders[i].nFloors,expanders[sis].nFloors);					 
-			float minDist = (1/3.f) * (nLessFloors*EN_FLOOR_HEIGHT);
+			float minDist = ( (1/3.f) * (nLessFloors*EN_FLOOR_HEIGHT) );
+			
+			cout << "limit expansion dist " << dist << " mindist " << minDist << endl;
+			
+			
+			//if(minDist < EN_FLOOR_HEIGHT) minDist = EN_FLOOR_HEIGHT;
 			 
 			if(dist <= minDist){
 				expandersAreas[i].bSideMaxed[side] = true;
 				expandersAreas[sis].bSideMaxed[sisSide] = true;
 				epData[i].iSides[j].bSideStopper = true;
-				//cout << "limit me: " << i << " myside: " << side << " sis " << sis << " siside " << sisSide << endl;
+				//epData[sis].iSides[sisSide].bSideStopper = true;
+				cout << "limit me: " << i << " myside: " << side << " sis " << sis << " siside " << sisSide << endl;
 			}
 			
 		}

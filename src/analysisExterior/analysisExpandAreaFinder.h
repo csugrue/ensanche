@@ -18,6 +18,7 @@ Finds the possible expand area for the buildings.
 #include "ensancheBarrio.h"
 #include "ensancheUtils.h"
 #include "ensancheConstants.h"
+#include "ensancheScaleTool.h"
 
 typedef struct enShortestDistances{
 	int mySide;
@@ -56,6 +57,7 @@ typedef struct enExpandAreas{
 	bool bSideMaxed[4];				// test if side cannot move any farther bc either at max dist or too close to neighbor
 	polySimple poly;				// polygon defining total possible expand area
 	string uid;
+	float distMoved[4];
 	// float expandDist[4]; distance each expands??
 };
 
@@ -83,6 +85,9 @@ class AnalysisExpandAreaFinder{
 		
 		vector<enExpandData> expanders;
 		vector<enExpandData> expandersOriginal;
+		
+		EnsancheScaleTool	scaleTool;
+		float gAlpha;
 
 	protected:
 		
@@ -99,7 +104,7 @@ class AnalysisExpandAreaFinder{
 		void findShortestDistances(vector<enExpandData> & epData);
 		
 		// stop expansion when we are too close
-		void limitExpansion(vector<enExpandData> & epData);
+		void limitExpansion(vector<enExpandData> & epData, float step);
 		
 		// minimum circumbscribed rectangle for each building, pts to expand etc.
 		vector<EnsancheBuilding> buildings; // save a copy of the buildings for later analysis
@@ -108,6 +113,5 @@ class AnalysisExpandAreaFinder{
 		
 		// expanding params
 		vector<enExpandAreas> expandersAreas;
-				
 	
 };

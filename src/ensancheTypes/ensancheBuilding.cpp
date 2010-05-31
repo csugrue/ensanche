@@ -59,13 +59,13 @@ void EnsancheBuilding::draw()
 	
 }*/
 
-void EnsancheBuilding::addWall( ofPoint m1, ofPoint m2, int uid )
+void EnsancheBuilding::addWall( ofPoint m1, ofPoint m2, int uid, int typeId )
 {
 	enWall tempWall;
 	tempWall.pts[0] = m1;
 	tempWall.pts[1] = m2;
 	tempWall.posInPoly = buildingPoly.pts.size();
-	tempWall.type = 0;
+	tempWall.type = typeId;
 	tempWall.uid = getUid();
 	
 	walls.push_back(tempWall);

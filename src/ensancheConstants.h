@@ -33,15 +33,18 @@
 #define XML_FILE_MAP				"_mapData.xml"
 #define XML_FILE_USER				"_userData.xml"
 #define XML_FILE_INT				"_interiorData.xml"
+#define XML_FILE_FACADE				"_expandedFacadeData.xml"
 #define FLOOR_PLAN_DIRECTORY		"floorPlans/"
 #define USER_DIRECTORY				"userData/"
+
+#define XML_PATH_TO_TITLE_TEXT		"settings/titleText.xml"
 
 //-------------------------------------------
 // Structural 
 //-------------------------------------------
 #define WALL_ORIENT_H				0
 #define WALL_ORIENT_V				1
-#define EN_FLOOR_HEIGHT				4	//meters
+#define EN_FLOOR_HEIGHT				3	//meters
 
 //-------------------------------------------
 // MISC
